@@ -1,7 +1,7 @@
 /* Service worker do app Entrelinhas: notificações (OneSignal) + funcionamento offline */
 try { importScripts('https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js'); } catch (e) {}
 
-const CACHE = 'entrelinhas-v9';
+const CACHE = 'entrelinhas-v10';
 const ARQUIVOS = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './apple-touch-icon.png'];
 
 self.addEventListener('install', e => {
