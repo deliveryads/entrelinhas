@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#120B07">
+<meta name="color-scheme" content="dark">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Entrelinhas">
+<title>Entrelinhas</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono&family=Instrument+Serif:ital@0;1&family=Italiana&display=swap">
+<style>
+:root{
+  /* Identidade "Espresso e cobre" (Dark Autumn discreta, só escuro). Fundos quase pretos, textos claros de baixo brilho, botões tingidos.
+     Camadas: --bar (barra de abas) < --bg (fundo) < --surface (painéis) < --card (cartões) < --raised (campos) */
+  color-scheme:dark;
+  --bar:#0E0805; --bg:#120B07; --surface:#160E09; --card:#1A110B; --raised:#22170F; --line:#2E1F14; --line2:#3B291B;
+  --ink:#C9B99D; --text:#B3A389; --muted:#85776A;
+  --accent:#A8653D; --accent-soft:#2B1A10; --accent-ink:#C08A63; --btn:#3A2415; --btn-ink:#C4906A; --on-accent:#120B07;
+  --gold:#A78851; --gold-soft:#2A2015; --wine:#6F2924; --ok:#8FA07A; --warn:#C0904F;
+  --serif:"Iowan Old Style","Palatino","Georgia",serif;
+  --sans:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;
+  --r:18px; --safe-b:env(safe-area-inset-bottom,0px); --safe-t:env(safe-area-inset-top,0px);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 var(--sans)}
+body{padding-top:var(--safe-t)}
+button,input,select,textarea{font:inherit;color:inherit}
+header.top{position:sticky;top:0;z-index:5;background:var(--bg);padding:14px 18px 8px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+header.top h1{font:600 26px/1.15 var(--serif);margin:0;letter-spacing:-.01em}
+.iconbtn{border:0;background:var(--surface);border:1px solid var(--line);color:var(--muted);border-radius:999px;width:40px;height:40px;display:grid;place-items:center;font-size:18px}
+main{padding:4px 16px calc(96px + var(--safe-b));max-width:720px;margin:0 auto}
+.banner{background:var(--gold-soft);color:var(--text);border-radius:12px;padding:10px 14px;font-size:14px;margin:6px 0 12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px;margin:0 0 14px}
+.card h2{font:600 22px/1.3 var(--serif);margin:0 0 10px;color:var(--ink)}
+.meta{color:var(--muted);font-size:13px}
+.nota{font:18px/1.75 var(--serif);color:var(--text);letter-spacing:.005em}
+.nota strong{font-weight:600;color:var(--ink)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.chip{border:0;background:var(--accent-soft);border-radius:999px;padding:4px 11px;font-size:13px;color:var(--accent-ink)}
+.chip.on{background:var(--btn);color:var(--btn-ink);border-color:var(--btn)}
+.chip .x{margin-left:6px;opacity:.7}
+.row{display:flex;gap:8px;align-items:center}
+.row > *{flex:1}
+.btn{border:0;border-radius:14px;padding:13px 16px;background:var(--btn);color:var(--btn-ink);font-weight:600;width:100%}
+.btn.sec{background:var(--accent-soft);color:var(--accent-ink);border:0}
+.btn.ghost{background:transparent;color:var(--muted);border:1px solid var(--line)}
+.btn.sm{padding:8px 12px;font-size:14px;width:auto}
+.btn:disabled{opacity:.5}
+.list .item{display:block;width:100%;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px 14px;margin-bottom:8px}
+.item .t{font:600 16px/1.35 var(--serif);color:var(--ink)}
+.item .s{color:var(--muted);font-size:13px;margin-top:2px}
+.item.capa{display:flex;gap:12px;align-items:flex-start}
+.thumb{width:40px;height:60px;border-radius:6px;flex:0 0 40px;background:var(--accent-soft) center/cover no-repeat;display:grid;place-items:center;font:600 16px var(--serif);color:var(--accent-ink)}
+.capa-g{width:64px;height:96px;border-radius:6px;flex:0 0 64px;background:var(--accent-soft) center/cover no-repeat;border:0;padding:0}
+.capas{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:10px 0}
+.capa-op{aspect-ratio:2/3;border:1px solid var(--line);border-radius:8px;background:var(--raised) center/cover no-repeat;padding:0}
+input[type=text],input[type=url],input[type=password],input[type=search],select,textarea{width:100%;border:1px solid var(--line);background:var(--raised);border-radius:12px;padding:11px 12px;outline:none}
+textarea{min-height:96px;resize:vertical}
+label.l{display:block;font-size:13px;color:var(--muted);margin:12px 0 4px}
+.seg{display:flex;gap:6px;overflow-x:auto;padding:2px 0 10px;scrollbar-width:none}
+.seg::-webkit-scrollbar{display:none}
+.seg .chip{white-space:nowrap;flex-shrink:0;padding:6px 12px}
+.quote{font:italic 18px/1.6 var(--serif);color:var(--ink);border-left:2px solid var(--accent);padding-left:14px;margin:6px 0 10px}
+.badge{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;border-radius:6px;padding:2px 6px;background:var(--gold-soft);color:var(--warn)}
+.badge.ok{background:transparent;color:var(--ok);border:1px solid currentColor}
+.badge.warn{background:transparent;color:var(--warn);border:1px solid currentColor}
+.bar{height:6px;border-radius:6px;background:var(--accent-soft);overflow:hidden;margin-top:6px}
+.bar i{display:block;height:100%;background:var(--accent)}
+.empty{color:var(--muted);text-align:center;padding:28px 10px}
+.mais{float:right;border:0;background:transparent;color:var(--muted);font-size:20px;line-height:1;padding:0 4px}
+nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:6;background:var(--bar);border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:6px 4px calc(6px + var(--safe-b))}
+nav.tabs button{border:0;background:transparent;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;color:var(--muted);padding:5px 8px;min-width:58px;border-radius:18px}
+nav.tabs button span{font-size:21px;line-height:1}
+nav.tabs button.on{color:var(--accent-ink);background:var(--accent-soft);font-weight:600}
+.sheet-bg{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:35;display:none}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:36;background:var(--card);border-top:1px solid var(--line);border-radius:24px 24px 0 0;max-height:90vh;overflow:auto;padding:10px 18px calc(24px + var(--safe-b));transform:translateY(100%);transition:transform .25s ease;max-width:720px;margin:0 auto}
+.sheet.open{transform:none}
+.sheet .grab{width:40px;height:5px;border-radius:5px;background:var(--line);margin:4px auto 12px}
+.sheet h3{font:600 22px/1.25 var(--serif);margin:0 0 4px}
+.toast{position:fixed;left:50%;bottom:calc(88px + var(--safe-b));transform:translateX(-50%);background:var(--raised);color:var(--ink);border:1px solid var(--line);padding:10px 16px;border-radius:12px;font-size:14px;z-index:40;max-width:88vw;opacity:0;transition:opacity .2s;pointer-events:none}
+.toast.show{opacity:1}
+.nota a,.meta a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;word-break:break-all}
+.spin{display:inline-block;width:16px;height:16px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:s .8s linear infinite;vertical-align:-3px}
+@keyframes s{to{transform:rotate(360deg)}}
+.foto-prev{width:100%;border-radius:12px;border:1px solid var(--line);margin:8px 0}
+.fab{position:fixed;right:18px;bottom:calc(82px + var(--safe-b));z-index:7;border:1px solid var(--line);border-radius:999px;background:var(--btn);color:var(--btn-ink);font-weight:700;padding:14px 18px;box-shadow:0 6px 18px rgba(0,0,0,.35)}
+.sp{height:8px}
+.crop{position:relative;touch-action:none;user-select:none;-webkit-user-select:none}
+.crop canvas{width:100%;display:block;border-radius:10px}
+.crop .r{position:absolute;border:2px solid var(--accent);background:rgba(168,101,61,.15);pointer-events:none}
+.full{position:fixed;inset:0;z-index:30;background:var(--bg);display:flex;flex-direction:column;padding-top:var(--safe-t)}
+.full .barra{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;gap:8px}
+.full .barra h3{font:600 20px var(--serif);margin:0}
+.grafo{flex:1;position:relative;overflow:hidden;touch-action:none}
+.grafo svg{width:100%;height:100%;display:block}
+.grafo text{font-family:var(--sans);fill:var(--ink);pointer-events:none}
+.grafo .lv circle{stroke:var(--bg);stroke-width:1.5;vector-effect:non-scaling-stroke}
+.grafo line{stroke:var(--muted);stroke-opacity:.35;vector-effect:non-scaling-stroke}
+.zoom{position:absolute;right:12px;bottom:calc(16px + var(--safe-b));display:flex;flex-direction:column;gap:8px}
+.check{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--line)}
+.check input{width:20px;height:20px;margin-top:3px;flex:0 0 20px}
+@media print{
+  nav.tabs,header.top,.sheet,.sheet-bg,.fab,.toast,#app{display:none!important}
+  #impressao{display:block!important;color:#000;font:12pt/1.5 Georgia,serif}
+}
+#impressao{display:none}
+/* ===== Abertura (tags ao fundo + nome) ===== */
+#abertura{position:fixed;inset:0;z-index:60;background:var(--bg);overflow:hidden;transition:opacity .4s ease}
+#abertura.sai{opacity:0;pointer-events:none}
+.ab-campo{position:absolute;left:22px;right:22px;top:calc(var(--safe-t) + 28px);bottom:calc(196px + var(--safe-b));display:flex;flex-wrap:wrap;justify-content:center;align-content:space-between;gap:10px 18px;overflow:hidden;font-family:"DM Mono",ui-monospace,Menlo,monospace;color:var(--ink)}
+.ab-campo span{opacity:.075;line-height:1.15;white-space:nowrap}
+.ab-campo span.on{opacity:.62;color:var(--accent-ink)}
+.ab-fios{position:absolute;inset:0;pointer-events:none}
+.ab-veu{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 62% 15% at 50% 44%,var(--bg) 45%,transparent 100%)}
+.ab-nome{position:absolute;left:0;right:0;top:44%;transform:translateY(-50%);text-align:center;pointer-events:none}
+.ab-nome .e{font:400 clamp(54px,15vw,72px)/1 "Italiana",var(--serif);letter-spacing:.05em;color:var(--ink)}
+.ab-nome .l{font:italic 400 clamp(66px,19vw,92px)/1 "Instrument Serif",var(--serif);color:var(--accent-ink);margin-top:2px}
+.ab-pe{position:absolute;left:26px;right:26px;bottom:calc(30px + var(--safe-b));text-align:center}
+.ab-data{font:12px/1 "DM Mono",ui-monospace,Menlo,monospace;letter-spacing:.28em;color:var(--muted);margin-bottom:18px;text-transform:uppercase}
+.ab-btn{width:100%;border:1px solid var(--line2);border-radius:999px;background:var(--btn);color:var(--btn-ink);font:400 22px/1 "Instrument Serif",var(--serif);padding:17px 16px}
+.ab-sub{font:11px/1 "DM Mono",ui-monospace,Menlo,monospace;letter-spacing:.12em;color:var(--muted);margin-top:16px}
+@media (prefers-reduced-motion:reduce){#abertura{transition:none}}
+</style>
+</head>
+<body>
+<div id="abertura" role="dialog" aria-label="Abertura do Entrelinhas">
+  <div class="ab-campo" id="abCampo" aria-hidden="true"></div>
+  <svg class="ab-fios" id="abFios" aria-hidden="true"></svg>
+  <div class="ab-veu"></div>
+  <div class="ab-nome"><div class="e">Entre</div><div class="l">linhas</div></div>
+  <div class="ab-pe"><div class="ab-data" id="abData"></div><button class="ab-btn" id="abBtn">Entrar</button><div class="ab-sub" id="abSub">&nbsp;</div></div>
+</div>
+<header class="top"><h1 id="titulo">Hoje</h1><button class="iconbtn" data-a="recarregar" aria-label="Atualizar">↻</button></header>
+<main id="app"></main>
+<nav class="tabs" id="tabs">
+  <button data-tab="hoje"><span>☀️</span>Hoje</button>
+  <button data-tab="biblioteca"><span>📚</span>Biblioteca</button>
+  <button data-tab="trechos"><span>📸</span>Guardar</button>
+  <button data-tab="tags"><span>🏷️</span>Tags</button>
+  <button data-tab="mais"><span>⋯</span>Mais</button>
+</nav>
+<div class="sheet-bg" id="sheetbg"></div>
+<div class="sheet" id="sheet"><div class="grab"></div><div id="sheetc"></div></div>
+<div id="tela"></div>
+<div class="toast" id="toast"></div>
+<div id="impressao"></div>
+<input type="file" id="cam" accept="image/*" hidden>
+
+<script>
+/* ===== Configuração fixa (edite antes de publicar) ===== */
+const CONFIG = {
+  nomeApp: 'Entrelinhas',
+  onesignalAppId: 'COLE_AQUI_O_APP_ID_DO_ONESIGNAL', // público, pode ficar no código
+  externalId: 'fernando',                             // o mesmo usado no n8n
+  tesseract: 'https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js' // leitura de texto no aparelho (gratuita)
+};
+const DEMO = {"acervo": [{"titulo": "1984", "autor": "George Orwell", "categoria": "Ficção e clássicos", "tags": "totalitarismo, vigilância, verdade, linguagem, memória", "tags_nota": "linguagem, liberdade", "nota_pessoal": "(exemplo) Me marcou como controlar a linguagem é controlar o que se consegue pensar.", "ativo": "sim"}, {"titulo": "A revolução dos bichos", "autor": "George Orwell", "categoria": "Ficção e clássicos", "tags": "poder, revolução, manipulação, totalitarismo", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Nós", "autor": "Ievguêni Zamiátin", "categoria": "Ficção e clássicos", "tags": "distopia, controle-social, liberdade, identidade", "tags_nota": "", "nota_pessoal": "", "ativo": "sim", "peso": "menos"}, {"titulo": "Admirável mundo novo", "autor": "Aldous Huxley", "categoria": "Ficção e clássicos", "tags": "distopia, felicidade, consumo, controle-social, tecnologia", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Fahrenheit 451", "autor": "Ray Bradbury", "categoria": "Ficção e clássicos", "tags": "censura, conhecimento, tecnologia, alienação", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "O processo", "autor": "Franz Kafka", "categoria": "Ficção e clássicos", "tags": "burocracia, culpa, justiça, absurdo", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "A metamorfose", "autor": "Franz Kafka", "categoria": "Ficção e clássicos", "tags": "alienação, trabalho, identidade, família", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Memórias do subsolo", "autor": "Fiódor Dostoiévski", "categoria": "Ficção e clássicos", "tags": "livre-arbítrio, razão, ressentimento, solidão", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Noites brancas", "autor": "Fiódor Dostoiévski", "categoria": "Ficção e clássicos", "tags": "solidão, amor, imaginação", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Crime e castigo", "autor": "Fiódor Dostoiévski", "categoria": "Ficção e clássicos", "tags": "culpa, moral, redenção, sofrimento", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "O livro do riso e do esquecimento", "autor": "Milan Kundera", "categoria": "Ficção e clássicos", "tags": "memória, totalitarismo, humor, identidade", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Vidas secas", "autor": "Graciliano Ramos", "categoria": "Ficção e clássicos", "tags": "desigualdade, sobrevivência, linguagem, natureza", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Germinal", "autor": "Émile Zola", "categoria": "Ficção e clássicos", "tags": "trabalho, desigualdade, revolução, comunidade", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "O senhor das moscas", "autor": "William Golding", "categoria": "Ficção e clássicos", "tags": "natureza-humana, civilização, poder, violência", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Cem anos de solidão", "autor": "Gabriel García Márquez", "categoria": "Ficção e clássicos", "tags": "solidão, tempo, memória, família, história", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Sidarta", "autor": "Hermann Hesse", "categoria": "Ficção e clássicos", "tags": "espiritualidade, autoconhecimento, sentido-da-vida, tempo", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "A peste", "autor": "Albert Camus", "categoria": "Ficção e clássicos", "tags": "sofrimento, comunidade, absurdo, morte", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "O Aleph", "autor": "Paulo Coelho", "categoria": "Ficção e clássicos", "tags": "espiritualidade, autoconhecimento, tempo, jornada", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Fundação", "autor": "Isaac Asimov", "categoria": "Ficção e clássicos", "tags": "história, civilização, futuro, ciência, poder", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "O guia do mochileiro das galáxias", "autor": "Douglas Adams", "categoria": "Ficção e clássicos", "tags": "absurdo, sentido-da-vida, humor, tecnologia", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "O horizonte", "autor": "Patrick Modiano", "categoria": "Ficção e clássicos", "tags": "memória, tempo, identidade, amor", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Utopia", "autor": "Thomas More", "categoria": "Ficção e clássicos", "tags": "utopia, estado, justiça, desigualdade", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Nada mais será como antes", "autor": "Miguel Nicolelis", "categoria": "Ficção e clássicos", "tags": "tecnologia, futuro, ciência, risco, inteligência-artificial", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "A república", "autor": "Platão", "categoria": "Filosofia e ciências humanas", "tags": "justiça, estado, educação, verdade, poder", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Ética a Nicômaco", "autor": "Aristóteles", "categoria": "Filosofia e ciências humanas", "tags": "virtude, felicidade, ética, amizade", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Ética", "autor": "Baruch Spinoza", "categoria": "Filosofia e ciências humanas", "tags": "liberdade, natureza, afetos, livre-arbítrio, felicidade", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "O contrato social", "autor": "Jean-Jacques Rousseau", "categoria": "Filosofia e ciências humanas", "tags": "estado, liberdade, democracia, comunidade", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "O mito de Sísifo", "autor": "Albert Camus", "categoria": "Filosofia e ciências humanas", "tags": "absurdo, sentido-da-vida, morte, revolta", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Pedagogia do oprimido", "autor": "Paulo Freire", "categoria": "Filosofia e ciências humanas", "tags": "educação, liberdade, desigualdade, poder", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Comunidade", "autor": "Zygmunt Bauman", "categoria": "Filosofia e ciências humanas", "tags": "comunidade, liberdade, segurança, identidade", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Cegueira moral", "autor": "Zygmunt Bauman e Leonidas Donskis", "categoria": "Filosofia e ciências humanas", "tags": "ética, moral, indiferença, tecnologia", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Sociedade do cansaço", "autor": "Byung-Chul Han", "categoria": "Filosofia e ciências humanas", "tags": "cansaço, trabalho, desempenho, liberdade", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Infocracia", "autor": "Byung-Chul Han", "categoria": "Filosofia e ciências humanas", "tags": "informação, democracia, tecnologia, verdade, vigilância", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Vida contemplativa", "autor": "Byung-Chul Han", "categoria": "Filosofia e ciências humanas", "tags": "contemplação, tempo, trabalho, sentido-da-vida", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "A coragem de não agradar", "autor": "Ichiro Kishimi e Fumitake Koga", "categoria": "Filosofia e ciências humanas", "tags": "liberdade, autoconhecimento, felicidade, relações", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "A coragem de ser feliz", "autor": "Ichiro Kishimi e Fumitake Koga", "categoria": "Filosofia e ciências humanas", "tags": "felicidade, educação, amor, comunidade", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Diário estoico (The Daily Stoic)", "autor": "Ryan Holiday e Stephen Hanselman", "categoria": "Filosofia e ciências humanas", "tags": "estoicismo, virtude, autoconhecimento, resiliência", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Free Will", "autor": "Sam Harris", "categoria": "Filosofia e ciências humanas", "tags": "livre-arbítrio, moral, ciência, responsabilidade", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "O animal social", "autor": "Elliot Aronson", "categoria": "Filosofia e ciências humanas", "tags": "natureza-humana, comportamento, manipulação, preconceito", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Sapiens", "autor": "Yuval Noah Harari", "categoria": "Não ficção", "tags": "civilização, história, natureza-humana, mito, felicidade", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Homo Deus", "autor": "Yuval Noah Harari", "categoria": "Não ficção", "tags": "futuro, tecnologia, inteligência-artificial, livre-arbítrio", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "21 lições para o século 21", "autor": "Yuval Noah Harari", "categoria": "Não ficção", "tags": "futuro, tecnologia, verdade, democracia, sentido-da-vida", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Por que as nações fracassam", "autor": "Daron Acemoglu e James Robinson", "categoria": "Não ficção", "tags": "estado, instituições, desigualdade, poder, história", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Antifrágil", "autor": "Nassim Nicholas Taleb", "categoria": "Não ficção", "tags": "risco, incerteza, resiliência, fragilidade", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Arriscando a própria pele (Skin in the Game)", "autor": "Nassim Nicholas Taleb", "categoria": "Não ficção", "tags": "risco, ética, responsabilidade, justiça", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "How the World Works", "autor": "Noam Chomsky", "categoria": "Não ficção", "tags": "poder, estado, manipulação, democracia", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Sobrevivendo ao século XXI", "autor": "Noam Chomsky e José Mujica", "categoria": "Não ficção", "tags": "futuro, desigualdade, democracia, consumo", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "O diário de Anne Frank", "autor": "Anne Frank", "categoria": "Não ficção", "tags": "guerra, esperança, identidade, totalitarismo", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Cem dias entre céu e mar", "autor": "Amyr Klink", "categoria": "Não ficção", "tags": "aventura, solidão, coragem, natureza", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Endurance: a lendária expedição de Shackleton", "autor": "Alfred Lansing", "categoria": "Não ficção", "tags": "liderança, sobrevivência, coragem, resiliência", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}], "trechos": [], "historico": [{"id": "d-2026-11-21", "data": "2026-11-21", "tema": "Sentido e absurdo", "livros": "O mito de Sísifo; Sidarta; O guia do mochileiro das galáxias", "formato": "Fio condutor", "sugestao": "", "mensagem": "*Rolar a pedra*\nCamus encerra seu ensaio com Sísifo feliz. Sidarta passa a vida procurando e encontra ouvindo um rio. Arthur Dent descobre que a resposta é 42. Três maneiras de lidar com a falta de um sentido dado.\n\n📚 *Referências*\n• Albert Camus — _O mito de Sísifo_: revolta lúcida diante do absurdo\n• Hermann Hesse — _Sidarta_: o sentido vem da experiência, não do ensino\n• Douglas Adams — _O guia do mochileiro das galáxias_: o absurdo como comédia\n\n🤔 Qual é a sua pedra, e você a escolheria de novo?\n\n🏷️ #absurdo #sentido-da-vida #humor", "status": "enviado", "trechos": "t-demo1", "tags": "absurdo, sentido-da-vida, humor", "resposta": "(exemplo) Minha pedra é o trabalho, e eu a escolheria de novo, mas não todos os dias.", "respondido_em": "2026-11-21"}, {"id": "d-2026-11-24", "data": "2026-11-24", "tema": "Autoexploração", "livros": "Sociedade do cansaço; A metamorfose; Diário estoico (The Daily Stoic)", "formato": "Ficção × realidade", "sugestao": "", "mensagem": "*O cansaço que a gente escolhe*\nNinguém mandou você trabalhar até tarde. Ainda assim, você trabalhou. Byung-Chul Han chama isso de _sociedade do desempenho_: o chicote saiu da mão do patrão e foi parar na nossa.\n\nLido ao lado de _A metamorfose_, o quadro fica mais estranho. Gregor acorda inseto e a primeira preocupação dele é o trem que vai perder. Kafka antecipa o trabalhador que se mede só pela utilidade.\n\nOs estoicos ofereceriam uma saída curiosa: separar o que depende de nós do que não depende. O problema, diria Han, é que hoje achamos que *tudo* depende de nós.\n\n📚 *Referências*\n• Byung-Chul Han — _Sociedade do cansaço_: a autoexploração substitui a coerção externa\n• Franz Kafka — _A metamorfose_: o sujeito reduzido à sua função\n• Ryan Holiday — _Diário estoico_: a dicotomia do controle\n\n🤔 O que, no seu trabalho, você cobra de si que ninguém cobraria?\n\n🏷️ #cansaço #trabalho #liberdade", "status": "enviado", "trechos": "", "tags": "cansaço, trabalho, liberdade"}], "tags": [{"tag": "absurdo", "tema": "Sentido da vida", "fundir_em": ""}, {"tag": "afetos", "tema": "", "fundir_em": ""}, {"tag": "alienação", "tema": "Sociedade e trabalho", "fundir_em": ""}, {"tag": "amizade", "tema": "", "fundir_em": ""}, {"tag": "amor", "tema": "Memória e identidade", "fundir_em": ""}, {"tag": "autoconhecimento", "tema": "Sentido da vida", "fundir_em": ""}, {"tag": "aventura", "tema": "", "fundir_em": ""}, {"tag": "burocracia", "tema": "Sociedade e trabalho", "fundir_em": ""}, {"tag": "cansaço", "tema": "Sociedade e trabalho", "fundir_em": ""}, {"tag": "censura", "tema": "Política e poder", "fundir_em": ""}, {"tag": "civilização", "tema": "Sociedade e trabalho", "fundir_em": ""}, {"tag": "ciência", "tema": "Tecnologia e futuro", "fundir_em": ""}, {"tag": "comportamento", "tema": "", "fundir_em": ""}, {"tag": "comunidade", "tema": "Sociedade e trabalho", "fundir_em": ""}, {"tag": "conhecimento", "tema": "", "fundir_em": ""}, {"tag": "consumo", "tema": "Sociedade e trabalho", "fundir_em": ""}, {"tag": "contemplação", "tema": "", "fundir_em": ""}, {"tag": "controle-social", "tema": "Política e poder", "fundir_em": ""}, {"tag": "coragem", "tema": "", "fundir_em": ""}, {"tag": "culpa", "tema": "Sentido da vida", "fundir_em": ""}, {"tag": "democracia", "tema": "Política e poder", "fundir_em": ""}, {"tag": "desempenho", "tema": "Sociedade e trabalho", "fundir_em": ""}, {"tag": "desigualdade", "tema": "Sociedade e trabalho", "fundir_em": ""}, {"tag": "distopia", "tema": "Política e poder", "fundir_em": ""}, {"tag": "educação", "tema": "Sociedade e trabalho", "fundir_em": ""}, {"tag": "esperança", "tema": "", "fundir_em": ""}, {"tag": "espiritualidade", "tema": "Sentido da vida", "fundir_em": ""}, {"tag": "estado", "tema": "Política e poder", "fundir_em": ""}, {"tag": "estoicismo", "tema": "Sentido da vida", "fundir_em": ""}, {"tag": "família", "tema": "Memória e identidade", "fundir_em": ""}, {"tag": "felicidade", "tema": "Sentido da vida", "fundir_em": ""}, {"tag": "fragilidade", "tema": "", "fundir_em": ""}, {"tag": "futuro", "tema": "Tecnologia e futuro", "fundir_em": ""}, {"tag": "guerra", "tema": "", "fundir_em": ""}, {"tag": "história", "tema": "Memória e identidade", "fundir_em": ""}, {"tag": "humor", "tema": "", "fundir_em": ""}, {"tag": "identidade", "tema": "Memória e identidade", "fundir_em": ""}, {"tag": "imaginação", "tema": "", "fundir_em": ""}, {"tag": "incerteza", "tema": "Tecnologia e futuro", "fundir_em": ""}, {"tag": "indiferença", "tema": "", "fundir_em": ""}, {"tag": "informação", "tema": "Tecnologia e futuro", "fundir_em": ""}, {"tag": "instituições", "tema": "Política e poder", "fundir_em": ""}, {"tag": "inteligência-artificial", "tema": "Tecnologia e futuro", "fundir_em": ""}, {"tag": "jornada", "tema": "", "fundir_em": ""}, {"tag": "justiça", "tema": "Política e poder", "fundir_em": ""}, {"tag": "liberdade", "tema": "", "fundir_em": ""}, {"tag": "liberdades", "tema": "", "fundir_em": "liberdade"}, {"tag": "liderança", "tema": "", "fundir_em": ""}, {"tag": "linguagem", "tema": "Memória e identidade", "fundir_em": ""}, {"tag": "livre-arbítrio", "tema": "", "fundir_em": ""}, {"tag": "manipulação", "tema": "Política e poder", "fundir_em": ""}, {"tag": "memória", "tema": "Memória e identidade", "fundir_em": ""}, {"tag": "mito", "tema": "", "fundir_em": ""}, {"tag": "moral", "tema": "Sentido da vida", "fundir_em": ""}, {"tag": "morte", "tema": "Sentido da vida", "fundir_em": ""}, {"tag": "natureza", "tema": "", "fundir_em": ""}, {"tag": "natureza-humana", "tema": "", "fundir_em": ""}, {"tag": "poder", "tema": "Política e poder", "fundir_em": ""}, {"tag": "preconceito", "tema": "", "fundir_em": ""}, {"tag": "razão", "tema": "", "fundir_em": ""}, {"tag": "redenção", "tema": "Sentido da vida", "fundir_em": ""}, {"tag": "relações", "tema": "", "fundir_em": ""}, {"tag": "resiliência", "tema": "", "fundir_em": ""}, {"tag": "responsabilidade", "tema": "", "fundir_em": ""}, {"tag": "ressentimento", "tema": "", "fundir_em": ""}, {"tag": "revolta", "tema": "Sentido da vida", "fundir_em": ""}, {"tag": "revolução", "tema": "Política e poder", "fundir_em": ""}, {"tag": "risco", "tema": "Tecnologia e futuro", "fundir_em": ""}, {"tag": "segurança", "tema": "", "fundir_em": ""}, {"tag": "sentido-da-vida", "tema": "Sentido da vida", "fundir_em": ""}, {"tag": "sobrevivência", "tema": "", "fundir_em": ""}, {"tag": "sofrimento", "tema": "Sentido da vida", "fundir_em": ""}, {"tag": "solidão", "tema": "Memória e identidade", "fundir_em": ""}, {"tag": "tecnologia", "tema": "Tecnologia e futuro", "fundir_em": ""}, {"tag": "tempo", "tema": "Memória e identidade", "fundir_em": ""}, {"tag": "totalitarismo", "tema": "Política e poder", "fundir_em": ""}, {"tag": "trabalho", "tema": "Sociedade e trabalho", "fundir_em": ""}, {"tag": "utopia", "tema": "Política e poder", "fundir_em": ""}, {"tag": "verdade", "tema": "", "fundir_em": ""}, {"tag": "vigilância", "tema": "Política e poder", "fundir_em": ""}, {"tag": "violência", "tema": "", "fundir_em": ""}, {"tag": "virtude", "tema": "Sentido da vida", "fundir_em": ""}, {"tag": "ética", "tema": "Sentido da vida", "fundir_em": ""}], "atualizado": "2026-11-25T07:00:00-03:00"};
+const VERSAO = '1.10.0';
+</script>
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<script>
+/* ===== Utilidades ===== */
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const sem = s => String(s ?? '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim();
+const normTag = t => String(t ?? '').trim().toLowerCase().replace(/^#/, '').replace(/\s+/g, '-');
+const T = s => (Array.isArray(s) ? s : String(s ?? '').split(/[,;]/)).map(normTag).filter(Boolean);
+const store = {
+  get(k, d) { try { const v = localStorage.getItem('lt_' + k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem('lt_' + k, JSON.stringify(v)); } catch (e) {} }
+};
+function fmt(txt) { // formatação do WhatsApp -> HTML, com links clicáveis
+  const links = [];
+  let h = esc(txt).replace(/https?:\/\/[^\s<]+[^\s<.,;:!?)\]]/g, u => { links.push(u); return `\u0000${links.length - 1}\u0000`; });
+  h = h.replace(/(^|[\s(“"])\*([^*\n]+)\*(?=[\s).,!?:;”"]|$)/g, '$1<strong>$2</strong>');
+  h = h.replace(/(^|[\s(“"])_([^_\n]+)_(?=[\s).,!?:;”"]|$)/g, '$1<em>$2</em>');
+  h = h.replace(/\u0000(\d+)\u0000/g, (m, i) => `<a href="${links[i]}" target="_blank" rel="noopener">${links[i].replace(/^https?:\/\/(www\.)?/, '').slice(0, 40)}${links[i].length > 48 ? '…' : ''}</a>`);
+  return h.replace(/\n/g, '<br>');
+}
+const semFmt = s => String(s ?? '').replace(/[*_]/g, '');
+function toast(m, ms = 2600) { const t = $('#toast'); t.textContent = m; t.classList.add('show'); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove('show'), ms); }
+const standalone = () => window.navigator.standalone === true || matchMedia('(display-mode: standalone)').matches;
+const hoje = () => new Date().toLocaleDateString('sv-SE', { timeZone: 'America/Sao_Paulo' });
+const agoraId = () => new Date().toISOString().replace(/\D/g, '').slice(0, 14);
+const dataBR = d => { const m = String(d || '').match(/^(\d{4})-(\d{2})-(\d{2})/); return m ? `${m[3]}/${m[2]}/${m[1]}` : String(d || ''); };
+const peso = r => sem(r?.peso) || 'normal';
+
+/* ===== Estado ===== */
+const S = {
+  cfg: store.get('cfg', { api: '', token: '' }),
+  dados: null, demo: false, aba: (location.hash || '#hoje').slice(1),
+  busca: '', categoria: '', tagFiltro: '', foto: null, capas: store.get('capas', {})
+};
+const ABAS = { hoje: 'Hoje', biblioteca: 'Biblioteca', trechos: 'Guardar trecho', tags: 'Tags', mais: 'Mais', historico: 'Notas anteriores' };
+if (!ABAS[S.aba]) S.aba = 'hoje';
+document.title = CONFIG.nomeApp;
+
+/* ===== API (n8n) ===== */
+const apiBase = () => S.cfg.api.replace(/\/+$/, '');
+async function carregar(silencioso) {
+  if (!S.cfg.api || !S.cfg.token) { S.demo = true; S.dados = S.dados && S.demo ? S.dados : JSON.parse(JSON.stringify(DEMO)); render(); return; }
+  S.demo = false;
+  try {
+    const r = await fetch(`${apiBase()}/entrelinhas/dados?t=${encodeURIComponent(S.cfg.token)}`, { cache: 'no-store' });
+    const j = await r.json();
+    if (!r.ok || j.erro) throw new Error(j.erro || ('HTTP ' + r.status));
+    S.dados = j; store.set('dados', j);
+    if (!silencioso) toast('Atualizado');
+  } catch (e) {
+    const c = store.get('dados', null);
+    if (c) { S.dados = c; toast('Sem conexão com o n8n: mostrando dados salvos'); }
+    else { S.dados = { acervo: [], trechos: [], historico: [], tags: [] }; toast('Erro ao carregar: ' + e.message, 4000); }
+  }
+  render();
+}
+async function acao(params) {
+  if (S.demo) { toast('Modo demonstração: configure a conexão em Mais › Conexão', 3500); return null; }
+  const body = new URLSearchParams({ t: S.cfg.token, ...params }); // formulário simples: sem pré-requisição CORS
+  const r = await fetch(`${apiBase()}/entrelinhas/acao`, { method: 'POST', body });
+  let j = {}; try { j = await r.json(); } catch (e) {}
+  if (!r.ok || j.ok === false) throw new Error(j.texto || ('HTTP ' + r.status));
+  return j;
+}
+async function comando(texto, msgOk) {
+  const j = await acao({ acao: 'comando', texto });
+  if (!j) return null;
+  await carregar(true);
+  if (msgOk) toast(msgOk);
+  return j;
+}
+/* Gravações diretas na planilha (sem IA). No modo demonstração, só mudam a tela. */
+const CHAVE = { Acervo: 'titulo', Trechos: 'id', Historico: 'id', Tags: 'tag' };
+function aplicarLocal(ops) {
+  const lista = { Acervo: S.dados.acervo, Trechos: S.dados.trechos, Historico: S.dados.historico, Tags: (S.dados.tags = S.dados.tags || []) };
+  ops.forEach(op => {
+    const l = lista[op.aba]; if (!l) return;
+    if (op.modo === 'append') { l.push({ ...op.valores }); return; }
+    const k = CHAVE[op.aba], r = l.find(x => String(x[k]) === String(op.valores[k]));
+    if (r) Object.assign(r, op.valores);
+  });
+  if (!S.demo) store.set('dados', S.dados);
+}
+async function gravar(ops, texto) {
+  if (!ops.length) return;
+  aplicarLocal(ops);
+  if (S.demo) { render(); toast('Modo demonstração: alteração só nesta tela'); return { texto: 'ok' }; }
+  const j = await acao({ acao: 'gravar', ops: JSON.stringify(ops), texto: texto || '' });
+  render();
+  return j;
+}
+
+/* ===== Dados derivados ===== */
+const A = () => (S.dados?.acervo || []);
+const TR = () => (S.dados?.trechos || []);
+const TG = () => (S.dados?.tags || []);
+const H = () => (S.dados?.historico || []).slice().sort((a, b) => String(a.data).localeCompare(String(b.data)) || String(a.id).localeCompare(String(b.id)));
+const trOk = () => [];   // trechos são só apoio do agente: o app não os recebe
+function indiceTags() {
+  const idx = {};
+  const pega = t => (idx[t] = idx[t] || { livros: new Set(), notas_pessoais: 0, trechos: 0, reflexoes: 0 });
+  A().forEach(r => { T(r.tags).forEach(t => pega(t).livros.add(r.titulo));
+    T(r.tags_nota).forEach(t => { const e = pega(t); e.livros.add(r.titulo); e.notas_pessoais++; }); });
+  trOk().forEach(r => T(r.tags).forEach(t => { const e = pega(t); e.trechos++; if (r.titulo) e.livros.add(r.titulo); }));
+  H().forEach(r => T(r.tags).forEach(t => pega(t).reflexoes++));
+  return idx;
+}
+const temaDe = () => { const m = {}; TG().forEach(r => { if (r.tema) m[r.tag] = r.tema; }); return m; };
+const vocabulario = () => Object.keys(indiceTags()).sort();
+const notasDoLivro = t => H().filter(r => String(r.livros || '').split(';').some(x => sem(x) === sem(t)));
+const chips = tags => T(tags).length ? `<div class="chips">${T(tags).map(t => `<button class="chip" data-a="tag" data-v="${esc(t)}">#${esc(t)}</button>`).join('')}</div>` : '';
+const pergunta = m => semFmt((String(m || '').split('\n').find(l => l.includes('🤔')) || '').replace('🤔', '')).trim();
+function limpaTxt(s) { return sem(s).replace(/[^\p{L}\p{N}\s]/gu, ' ').split(/\s+/).filter(w => w.length > 2); }
+function parecido(a, b) {
+  const X = new Set(limpaTxt(a)), Y = new Set(limpaTxt(b)); if (!X.size || !Y.size) return false;
+  let c = 0; X.forEach(w => { if (Y.has(w)) c++; });
+  return c / Math.min(X.size, Y.size) >= 0.85 || c / new Set([...X, ...Y]).size >= 0.6;
+}
+
+/* ===== Capas (gratuito: link salvo no Acervo > Open Library > Google Books) ===== */
+const filaCapas = []; let buscandoCapa = false;
+const SEM_CAPA_DIAS = 7;   // livro sem capa encontrada: tenta de novo depois de 7 dias
+const https = u => String(u || '').replace(/^http:\/\//, 'https://');
+function capa(titulo) {
+  const r = A().find(x => x.titulo === titulo);
+  if (r && /^https?:\/\//.test(r.capa || '')) return https(r.capa);            // escolhida no app
+  const u = S.capas[titulo];
+  if (typeof u === 'string' && u.startsWith('http')) return u;
+  const tentouHa = typeof u === 'string' && u.startsWith('!') ? (Date.now() - Number(u.slice(1))) / 864e5 : Infinity;
+  if (tentouHa >= SEM_CAPA_DIAS && !filaCapas.includes(titulo)) { filaCapas.push(titulo); proximaCapa(); }
+  return '';
+}
+const limpaTitulo = t => String(t || '').replace(/\(.*?\)/g, '').split(':')[0].trim();
+const primeiroAutor = a => String(a || '').split(/ e |,|&/)[0].trim();
+async function json(url) { const r = await fetch(url); if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }
+// candidatos de capa, do mais provável para o menos
+async function candidatosCapa(titulo, autor, max = 1) {
+  const t = limpaTitulo(titulo), a = primeiroAutor(autor), out = [];
+  const add = u => { if (u && !out.includes(u)) out.push(u); };
+  const ol = async q => { const j = await json('https://openlibrary.org/search.json?' + new URLSearchParams({ ...q, limit: String(Math.max(3, max)), fields: 'cover_i' }));
+    (j.docs || []).forEach(d => d.cover_i && add(`https://covers.openlibrary.org/b/id/${d.cover_i}-M.jpg`)); };
+  const gb = async q => { const j = await json('https://www.googleapis.com/books/v1/volumes?' + new URLSearchParams({ q, maxResults: String(Math.max(3, max)), printType: 'books', fields: 'items(volumeInfo/imageLinks)' }));
+    (j.items || []).forEach(it => { const l = it.volumeInfo?.imageLinks; if (l) add(https(l.thumbnail || l.smallThumbnail).replace('&edge=curl', '')); }); };
+  const passos = [() => ol({ title: t, author: a }), () => gb(`intitle:${t}` + (a ? ` inauthor:${a}` : '')), () => ol({ title: t }), () => gb(`${t} ${a}`)];
+  let erros = 0;
+  for (const p of passos) { if (out.length >= max) break; try { await p(); } catch (e) { erros++; } }
+  if (!out.length && erros === passos.length) throw new Error('sem conexão');   // não grava "sem capa" quando foi falha de rede
+  return out.slice(0, max);
+}
+async function proximaCapa() {
+  if (buscandoCapa || !filaCapas.length || !navigator.onLine) return;
+  buscandoCapa = true;
+  const titulo = filaCapas.shift(), r = A().find(x => x.titulo === titulo);
+  try {
+    const [u] = await candidatosCapa(titulo, r?.autor, 1);
+    S.capas[titulo] = u || '!' + Date.now();
+    store.set('capas', S.capas);
+    if (u) document.querySelectorAll(`[data-capa="${CSS.escape(titulo)}"]`).forEach(el => { el.style.backgroundImage = `url("${u}")`; el.textContent = ''; });
+  } catch (e) { /* falha de rede: tenta de novo na próxima abertura */ }
+  buscandoCapa = false; setTimeout(proximaCapa, 350);
+}
+async function painelCapas(titulo) {
+  const r = A().find(x => x.titulo === titulo); if (!r) return;
+  abrir(`<h3>Capa de ${esc(titulo)}</h3><div class="meta">Procurando na Open Library e no Google Books…</div><div class="empty"><span class="spin"></span></div>`);
+  let l = []; try { l = await candidatosCapa(titulo, r.autor, 9); } catch (e) {}
+  abrir(`<h3>Capa de ${esc(titulo)}</h3><div class="meta">${l.length ? 'Toque na capa certa.' : 'Não encontrei capas. Cole o link de uma imagem.'}</div>
+    <div class="capas">${l.map(u => `<button class="capa-op" data-a="usarCapa" data-v="${esc(titulo)}|${esc(u)}" style="background-image:url('${esc(u)}')" aria-label="Usar esta capa"></button>`).join('')}</div>
+    <label class="l">Ou cole o link de uma imagem</label><input type="url" id="capaUrl" placeholder="https://…" value="${esc(r.capa || '')}">
+    <div class="sp"></div><button class="btn" data-a="usarCapaLink" data-v="${esc(titulo)}">Usar este link</button>
+    ${r.capa ? `<div class="sp"></div><button class="btn ghost" data-a="usarCapa" data-v="${esc(titulo)}|">Voltar à capa automática</button>` : ''}`);
+}
+async function salvarCapa(titulo, url) {
+  delete S.capas[titulo]; store.set('capas', S.capas);
+  await gravar([{ aba: 'Acervo', modo: 'update', valores: { titulo, capa: url } }], url ? `🖼️ Capa de _${titulo}_ atualizada.` : '');
+  painelLivro(titulo); toast(url ? 'Capa atualizada' : 'Capa automática');
+}
+const thumb = (r, cls = 'thumb') => { const u = capa(r.titulo); return `<div class="${cls}" data-capa="${esc(r.titulo)}" style="${u ? `background-image:url('${esc(u)}')` : ''}">${u || cls !== 'thumb' ? '' : esc(r.titulo[0] || '?')}</div>`; };
+
+/* ===== Editor de tags (confirmar, tirar, acrescentar) ===== */
+function editorTags(id, tags) {
+  const lista = T(tags);
+  return `<div class="chips" id="${id}" data-tags="${esc(lista.join(','))}">${lista.map(t => `<button class="chip on" data-a="tirarTag" data-v="${id}|${esc(t)}">#${esc(t)}<span class="x">✕</span></button>`).join('')}</div>
+    <div class="row" style="margin-top:8px"><input type="text" id="${id}_in" list="vocab" placeholder="Acrescentar tag" autocapitalize="none"><button class="btn sm sec" style="flex:0 0 auto" data-a="porTag" data-v="${id}">＋</button></div>
+    <datalist id="vocab">${vocabulario().map(t => `<option value="${esc(t)}">`).join('')}</datalist>`;
+}
+const lerTags = id => T($('#' + id)?.dataset.tags || '');
+function setTags(id, lista) { const el = $('#' + id); if (!el) return; el.outerHTML = editorTags(id, lista).split('<div class="row"')[0]; }
+
+/* ===== Telas ===== */
+function telaHoje() {
+  const h = H();
+  if (!h.length) return `<div class="empty">Nenhuma nota ainda.<br>A primeira chega amanhã às 7h.</div>`;
+  const diarias = h.filter(r => !String(r.id).startsWith('a-'));
+  const atual = diarias[diarias.length - 1] || h[h.length - 1];
+  const aprof = h.filter(r => String(r.id).startsWith('a-') && r.data >= atual.data);
+  S.lidas = S.lidas || store.get('lidas', []);
+  if (!S.demo && atual.status === 'pendente' && !S.lidas.includes(atual.id)) { S.lidas.push(atual.id); store.set('lidas', S.lidas.slice(-30)); acao({ acao: 'lida', id: atual.id }).catch(() => {}); }
+  const q = pergunta(atual.mensagem);
+  return `
+  <div class="card">
+    <button class="mais" data-a="cartaoNota" data-v="${esc(atual.id)}" aria-label="Compartilhar">⤴︎</button>
+    <div class="meta">${esc(dataBR(atual.data))} · ${esc(atual.formato || 'nota')}${atual.status === 'pendente' ? ' · <span class="badge">nova</span>' : ''}</div>
+    <div class="sp"></div>
+    <div class="nota">${fmt(atual.mensagem)}</div>
+    ${chips(atual.tags)}
+  </div>
+  ${q ? `<div class="card"><div class="meta">Sua resposta${atual.respondido_em ? ' · ' + esc(dataBR(atual.respondido_em)) : ''}</div>
+    <div class="sp"></div><div class="nota" style="font-size:15px">🤔 ${esc(q)}</div>
+    <textarea id="resp" placeholder="Escreva o que pensa. O agente usa suas respostas nas próximas notas.">${esc(atual.resposta || '')}</textarea>
+    <div class="sp"></div><button class="btn sec" data-a="responder" data-v="${esc(atual.id)}">${atual.resposta ? 'Atualizar resposta' : 'Guardar resposta'}</button></div>` : ''}
+  ${aprof.map(r => `<div class="card"><div class="meta">Aprofundamento · ${esc(dataBR(r.data))}</div><div class="sp"></div><div class="nota">${fmt(r.mensagem)}</div>${chips(r.tags)}</div>`).join('')}
+  <button class="btn" data-a="aprofundar">Aprofundar esta nota</button>
+  <div class="sp"></div>
+  <button class="btn ghost" data-a="ir" data-v="historico">Ver notas anteriores</button>`;
+}
+function telaBiblioteca() {
+  const cats = [...new Set(A().map(r => r.categoria).filter(Boolean))];
+  let l = A();
+  if (S.categoria === '_mais') l = l.filter(r => peso(r) === 'mais');
+  else if (S.categoria === '_nunca') l = l.filter(r => peso(r) === 'nunca');
+  else if (S.categoria) l = l.filter(r => r.categoria === S.categoria);
+  if (S.busca) l = l.filter(r => sem(r.titulo + ' ' + r.autor + ' ' + r.tags + ' ' + r.tags_nota).includes(sem(S.busca)));
+  l = l.slice().sort((a, b) => sem(a.titulo).localeCompare(sem(b.titulo)));
+  const filtros = [['', 'Todos'], ...cats.map(c => [c, c]), ['_mais', '★ Prioridade'], ['_nunca', 'Fora das notas']];
+  return `
+  <input type="search" placeholder="Buscar título, autor ou tag" value="${esc(S.busca)}" data-in="busca">
+  <div class="sp"></div>
+  <div class="seg">${filtros.map(([v, n]) => `<button class="chip ${S.categoria === v ? 'on' : ''}" data-a="cat" data-v="${esc(v)}">${esc(n)}</button>`).join('')}</div>
+  <div class="row" style="margin-bottom:10px"><button class="btn sm sec" data-a="mapa">🕸️ Mapa de conexões</button><button class="btn sm ghost" data-a="estante">📷 Pela estante</button></div>
+  <div class="meta" style="margin-bottom:8px">${l.length} livro(s)</div>
+  <div class="list">${l.map(r => {
+    const p = peso(r);
+    return `<button class="item capa" data-a="livro" data-v="${esc(r.titulo)}">${thumb(r)}<div style="flex:1">
+      <div class="t">${p === 'mais' ? '★ ' : ''}${esc(r.titulo)}</div>
+      <div class="s">${esc(r.autor)}${r.nota_pessoal ? ' · 📝' : ''}${p === 'menos' ? ' · aparece menos' : p === 'nunca' ? ' · fora das notas' : ''}</div>
+      <div class="s" style="color:var(--accent-ink)">${T(r.tags).map(t => '#' + esc(t)).join(' ')}</div></div></button>`;
+  }).join('') || '<div class="empty">Nada encontrado.</div>'}</div>
+  <button class="fab" data-a="novoLivro">＋ Livro</button>`;
+}
+function telaTrechos() {
+  return `
+  <div class="card">
+    <h2>Guardar um trecho</h2>
+    <div class="meta">Fotografe a página e escolha o livro. O trecho fica só como apoio das reflexões: ele não aparece no app.</div>
+    <div class="sp"></div>
+    <button class="btn" data-a="camera" data-v="local">📸 Ler no aparelho (grátis)</button>
+    <div class="sp"></div>
+    <button class="btn sec" data-a="camera" data-v="ia">✨ Ler com IA (reconhece grifos)</button>
+  </div>`;
+}
+function telaTags() {
+  const idx = indiceTags(), tm = temaDe();
+  const pesoT = v => v.livros.size + v.reflexoes + v.notas_pessoais;
+  const l = Object.entries(idx).filter(([t]) => !S.busca || sem(t).includes(sem(S.busca))).sort((a, b) => pesoT(b[1]) - pesoT(a[1]));
+  const max = Math.max(1, ...l.map(([, v]) => pesoT(v)));
+  const fus = TG().filter(r => r.fundir_em && r.fundir_em !== r.tag && idx[r.tag]);
+  const item = ([t, v]) => `<button class="item" data-a="tag" data-v="${esc(t)}">
+      <div class="row" style="justify-content:space-between"><div class="t">#${esc(t)}</div><div class="s" style="flex:0 0 auto">${v.livros.size} · ${v.reflexoes}</div></div>
+      <div class="bar"><i style="width:${Math.round(pesoT(v) / max * 100)}%"></i></div></button>`;
+  const grupos = {};
+  l.forEach(e => { const g = tm[e[0]] || 'Sem tema'; (grupos[g] = grupos[g] || []).push(e); });
+  const temTemas = Object.keys(tm).length > 0;
+  return `
+  ${fus.length ? `<div class="card"><h2>Sugestões de fusão</h2><div class="meta">Tags com o mesmo sentido, sugeridas no agrupamento mensal.</div>
+    ${fus.map(r => `<div class="row" style="margin-top:10px"><div><b>#${esc(r.tag)}</b> → #${esc(r.fundir_em)}</div>
+      <button class="btn sm" style="flex:0 0 auto" data-a="fundir" data-v="${esc(r.tag)}">Juntar</button>
+      <button class="btn sm ghost" style="flex:0 0 auto" data-a="naoFundir" data-v="${esc(r.tag)}">Manter</button></div>`).join('')}</div>` : ''}
+  <input type="search" placeholder="Filtrar tags" value="${esc(S.busca)}" data-in="busca">
+  <div class="sp"></div>
+  <div class="meta" style="margin-bottom:8px">${l.length} tags · livros · reflexões</div>
+  ${temTemas ? Object.entries(grupos).sort((a, b) => a[0] === 'Sem tema' ? 1 : b[0] === 'Sem tema' ? -1 : a[0].localeCompare(b[0]))
+      .map(([g, es]) => `<label class="l" style="font-weight:600;color:var(--ink)">${esc(g)}</label><div class="list">${es.map(item).join('')}</div>`).join('')
+    : `<div class="list">${l.map(item).join('') || '<div class="empty">Nenhuma tag.</div>'}</div>`}`;
+}
+function telaMais() {
+  const n = typeof window.OneSignal !== 'undefined' && OneSignal.Notifications ? OneSignal.Notifications.permission : null;
+  return `
+  <div class="list">
+    <button class="item" data-a="ir" data-v="historico"><div class="t">🗂️ Notas anteriores</div><div class="s">${H().length} registro(s)</div></button>
+  </div>
+  <div class="card">
+    <h2>Exportar</h2>
+    <div class="meta">Acervo e reflexões, com suas respostas.</div>
+    <div class="sp"></div>
+    <div class="row"><button class="btn sm sec" data-a="exportar" data-v="md">Markdown</button><button class="btn sm sec" data-a="exportar" data-v="json">JSON</button><button class="btn sm sec" data-a="exportar" data-v="pdf">PDF</button></div>
+  </div>
+  <div class="card">
+    <h2>Notificações</h2>
+    <div class="meta">${!standalone() ? 'Primeiro instale o app: no Safari, toque em Compartilhar › Adicionar à Tela de Início, e abra pelo ícone.' : n ? 'Ativadas ✅' : 'Receba a nota do dia às 7h.'}</div>
+    <div class="sp"></div>
+    <button class="btn" data-a="push" ${!standalone() || n ? 'disabled' : ''}>Ativar notificações</button>
+  </div>
+  <div class="card">
+    <h2>Conexão com o n8n</h2>
+    <label class="l">URL base dos webhooks</label>
+    <input type="url" id="cfgApi" placeholder="https://seu-n8n.app.n8n.cloud/webhook" value="${esc(S.cfg.api)}">
+    <label class="l">Token</label>
+    <input type="password" id="cfgTok" placeholder="O mesmo TOKEN_APP do fluxo" value="${esc(S.cfg.token)}">
+    <div class="sp"></div>
+    <button class="btn" data-a="salvarCfg">Salvar e testar</button>
+    <div class="sp"></div>
+    <div class="meta">${S.demo ? 'Sem conexão configurada: o app está em modo demonstração.' : 'Última atualização: ' + esc(S.dados?.atualizado ? new Date(S.dados.atualizado).toLocaleString('pt-BR') : '—')}</div>
+  </div>
+  <div class="meta" style="text-align:center">${esc(CONFIG.nomeApp)} v${VERSAO}</div>`;
+}
+function telaHistorico() {
+  const l = H().slice().reverse();
+  return `<div class="list">${l.map(r => `<button class="item" data-a="nota" data-v="${esc(r.id)}">
+    <div class="t">${esc(r.tema || 'Nota')}</div><div class="s">${esc(dataBR(r.data))} · ${esc(r.formato || '')}${r.resposta ? ' · ✍️ respondida' : ''}</div>
+    <div class="s" style="color:var(--accent-ink)">${T(r.tags).map(t => '#' + esc(t)).join(' ')}</div></button>`).join('') || '<div class="empty">Sem notas ainda.</div>'}</div>`;
+}
+
+/* ===== Painéis (bottom sheet) ===== */
+function abrir(html) { $('#sheetc').innerHTML = html; $('#sheetbg').style.display = 'block'; $('#sheet').scrollTop = 0; requestAnimationFrame(() => $('#sheet').classList.add('open')); }
+function fechar() { $('#sheet').classList.remove('open'); setTimeout(() => { $('#sheetbg').style.display = 'none'; }, 250); }
+const segPeso = (alvo, v, atual) => `<div class="seg">${[['mais', '★ Mais'], ['normal', 'Normal'], ['menos', 'Menos'], ['nunca', 'Nunca']]
+  .map(([p, n]) => `<button class="chip ${atual === p ? 'on' : ''}" data-a="peso" data-v="${alvo}|${esc(v)}|${p}">${n}</button>`).join('')}</div>`;
+function painelLivro(titulo) {
+  const r = A().find(x => x.titulo === titulo); if (!r) return;
+  const ns = notasDoLivro(titulo);
+  abrir(`<div style="display:flex;gap:14px;align-items:flex-start"><button class="capa-g" data-a="trocarCapa" data-v="${esc(r.titulo)}" data-capa="${esc(r.titulo)}" aria-label="Trocar capa" style="${capa(r.titulo) ? `background-image:url('${esc(capa(r.titulo))}')` : ''}"></button><div><h3>${esc(r.titulo)}</h3><div class="meta">${esc(r.autor)} · ${esc(r.categoria)}</div><button class="btn ghost sm" style="margin-top:8px" data-a="trocarCapa" data-v="${esc(r.titulo)}">Trocar capa</button></div></div>
+    <label class="l">Quanto aparece nas notas</label>${segPeso('livro', r.titulo, peso(r))}
+    <label class="l">Tags do livro</label>${editorTags('tgLivro', r.tags)}
+    <label class="l">O que me marcou</label>
+    <textarea id="notaTxt" placeholder="Escreva sua impressão sobre o livro">${esc(r.nota_pessoal || '')}</textarea>
+    <label class="l">Tags da sua nota</label>${editorTags('tgNota', r.tags_nota)}
+    <div class="sp"></div><button class="btn" data-a="salvarLivro" data-v="${esc(r.titulo)}">Salvar alterações</button>
+    <div class="sp"></div><button class="btn ghost sm" data-a="buscarPopulares" data-v="${esc(r.titulo)}">Buscar trechos populares</button>
+    ${(() => { const v = vizinhos(r.titulo).slice(0, 5); return v.length ? `<label class="l">Livros mais próximos</label><div class="list">${v.map(x => `<button class="item" data-a="livro" data-v="${esc(x.livro.titulo)}"><div class="t">${esc(x.livro.titulo)}</div><div class="s" style="color:var(--accent-ink)">${x.comuns.map(t => '#' + esc(t)).join(' ')}</div></button>`).join('')}</div>` : ''; })()}
+    ${ns.length ? `<label class="l">Apareceu em ${ns.length} nota(s)</label>${ns.slice(-6).reverse().map(n => `<button class="item" data-a="nota" data-v="${esc(n.id)}"><div class="t">${esc(n.tema)}</div><div class="s">${esc(dataBR(n.data))}</div></button>`).join('')}` : ''}
+    <div class="sp"></div><button class="btn ghost" data-a="remover" data-v="${esc(r.titulo)}">Remover do acervo</button>`);
+}
+function painelTag(tag) {
+  const livros = A().filter(r => T(r.tags).includes(tag) || T(r.tags_nota).includes(tag));
+  const refs = H().filter(r => T(r.tags).includes(tag));
+  const viz = {};
+  livros.forEach(r => [...T(r.tags), ...T(r.tags_nota)].forEach(t => { if (t !== tag) viz[t] = (viz[t] || 0) + 1; }));
+  const junto = Object.entries(viz).sort((a, b) => b[1] - a[1]).slice(0, 8);
+  const tm = temaDe()[tag];
+  abrir(`<h3>#${esc(tag)}</h3><div class="meta">${tm ? esc(tm) + ' · ' : ''}${livros.length} livro(s) · ${refs.length} reflexão(ões)</div>
+    ${junto.length ? `<label class="l">Aparece junto com</label><div class="chips">${junto.map(([t, n]) => `<button class="chip" data-a="tag" data-v="${esc(t)}">#${esc(t)} (${n})</button>`).join('')}</div>` : ''}
+    <label class="l">Livros</label><div class="list">${livros.map(r => `<button class="item" data-a="livro" data-v="${esc(r.titulo)}"><div class="t">${esc(r.titulo)}</div><div class="s">${esc(r.autor)}${T(r.tags_nota).includes(tag) ? ' · 📝 na sua nota' : ''}</div></button>`).join('') || '<div class="meta">—</div>'}</div>
+    ${refs.length ? `<label class="l">Reflexões</label><div class="list">${refs.slice().reverse().map(n => `<button class="item" data-a="nota" data-v="${esc(n.id)}"><div class="t">${esc(n.tema)}</div><div class="s">${esc(dataBR(n.data))}${n.resposta ? ' · ✍️' : ''}</div></button>`).join('')}</div>` : ''}`);
+}
+function painelNota(id) {
+  const n = H().find(x => String(x.id) === String(id)); if (!n) return;
+  abrir(`<button class="mais" data-a="cartaoNota" data-v="${esc(n.id)}">⤴︎</button><div class="meta">${esc(dataBR(n.data))} · ${esc(n.formato)}</div><div class="sp"></div><div class="nota">${fmt(n.mensagem)}</div>${chips(n.tags)}
+    ${n.resposta ? `<label class="l">Sua resposta</label><div class="nota" style="font-size:15px">${esc(n.resposta)}</div>` : ''}`);
+}
+function painelNovoLivro() {
+  abrir(`<h3>Adicionar livro</h3><div class="meta">O agente confere o autor, evita duplicatas e atribui as tags.</div>
+    <label class="l">Título</label><input type="text" id="nlT" placeholder="Ex.: Vigiar e punir">
+    <label class="l">Autor (opcional)</label><input type="text" id="nlA" placeholder="Ex.: Michel Foucault">
+    <label class="l">O que me marcou (opcional)</label><textarea id="nlN"></textarea>
+    <div class="sp"></div><button class="btn" data-a="enviarLivro">Adicionar</button>`);
+}
+function painelAprofundar() {
+  abrir(`<h3>Aprofundar</h3><div class="meta">Uma camada nova sobre a nota de hoje: outro livro, uma objeção ou uma aplicação.</div>
+    <label class="l">Direção (opcional)</label><input type="text" id="apD" placeholder="Ex.: lado prático, Camus, #liberdade">
+    <div class="sp"></div><button class="btn" data-a="enviarAprof">Pedir aprofundamento</button>`);
+}
+const opcoesLivros = sel => A().slice().sort((a, b) => sem(a.titulo).localeCompare(sem(b.titulo))).map(r => `<option ${r.titulo === sel ? 'selected' : ''}>${esc(r.titulo)}</option>`).join('');
+function painelFotoIA() {
+  abrir(`<h3>Ler com IA</h3><img class="foto-prev" src="${S.foto.url}" alt="Prévia da foto">
+    <label class="l">De qual livro?</label>
+    <select id="fLivro"><option value="">— escolha —</option>${opcoesLivros()}</select>
+    <div class="sp"></div><button class="btn" data-a="enviarFoto">Enviar e transcrever</button>
+    <div class="sp"></div><button class="btn ghost" data-a="camera" data-v="ia">Escolher outra foto</button>`);
+}
+function painelResultado(titulo, texto, extra = '') { abrir(`<h3>${esc(titulo)}</h3><div class="sp"></div><div class="nota">${fmt(texto)}</div>${extra}<div class="sp"></div><button class="btn ghost" data-a="fechar">Fechar</button>`); }
+
+/* ===== Foto: compressão no aparelho ===== */
+function carregarImagem(file) {
+  return new Promise((ok, err) => { const url = URL.createObjectURL(file), img = new Image();
+    img.onload = () => ok({ img, url }); img.onerror = () => err(new Error('Não consegui abrir a imagem')); img.src = url; });
+}
+function paraJpeg(src, sx, sy, sw, sh, max = 1600, q = 0.85) {
+  const k = Math.min(1, max / Math.max(sw, sh));
+  const c = document.createElement('canvas'); c.width = Math.round(sw * k); c.height = Math.round(sh * k);
+  c.getContext('2d').drawImage(src, sx, sy, sw, sh, 0, 0, c.width, c.height);
+  const url = c.toDataURL('image/jpeg', q);
+  return { url, b64: url.split(',')[1], mime: 'image/jpeg', canvas: c };
+}
+
+/* ===== Leitura no aparelho (Tesseract, gratuito) ===== */
+let tessCarregado = null;
+function carregarTesseract() {
+  if (window.Tesseract) return Promise.resolve();
+  return tessCarregado || (tessCarregado = new Promise((ok, err) => { const s = document.createElement('script'); s.src = CONFIG.tesseract;
+    s.onload = ok; s.onerror = () => { tessCarregado = null; err(new Error('Não consegui baixar o leitor de texto. Confira a internet.')); }; document.head.appendChild(s); }));
+}
+function painelRecorte() {
+  abrir(`<h3>Selecione o trecho</h3><div class="meta">Arraste o dedo sobre a parte que interessa. Sem seleção, a página inteira é lida.</div>
+    <div class="sp"></div><div class="crop" id="crop"><canvas id="cropC"></canvas><div class="r" id="cropR" style="display:none"></div></div>
+    <div class="sp"></div><button class="btn" data-a="lerLocal">Ler e salvar</button>
+    <div class="sp"></div><button class="btn ghost" data-a="outraFotoLocal">Escolher outra foto</button>`);
+  const img = S.foto.img, cv = $('#cropC'), k = Math.min(1, 1000 / img.width);
+  cv.width = Math.round(img.width * k); cv.height = Math.round(img.height * k);
+  cv.getContext('2d').drawImage(img, 0, 0, cv.width, cv.height);
+  S.sel = null;
+  const box = $('#crop'), r = $('#cropR'); let ini = null;
+  const pt = e => { const b = cv.getBoundingClientRect(); return { x: Math.max(0, Math.min(b.width, e.clientX - b.left)), y: Math.max(0, Math.min(b.height, e.clientY - b.top)), w: b.width, h: b.height }; };
+  box.onpointerdown = e => { ini = pt(e); box.setPointerCapture(e.pointerId); r.style.display = 'block'; Object.assign(r.style, { left: ini.x + 'px', top: ini.y + 'px', width: 0, height: 0 }); };
+  box.onpointermove = e => { if (!ini) return; const p = pt(e);
+    const x = Math.min(ini.x, p.x), y = Math.min(ini.y, p.y), w = Math.abs(p.x - ini.x), h = Math.abs(p.y - ini.y);
+    Object.assign(r.style, { left: x + 'px', top: y + 'px', width: w + 'px', height: h + 'px' }); S.sel = { x: x / p.w, y: y / p.h, w: w / p.w, h: h / p.h }; };
+  box.onpointerup = () => { ini = null; if (S.sel && (S.sel.w < 0.05 || S.sel.h < 0.02)) { S.sel = null; r.style.display = 'none'; } };
+}
+function sugerirTags(texto, titulo) {
+  const livro = A().find(r => r.titulo === titulo), palavras = new Set(limpaTxt(texto));
+  const doTexto = vocabulario().filter(t => t.split('-').every(p => palavras.has(sem(p))));
+  return [...new Set([...doTexto, ...T(livro?.tags)])].slice(0, 5);
+}
+function painelAntesDaFoto() {
+  abrir(`<h3>Ler no aparelho</h3><div class="meta">Escolha o livro antes da foto. O texto lido é guardado direto, só com o livro.</div>
+    <label class="l">Livro</label><select id="alLivro"><option value="">— escolha —</option>${opcoesLivros(S.fotoLivro)}</select>
+    <div class="sp"></div><button class="btn" data-a="tirarFotoLocal">📸 Fotografar a página</button>`);
+}
+async function salvarTrechoLocal(texto) {
+  const titulo = S.fotoLivro, livro = A().find(r => r.titulo === titulo);
+  await gravar([{ aba: 'Trechos', modo: 'append', valores: { id: 't-' + agoraId(), titulo, autor: livro?.autor || '', trecho: texto,
+    tags: sugerirTags(texto, titulo).join(', ') } }], '📸 Trecho guardado.');
+  S.foto = null; fechar(); render(); toast('Trecho guardado. Ele entra como apoio nas próximas reflexões.', 3500);
+}
+
+/* ===== Estante ===== */
+function painelEstante(livros) {
+  S.estante = livros.map((l, i) => ({ ...l, i, tags: T(l.tags) }));
+  const cats = ['Ficção e clássicos', 'Filosofia e ciências humanas', 'Não ficção'];
+  abrir(`<h3>Livros encontrados</h3><div class="meta">Marque os que quer adicionar. Os que já estão no acervo vêm desmarcados.</div>
+    ${S.estante.map(l => { const ja = l.ja_no_acervo || A().some(r => sem(r.titulo) === sem(l.titulo));
+      return `<div class="check"><input type="checkbox" id="es_${l.i}" ${ja ? '' : 'checked'}><div style="flex:1">
+        <div class="t" style="font:600 16px var(--serif)">${esc(l.titulo)}</div><div class="meta">${esc(l.autor || '')}${ja ? ' · já no acervo' : ''}</div>
+        <select id="esc_${l.i}" style="margin-top:6px;padding:6px 8px">${cats.map(c => `<option ${c === l.categoria ? 'selected' : ''}>${c}</option>`).join('')}</select>
+        ${editorTags('tgE' + l.i, l.tags)}</div></div>`; }).join('')}
+    <div class="sp"></div><button class="btn" data-a="adicionarEstante">Adicionar selecionados</button>`);
+}
+
+/* ===== Mapa de conexões entre livros (por tags em comum) ===== */
+const tagsDo = r => [...new Set([...T(r.tags), ...T(r.tags_nota)])];
+function vizinhos(titulo) {
+  const r = A().find(x => x.titulo === titulo); if (!r) return [];
+  const minhas = new Set(tagsDo(r));
+  return A().filter(x => x.titulo !== titulo && peso(x) !== 'nunca')
+    .map(x => ({ livro: x, comuns: tagsDo(x).filter(t => minhas.has(t)) }))
+    .filter(v => v.comuns.length).sort((a, b) => b.comuns.length - a.comuns.length);
+}
+const COR_CAT = { 'Ficção e clássicos': 'var(--accent)', 'Filosofia e ciências humanas': 'var(--gold)' };
+function abrirMapa(filtroTema) {
+  const tm = temaDe(), temas = [...new Set(Object.values(tm))].sort();
+  const noTema = t => !filtroTema || tm[t] === filtroTema;
+  const minimo = filtroTema ? 1 : 2;                       // em "Tudo", só liga livros com 2+ tags em comum
+  const livros = A().filter(r => peso(r) !== 'nunca' && tagsDo(r).some(noTema));
+  const arestas = [], grau = {};
+  for (let i = 0; i < livros.length; i++) {
+    const a = new Set(tagsDo(livros[i]).filter(noTema));
+    for (let j = i + 1; j < livros.length; j++) {
+      const n = tagsDo(livros[j]).filter(t => a.has(t)).length;
+      if (n >= minimo) { arestas.push([livros[i].titulo, livros[j].titulo, n]); [livros[i].titulo, livros[j].titulo].forEach(t => { grau[t] = (grau[t] || 0) + 1; }); }
+    }
+  }
+  const nos = livros.filter(r => grau[r.titulo]).map(r => ({ id: r.titulo, cat: r.categoria })), soltos = livros.length - nos.length;
+  const pos = {};
+  nos.forEach((n, i) => { const a = i / nos.length * Math.PI * 2; n.x = Math.cos(a) * 300 + (Math.random() - .5) * 40; n.y = Math.sin(a) * 300 + (Math.random() - .5) * 40; n.vx = 0; n.vy = 0; pos[n.id] = n; });
+  const ar = arestas.map(([a, b, n]) => [pos[a], pos[b], n]);
+  for (let it = 0; it < 280; it++) {                       // simulação simples de forças
+    for (let i = 0; i < nos.length; i++) for (let j = i + 1; j < nos.length; j++) {
+      const a = nos[i], b = nos[j], dx = a.x - b.x, dy = a.y - b.y, d2 = Math.max(dx * dx + dy * dy, 25), f = 6000 / d2;
+      const fx = dx / Math.sqrt(d2) * f, fy = dy / Math.sqrt(d2) * f; a.vx += fx; a.vy += fy; b.vx -= fx; b.vy -= fy;
+    }
+    ar.forEach(([a, b, n]) => { const dx = b.x - a.x, dy = b.y - a.y, d = Math.sqrt(dx * dx + dy * dy) || 1, f = (d - 150 / n) * 0.015 * n;
+      a.vx += dx / d * f; a.vy += dy / d * f; b.vx -= dx / d * f; b.vy -= dy / d * f; });
+    nos.forEach(n => { n.vx -= n.x * 0.004; n.vy -= n.y * 0.004; n.x += n.vx * 0.5; n.y += n.vy * 0.5; n.vx *= 0.6; n.vy *= 0.6; });
+  }
+  const xs = nos.map(n => n.x), ys = nos.map(n => n.y), pad = 70;
+  const vb = nos.length ? [Math.min(...xs) - pad, Math.min(...ys) - pad, Math.max(...xs) - Math.min(...xs) + 2 * pad, Math.max(...ys) - Math.min(...ys) + 2 * pad] : [0, 0, 100, 100];
+  const larg = Math.min(innerWidth, 720), alt = Math.max(300, innerHeight - 170), cx = vb[0] + vb[2] / 2, cy = vb[1] + vb[3] / 2;
+  const w0 = Math.min(vb[2], Math.max(520, vb[3] * larg / alt)), h0 = w0 * alt / larg;   // começa com zoom legível, centralizado
+  S.vb = [cx - w0 / 2, cy - h0 / 2, w0, h0]; S.vb0 = S.vb.slice();
+  const e0 = w0 / larg, fs = (12 * e0).toFixed(1), corta = s => s.length > 24 ? s.slice(0, 23) + '…' : s;
+  $('#tela').innerHTML = `<div class="full"><div class="barra"><h3>Conexões entre livros</h3><button class="iconbtn" data-a="fecharTela">✕</button></div>
+    <div class="seg" style="padding:0 14px 6px"><button class="chip ${!filtroTema ? 'on' : ''}" data-a="mapaTema" data-v="">Tudo</button>${temas.map(t => `<button class="chip ${filtroTema === t ? 'on' : ''}" data-a="mapaTema" data-v="${esc(t)}">${esc(t)}</button>`).join('')}</div>
+    <div class="meta" style="padding:0 14px 6px">${filtroTema ? 'Livros ligados por tags deste tema.' : 'Linhas ligam livros com 2 ou mais tags em comum; mais grossa = mais tags.'}
+      <span style="color:var(--accent-ink)">●</span> Ficção <span style="color:var(--gold)">●</span> Filosofia <span style="color:var(--muted)">●</span> Não ficção${soltos ? ` · ${soltos} sem ligação` : ''}</div>
+    <div class="grafo" id="grafo">${nos.length ? `<svg id="svg" viewBox="${S.vb.join(' ')}">
+      ${ar.map(([a, b, n]) => `<line x1="${a.x.toFixed(1)}" y1="${a.y.toFixed(1)}" x2="${b.x.toFixed(1)}" y2="${b.y.toFixed(1)}" style="stroke-width:${Math.min(4, n)}px"/>`).join('')}
+      ${nos.map(n => `<g class="lv" data-a="livro" data-v="${esc(n.id)}" transform="translate(${n.x.toFixed(1)},${n.y.toFixed(1)})">
+        <circle r="${((5 + Math.min(9, grau[n.id])) * e0).toFixed(1)}" style="fill:${COR_CAT[n.cat] || 'var(--muted)'}"/><text x="${((9 + Math.min(9, grau[n.id])) * e0).toFixed(1)}" y="${(4 * e0).toFixed(1)}" style="font-size:${fs}px">${esc(corta(n.id))}</text></g>`).join('')}
+    </svg>` : '<div class="empty">Nenhuma ligação neste filtro.</div>'}
+    <div class="zoom"><button class="iconbtn" data-a="zoom" data-v="0.7">＋</button><button class="iconbtn" data-a="zoom" data-v="1.4">－</button><button class="iconbtn" data-a="zoom" data-v="0">⟲</button></div></div></div>`;
+  const g = $('#grafo'), svg = $('#svg'); let arr = null; if (!svg) return;
+  g.onpointerdown = e => { if (e.target.closest('[data-a]')) return; arr = { x: e.clientX, y: e.clientY, vb: S.vb.slice() }; g.setPointerCapture(e.pointerId); };
+  g.onpointermove = e => { if (!arr) return; const k = S.vb[2] / g.clientWidth;
+    S.vb[0] = arr.vb[0] - (e.clientX - arr.x) * k; S.vb[1] = arr.vb[1] - (e.clientY - arr.y) * k; svg.setAttribute('viewBox', S.vb.join(' ')); };
+  g.onpointerup = () => { arr = null; };
+}
+
+/* ===== Cartão-imagem para compartilhar ===== */
+function quebrar(ctx, texto, larg) {
+  const linhas = []; String(texto).split('\n').forEach(par => { let l = '';
+    par.split(/\s+/).forEach(p => { const t = l ? l + ' ' + p : p; if (ctx.measureText(t).width > larg && l) { linhas.push(l); l = p; } else l = t; });
+    linhas.push(l); });
+  return linhas;
+}
+async function cartaoImagem({ citacao, titulo, linha2, rodape }) {
+  const W = 1080, Hh = 1350, c = document.createElement('canvas'); c.width = W; c.height = Hh; const x = c.getContext('2d');
+  x.fillStyle = '#120B07'; x.fillRect(0, 0, W, Hh); x.fillStyle = '#A8653D'; x.fillRect(90, 150, 10, 180);
+  let tam = 58, linhas;
+  do { x.font = `italic ${tam}px Georgia, serif`; linhas = quebrar(x, citacao, W - 230); tam -= 4; } while (linhas.length * tam * 1.45 > 800 && tam > 30);
+  x.fillStyle = '#C9B99D'; x.textBaseline = 'top'; let y = 150;
+  linhas.forEach(l => { x.fillText(l, 130, y); y += (tam + 4) * 1.45; });
+  y += 50; x.font = '600 40px Georgia, serif'; x.fillStyle = '#C08A63'; quebrar(x, titulo, W - 230).forEach(l => { x.fillText(l, 130, y); y += 52; });
+  if (linha2) { x.font = '34px -apple-system, sans-serif'; x.fillStyle = '#85776A'; x.fillText(linha2, 130, y + 6); }
+  x.font = 'italic 600 34px Georgia, serif'; x.fillStyle = '#A8653D'; x.fillText(rodape || CONFIG.nomeApp, 90, Hh - 110);
+  const blob = await new Promise(ok => c.toBlob(ok, 'image/png'));
+  const file = new File([blob], 'trecho.png', { type: 'image/png' });
+  if (navigator.canShare && navigator.canShare({ files: [file] })) { try { await navigator.share({ files: [file] }); return; } catch (e) { if (e.name === 'AbortError') return; } }
+  abrir(`<h3>Imagem pronta</h3><img class="foto-prev" src="${c.toDataURL('image/png')}" alt="Cartão"><div class="meta">Toque e segure a imagem para salvar ou compartilhar.</div>`);
+}
+
+/* ===== Exportar ===== */
+function markdown() {
+  let md = `# ${CONFIG.nomeApp} — exportado em ${dataBR(hoje())}\n\n## Acervo (${A().length})\n`;
+  A().forEach(r => { md += `\n### ${r.titulo} — ${r.autor}\n- Categoria: ${r.categoria}\n- Tags: ${T(r.tags).join(', ')}\n` + (r.nota_pessoal ? `- O que me marcou: ${r.nota_pessoal}\n` : ''); });
+  md += `\n## Reflexões (${H().length})\n`;
+  H().forEach(r => { md += `\n### ${dataBR(r.data)} — ${r.tema}\n\n${semFmt(r.mensagem)}\n` + (r.resposta ? `\n**Minha resposta:** ${r.resposta}\n` : ''); });
+  return md;
+}
+async function baixar(nome, conteudo, tipo) {
+  const file = new File([conteudo], nome, { type: tipo });
+  if (navigator.canShare && navigator.canShare({ files: [file] })) { try { await navigator.share({ files: [file] }); return; } catch (e) { if (e.name === 'AbortError') return; } }
+  const a = document.createElement('a'); a.href = URL.createObjectURL(file); a.download = nome; document.body.appendChild(a); a.click(); a.remove();
+}
+function imprimir() {
+  $('#impressao').innerHTML = `<h1>${esc(CONFIG.nomeApp)}</h1>` + markdown().split('\n').map(l =>
+    l.startsWith('### ') ? `<h3>${esc(l.slice(4))}</h3>` : l.startsWith('## ') ? `<h2>${esc(l.slice(3))}</h2>` : l.startsWith('# ') ? '' :
+    l.startsWith('> ') ? `<blockquote><i>${esc(l.slice(2))}</i></blockquote>` : l.trim() ? `<p>${esc(l)}</p>` : '').join('');
+  setTimeout(() => window.print(), 100);
+}
+
+/* ===== Ações ===== */
+async function ocupado(btn, fn) {
+  const txt = btn ? btn.innerHTML : '';
+  if (btn) { btn.disabled = true; btn.innerHTML = '<span class="spin"></span> Aguarde…'; }
+  try { return await fn(); }
+  catch (e) { toast('Erro: ' + e.message, 4000); }
+  finally { if (btn && document.body.contains(btn)) { btn.disabled = false; btn.innerHTML = txt; } }
+}
+const AC = {
+  recarregar: () => carregar(),
+  ir: (v) => { fechar(); S.aba = v; S.busca = ''; location.hash = v; render(); window.scrollTo(0, 0); },
+  cat: (v) => { S.categoria = v; render(); },
+  livro: (v) => painelLivro(v),
+  tag: (v) => painelTag(v),
+  nota: (v) => painelNota(v),
+  fechar: () => fechar(),
+  fecharTela: () => { $('#tela').innerHTML = ''; render(); },
+  buscarPopulares: (v, b) => ocupado(b, async () => {
+    b.innerHTML = '<span class="spin"></span> Procurando…';
+    const j = await acao({ acao: 'populares', titulo: v }); if (!j) return;
+    toast(j.texto || 'Pronto.', 3500);
+  }),
+
+  novoLivro: () => painelNovoLivro(),
+  aprofundar: () => painelAprofundar(),
+  mapa: () => abrirMapa(''),
+  mapaTema: (v) => abrirMapa(v),
+  zoom: (v) => { const k = Number(v), svg = $('#svg'); if (!k) S.vb = S.vb0.slice();
+    else { const cx = S.vb[0] + S.vb[2] / 2, cy = S.vb[1] + S.vb[3] / 2; S.vb[2] *= k; S.vb[3] *= k; S.vb[0] = cx - S.vb[2] / 2; S.vb[1] = cy - S.vb[3] / 2; }
+    svg.setAttribute('viewBox', S.vb.join(' ')); },
+  camera: (v) => { if (v === 'local') return painelAntesDaFoto(); S.modoFoto = v; const i = $('#cam'); i.value = ''; i.click(); },
+  estante: () => { S.modoFoto = 'estante'; const i = $('#cam'); i.value = ''; i.click(); },
+  tirarTag: (v) => { const [id, t] = v.split('|'); setTags(id, lerTags(id).filter(x => x !== t)); },
+  porTag: (v) => { const inp = $('#' + v + '_in'), t = normTag(inp.value); if (!t) return; setTags(v, [...new Set([...lerTags(v), t])]); inp.value = ''; },
+  responder: (v, b) => ocupado(b, async () => {
+    const t = $('#resp').value.trim(); if (!t) return toast('Escreva a resposta');
+    await gravar([{ aba: 'Historico', modo: 'update', valores: { id: v, resposta: t, respondido_em: hoje() } }], '✍️ Resposta guardada.');
+    toast('Resposta guardada');
+  }),
+  peso: (v, b) => { const [alvo, ref, p] = v.split('|');
+    if (alvo !== 'livro') return;
+    const op = { aba: 'Acervo', modo: 'update', valores: { titulo: ref, peso: p } };
+    return ocupado(null, async () => { await gravar([op]); toast(p === 'nunca' ? 'Fora das notas' : p === 'mais' ? 'Vai aparecer mais' : p === 'menos' ? 'Vai aparecer menos' : 'Prioridade normal');
+      if (b.closest('.sheet')) painelLivro(ref); }); },
+  trocarCapa: (v) => painelCapas(v),
+  usarCapa: (v, b) => { const i = v.indexOf('|'); return ocupado(b, () => salvarCapa(v.slice(0, i), v.slice(i + 1))); },
+  usarCapaLink: (v, b) => { const u = $('#capaUrl').value.trim(); if (!/^https?:\/\/\S+$/.test(u)) return toast('Cole um link que comece com https://'); return ocupado(b, () => salvarCapa(v, https(u))); },
+  salvarLivro: (v, b) => ocupado(b, async () => {
+    const r = A().find(x => x.titulo === v), nota = $('#notaTxt').value.trim();
+    const valores = { titulo: v, tags: lerTags('tgLivro').join(', '), tags_nota: lerTags('tgNota').join(', ') };
+    if (nota !== String(r.nota_pessoal || '').trim()) valores.nota_pessoal = nota;
+    await gravar([{ aba: 'Acervo', modo: 'update', valores }]); toast('Livro atualizado'); fechar();
+  }),
+
+  cartaoNota: (v) => { const n = H().find(x => String(x.id) === String(v)); if (!n) return;
+    const tit = semFmt(String(n.mensagem).split('\n')[0]); cartaoImagem({ citacao: pergunta(n.mensagem) || tit, titulo: tit, linha2: T(n.tags).map(t => '#' + t).join(' ') }); },
+  fundir: (v, b) => ocupado(b, async () => {
+    const para = TG().find(r => r.tag === v)?.fundir_em; if (!para) return;
+    const troca = s => [...new Set(T(s).map(t => t === v ? para : t))].join(', '), ops = [];
+    A().forEach(r => { if (T(r.tags).includes(v) || T(r.tags_nota).includes(v)) ops.push({ aba: 'Acervo', modo: 'update', valores: { titulo: r.titulo, tags: troca(r.tags), tags_nota: troca(r.tags_nota) } }); });
+    H().forEach(r => { if (T(r.tags).includes(v)) ops.push({ aba: 'Historico', modo: 'update', valores: { id: r.id, tags: troca(r.tags) } }); });
+    ops.push({ aba: 'Tags', modo: 'update', valores: { tag: v, fundir_em: '' } });
+    await gravar(ops, `🔀 #${v} juntada a #${para} (${ops.length - 1} registro(s)).`); toast(`#${v} → #${para}`);
+  }),
+  naoFundir: (v, b) => ocupado(b, async () => { await gravar([{ aba: 'Tags', modo: 'update', valores: { tag: v, fundir_em: '' } }]); }),
+  exportar: (v) => v === 'json' ? baixar(`entrelinhas-${hoje()}.json`, JSON.stringify(S.dados, null, 2), 'application/json')
+    : v === 'md' ? baixar(`entrelinhas-${hoje()}.md`, markdown(), 'text/markdown') : imprimir(),
+  enviarLivro: (v, b) => ocupado(b, async () => {
+    const t = $('#nlT').value.trim(), a = $('#nlA').value.trim(), n = $('#nlN').value.trim();
+    if (!t) return toast('Informe o título');
+    const j = await comando(['/livro ' + t, a, n].filter(Boolean).join(' - '));
+    if (j) painelResultado('Acervo', j.texto);
+  }),
+  remover: (v, b) => {
+    if (b.dataset.conf !== '1') { b.dataset.conf = '1'; b.textContent = 'Toque de novo para confirmar'; return; }
+    return ocupado(b, async () => { const j = await comando('/remover ' + v); if (j) painelResultado('Acervo', j.texto); });
+  },
+  enviarAprof: (v, b) => ocupado(b, async () => {
+    const d = $('#apD').value.trim(); const j = await comando('/aprofundar' + (d ? ' ' + d : ''));
+    if (j) { fechar(); S.aba = 'hoje'; render(); toast('Aprofundamento pronto'); }
+  }),
+  enviarFoto: (v, b) => ocupado(b, async () => {
+    if (!$('#fLivro').value) return toast('Escolha o livro');
+    const j = await acao({ acao: 'foto', imagem_b64: S.foto.b64, mime: S.foto.mime, legenda: $('#fLivro').value });
+    if (!j) return; S.foto = null; await carregar(true);
+    painelResultado('Trecho', j.texto);
+  }),
+  lerLocal: (v, b) => ocupado(b, async () => {
+    const img = S.foto.img, s = S.sel || { x: 0, y: 0, w: 1, h: 1 };
+    const rec = paraJpeg(img, s.x * img.width, s.y * img.height, s.w * img.width, s.h * img.height, 2000, 0.92);
+    b.innerHTML = '<span class="spin"></span> Baixando o leitor (só na 1ª vez)…';
+    await carregarTesseract();
+    const res = await Tesseract.recognize(rec.canvas, 'por', { logger: m => { if (m.status === 'recognizing text') b.innerHTML = `<span class="spin"></span> Lendo… ${Math.round(m.progress * 100)}%`; } });
+    const texto = res.data.text.replace(/-\n(\p{Ll})/gu, '$1').replace(/\s*\n\s*/g, ' ').replace(/\s{2,}/g, ' ').trim();
+    if (texto.length < 10) return toast('Não encontrei texto. Tente uma foto mais nítida ou selecione menos área.', 4000);
+    await salvarTrechoLocal(texto);
+  }),
+  tirarFotoLocal: () => {
+    const t = $('#alLivro').value; if (!t) return toast('Escolha o livro');
+    S.fotoLivro = t; S.modoFoto = 'local'; const i = $('#cam'); i.value = ''; i.click();
+  },
+  outraFotoLocal: () => { S.modoFoto = 'local'; const i = $('#cam'); i.value = ''; i.click(); },
+  adicionarEstante: (v, b) => ocupado(b, async () => {
+    const ops = S.estante.filter(l => $('#es_' + l.i)?.checked).map(l => ({ aba: 'Acervo', modo: 'append', valores: {
+      titulo: l.titulo, autor: l.autor || '', categoria: $('#esc_' + l.i).value, nota_pessoal: '', ativo: 'sim', adicionado_em: hoje(),
+      tags: lerTags('tgE' + l.i).join(', '), tags_nota: '', peso: 'normal' } }));
+    if (!ops.length) return toast('Nenhum livro marcado');
+    await gravar(ops, `📚 ${ops.length} livro(s) adicionado(s).`); fechar(); toast(`${ops.length} livro(s) adicionado(s)`);
+  }),
+
+  salvarCfg: (v, b) => ocupado(b, async () => {
+    S.cfg = { api: $('#cfgApi').value.trim(), token: $('#cfgTok').value.trim() }; store.set('cfg', S.cfg);
+    await carregar();
+  }),
+  push: (v, b) => ocupado(b, async () => {
+    if (!window.OneSignal || !OneSignal.Notifications) throw new Error('serviço de notificações não carregou');
+    await OneSignal.Notifications.requestPermission();
+    render();
+  })
+};
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-a]'); if (b) { e.preventDefault(); AC[b.dataset.a]?.(b.dataset.v, b); return; }
+  const t = e.target.closest('[data-tab]'); if (t) { $('#tela').innerHTML = ''; S.aba = t.dataset.tab; S.busca = ''; location.hash = S.aba; render(); window.scrollTo(0, 0); }
+});
+document.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.id?.endsWith('_in')) { e.preventDefault(); AC.porTag(e.target.id.slice(0, -3)); } });
+document.addEventListener('input', e => {
+  const k = e.target.dataset.in; if (!k) return;
+  S[k] = e.target.value; clearTimeout(S._deb);
+  S._deb = setTimeout(() => { const pos = e.target.selectionStart; render(); const el = document.querySelector(`[data-in="${k}"]`); if (el) { el.focus(); try { el.setSelectionRange(pos, pos); } catch (x) {} } }, 200);
+});
+$('#sheetbg').addEventListener('click', fechar);
+$('#cam').addEventListener('change', async e => {
+  const f = e.target.files[0]; if (!f) return;
+  try {
+    const { img, url } = await carregarImagem(f);
+    if (S.modoFoto === 'local') { S.foto = { img, url }; painelRecorte(); return; }
+    const j = paraJpeg(img, 0, 0, img.width, img.height);
+    if (S.modoFoto === 'estante') {
+      abrir('<h3>Lendo a estante…</h3><div class="empty"><span class="spin"></span></div>');
+      try { const r = await acao({ acao: 'estante', imagem_b64: j.b64, mime: j.mime }); if (!r) return fechar();
+        if (!r.livros || !r.livros.length) return painelResultado('Estante', r.texto || 'Nenhum livro identificado.');
+        painelEstante(r.livros); } catch (x) { fechar(); toast('Erro: ' + x.message, 4000); }
+      return;
+    }
+    S.foto = j; painelFotoIA();
+  } catch (x) { toast(x.message); }
+});
+window.addEventListener('hashchange', () => { const a = location.hash.slice(1); if (ABAS[a] && a !== S.aba) { S.aba = a; render(); } });
+
+/* ===== Render ===== */
+function render() {
+  const aba = S.aba;
+  $('#titulo').textContent = aba === 'hoje' ? CONFIG.nomeApp : ABAS[aba];
+  document.querySelectorAll('#tabs button').forEach(b => b.classList.toggle('on', b.dataset.tab === (aba === 'historico' ? 'mais' : aba)));
+  if (!S.dados) { $('#app').innerHTML = '<div class="empty"><span class="spin"></span></div>'; return; }
+  const banner = S.demo ? '<div class="banner">Modo demonstração com dados de exemplo. Configure a conexão em <b>Mais</b>.</div>' : '';
+  const telas = { hoje: telaHoje, biblioteca: telaBiblioteca, trechos: telaTrechos, tags: telaTags, mais: telaMais, historico: telaHistorico };
+  $('#app').innerHTML = banner + telas[aba]();
+  if (!S._abMontada && $('#abertura')) { S._abMontada = true; montarAbertura(); }
+}
+
+/* ===== Abertura: campo de tags do acervo; as tags da nota do dia acendem e se ligam ===== */
+function semente(txt) { let h = 2166136261; for (const c of txt) { h ^= c.charCodeAt(0); h = Math.imul(h, 16777619); } return () => ((h = Math.imul(h ^ (h >>> 15), 2246822507) ^ Math.imul(h ^ (h >>> 13), 3266489909)) >>> 0) / 4294967296; }
+function notaDoDia() { const l = H().filter(n => String(n.id || '').startsWith('d-')); const h = l.find(n => n.data === hoje()); return { nota: h || l[l.length - 1] || null, eHoje: !!h, total: l.length }; }
+function montarAbertura() {
+  const ab = $('#abertura'); if (!ab || ab.classList.contains('sai') || !S.dados) return;
+  const { nota, eHoje, total } = notaDoDia(), rnd = semente(hoje());
+  const dt = new Date(hoje() + 'T12:00:00');
+  $('#abData').textContent = dt.toLocaleDateString('pt-BR', { weekday: 'long', timeZone: 'America/Sao_Paulo' }).replace('-feira', '') + ' · ' + dt.getDate() + ' · ' + dt.toLocaleDateString('pt-BR', { month: 'long' });
+  $('#abBtn').textContent = eHoje ? 'Ler a nota de hoje' : nota ? 'Ler a última nota' : 'Entrar';
+  const nLivros = nota ? String(nota.livros || '').split(';').filter(x => x.trim()).length : 0, nArt = nota ? String(nota.artigos || '').split(' ;; ').filter(x => x.trim()).length : 0;
+  $('#abSub').textContent = nota ? `nota nº ${total} · ${nLivros} livro${nLivros === 1 ? '' : 's'}${nArt ? ` · ${nArt} artigo${nArt === 1 ? '' : 's'}` : ''}` : 'a primeira nota chega às 7h';
+  const vocab = Object.entries(indiceTags()).sort((a, b) => b[1].livros.size - a[1].livros.size).map(([t]) => t);
+  if (!vocab.length) return;
+  const acesas = [...new Set(T(nota?.tags))].filter(t => vocab.includes(t)).slice(0, 5);
+  const lista = []; while (lista.length < 140) lista.push(...vocab.slice().sort(() => rnd() - .5));
+  const corpo = lista.slice(0, 140).filter(t => !acesas.includes(t));
+  acesas.forEach((t, i) => corpo.splice(Math.round((i + .5) / acesas.length * 70) + 4, 0, '§' + t));   // espalhadas pela parte visível
+  const tam = [11, 12, 13, 15, 18, 22];
+  $('#abCampo').innerHTML = corpo.map(t => { const on = t.startsWith('§'), n = on ? t.slice(1) : t;
+    return `<span class="${on ? 'on' : ''}" style="font-size:${on ? 15 + Math.round(rnd() * 5) : tam[Math.floor(rnd() * tam.length)]}px">#${esc(n)}</span>`; }).join('');
+  requestAnimationFrame(() => {
+    const campo = $('#abCampo'), rc = campo.getBoundingClientRect();
+    [...campo.children].forEach(e => { if (e.getBoundingClientRect().bottom > rc.bottom - 2 && !e.classList.contains('on')) e.remove(); });   // nada cortado no rodapé
+    [...campo.children].forEach(e => { if (e.getBoundingClientRect().bottom > rc.bottom - 2) e.remove(); });
+    // as tags da nota ocupam lugares fixos acima e abaixo do nome, em linhas diferentes, para o fio cruzar a tela por trás do nome
+    const r0top = ab.getBoundingClientRect().top, r0h = ab.getBoundingClientRect().height;
+    const pos = e => { const r = e.getBoundingClientRect(); return (r.top + r.bottom) / 2 - r0top; };
+    const todos = [...campo.children], comuns = vocab.filter(t => !acesas.includes(t));
+    todos.forEach((e, k) => { if (e.classList.contains('on')) { e.classList.remove('on'); e.textContent = '#' + comuns[k % comuns.length]; } });
+    const linhasDe = filtro => { const m = new Map(); todos.forEach(e => { const y = Math.round(pos(e)); if (filtro(y / r0h) && parseInt(e.style.fontSize) >= 15) { const k = [...m.keys()].find(v => Math.abs(v - y) < 6) ?? y; (m.get(k) || m.set(k, []).get(k)).push(e); } }); return [...m.values()]; };
+    const cima = linhasDe(t => t < .30), baixo = linhasDe(t => t > .58);
+    const alvos = acesas.map((t, i) => { const z = i % 2 ? baixo : cima, n = Math.ceil(acesas.length / 2), j = Math.floor(i / 2);
+      const linha = z[Math.min(z.length - 1, Math.floor((j + .5) * z.length / n))] || []; return linha[Math.floor(linha.length * ((i * .61 + .2) % 1))]; });
+    alvos.forEach((e, i) => { if (!e) return; e.textContent = '#' + acesas[i]; e.classList.add('on'); });
+    [...campo.children].forEach(e => { if (e.getBoundingClientRect().bottom > rc.bottom - 2 && !e.classList.contains('on')) e.remove(); });
+    const svg = $('#abFios'), r0 = ab.getBoundingClientRect();
+    const pts = alvos.filter(Boolean).map(e => { const r = e.getBoundingClientRect(); return [r.left - r0.left + r.width / 2, r.top - r0.top + r.height / 2]; }).filter(p => p[1] > 0);
+    svg.setAttribute('viewBox', `0 0 ${r0.width} ${r0.height}`);
+    svg.innerHTML = (pts.length > 1 ? `<polyline points="${pts.map(p => p.join(',')).join(' ')}" fill="none" stroke="var(--accent)" stroke-opacity=".38" stroke-width="1"/>` : '') +
+      pts.map(p => `<circle cx="${p[0]}" cy="${p[1] + 13}" r="2.5" fill="var(--accent)" fill-opacity=".7"/>`).join('');
+  });
+}
+function fecharAbertura() {
+  const ab = $('#abertura'); if (!ab) return;
+  ab.classList.add('sai'); try { sessionStorage.setItem('ab_vista', '1'); } catch (e) {}
+  S.aba = 'hoje'; location.hash = 'hoje'; render(); setTimeout(() => ab.remove(), 450);
+}
+$('#abBtn').addEventListener('click', fecharAbertura);
+let abVista = false; try { abVista = sessionStorage.getItem('ab_vista') === '1'; } catch (e) {}
+if (abVista) $('#abertura').remove();
+window.addEventListener('resize', () => montarAbertura());
+
+/* ===== Início ===== */
+render();
+carregar(true);
+window.OneSignalDeferred = window.OneSignalDeferred || [];
+if (CONFIG.onesignalAppId && !CONFIG.onesignalAppId.startsWith('COLE') && location.protocol === 'https:') {
+  const base = location.pathname.replace(/[^/]*$/, '');
+  OneSignalDeferred.push(async OS => {
+    try {
+      await OS.init({ appId: CONFIG.onesignalAppId, serviceWorkerPath: base.slice(1) + 'sw.js', serviceWorkerParam: { scope: base } });
+      await OS.login(CONFIG.externalId);
+      if (S.aba === 'mais') render();
+    } catch (e) { console.log('OneSignal', e); }
+  });
+} else if ('serviceWorker' in navigator && location.protocol === 'https:') {
+  navigator.serviceWorker.register('sw.js').catch(() => {});
+}
+</script>
+</body>
+</html>
