@@ -77,7 +77,8 @@ label.l{display:block;font-size:13px;color:var(--muted);margin:12px 0 4px}
 .mais{float:right;border:0;background:transparent;color:var(--muted);font-size:20px;line-height:1;padding:0 4px}
 nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:6;background:var(--bar);border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:6px 4px calc(6px + var(--safe-b))}
 nav.tabs button{border:0;background:transparent;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;color:var(--muted);padding:5px 8px;min-width:58px;border-radius:18px}
-nav.tabs button span{font-size:21px;line-height:1}
+nav.tabs button svg{width:23px;height:23px;fill:none;stroke:var(--accent);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;opacity:.8}
+nav.tabs button.on svg{stroke:var(--accent-ink);opacity:1}
 nav.tabs button.on{color:var(--accent-ink);background:var(--accent-soft);font-weight:600}
 .sheet-bg{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:35;display:none}
 .sheet{position:fixed;left:0;right:0;bottom:0;z-index:36;background:var(--card);border-top:1px solid var(--line);border-radius:24px 24px 0 0;max-height:90vh;overflow:auto;padding:10px 18px calc(24px + var(--safe-b));transform:translateY(100%);transition:transform .25s ease;max-width:720px;margin:0 auto}
@@ -106,6 +107,25 @@ nav.tabs button.on{color:var(--accent-ink);background:var(--accent-soft);font-we
 .grafo .lv circle{stroke:var(--bg);stroke-width:1.5;vector-effect:non-scaling-stroke}
 .grafo line{stroke:var(--muted);stroke-opacity:.35;vector-effect:non-scaling-stroke}
 .zoom{position:absolute;right:12px;bottom:calc(16px + var(--safe-b));display:flex;flex-direction:column;gap:8px}
+.navnota{display:flex;align-items:center;gap:6px;margin-bottom:8px}
+.navnota .meta{flex:1;text-align:center}
+.seta{flex:0 0 34px;width:34px;height:34px;border:1px solid var(--line);background:transparent;color:var(--accent-ink);border-radius:999px;display:grid;place-items:center;font-size:17px;line-height:1;padding:0}
+.seta:disabled{opacity:.25}
+details.refs{margin-top:12px}
+details.refs summary{list-style:none;display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:13px;color:var(--accent-ink);cursor:pointer}
+details.refs summary::-webkit-details-marker{display:none}
+details.refs summary::after{content:"▾";font-size:11px}
+details.refs[open] summary::after{content:"▴"}
+details.refs[open] summary{margin-bottom:8px}
+.resp{display:flex;gap:8px;align-items:flex-end}
+.resp textarea{flex:1}
+.salvar{flex:0 0 46px;height:46px;border:0;border-radius:12px;background:var(--btn);color:var(--btn-ink);display:grid;place-items:center;padding:0}
+.salvar svg,.ico svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.salvar:disabled{opacity:.5}
+.nuvem{display:flex;flex-wrap:wrap;align-items:baseline;gap:7px 8px;margin:2px 0 16px}
+.nuvem .chip{line-height:1.25;padding:5px 11px}
+.sec-tit{font:600 22px/1.3 var(--serif);margin:22px 2px 10px;color:var(--ink)}
+.grafo text.oculto{display:none}
 .check{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--line)}
 .check input{width:20px;height:20px;margin-top:3px;flex:0 0 20px}
 @media print{
@@ -144,11 +164,11 @@ nav.tabs button.on{color:var(--accent-ink);background:var(--accent-soft);font-we
 <header class="top"><h1 id="titulo">Hoje</h1><button class="iconbtn" data-a="recarregar" aria-label="Atualizar">↻</button></header>
 <main id="app"></main>
 <nav class="tabs" id="tabs">
-  <button data-tab="hoje"><span>☀️</span>Hoje</button>
-  <button data-tab="biblioteca"><span>📚</span>Biblioteca</button>
-  <button data-tab="trechos"><span>📸</span>Guardar</button>
-  <button data-tab="tags"><span>🏷️</span>Tags</button>
-  <button data-tab="mais"><span>⋯</span>Mais</button>
+  <button data-tab="hoje" aria-label="Hoje"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>Hoje</button>
+  <button data-tab="biblioteca" aria-label="Biblioteca"><svg viewBox="0 0 24 24"><path d="M4.5 4.5H8v15H4.5zM9.8 4.5h3.5v15H9.8zM15 5.6l3.3-.9 3.4 13.9-3.3.9z"/></svg>Biblioteca</button>
+  <button data-tab="trechos" aria-label="Trechos"><svg viewBox="0 0 24 24"><path d="M3.5 5.6c3-1 6-1 8.5 1 2.5-2 5.5-2 8.5-1v13c-3-1-6-1-8.5 1-2.5-2-5.5-2-8.5-1z"/><path d="M12 6.6v13"/></svg>Trechos</button>
+  <button data-tab="tags" aria-label="Tags"><svg viewBox="0 0 24 24"><path d="M3.5 12.2V4.5a1 1 0 0 1 1-1h7.7l8.3 8.3a1 1 0 0 1 0 1.4l-7.1 7.1a1 1 0 0 1-1.4 0z"/><circle cx="8" cy="8" r="1.4"/></svg>Tags</button>
+  <button data-tab="mais" aria-label="Mais"><svg viewBox="0 0 24 24"><circle cx="5.5" cy="12" r="1.1"/><circle cx="12" cy="12" r="1.1"/><circle cx="18.5" cy="12" r="1.1"/></svg>Mais</button>
 </nav>
 <div class="sheet-bg" id="sheetbg"></div>
 <div class="sheet" id="sheet" role="dialog" aria-modal="true"><div class="grab"></div><div class="topo"><button class="iconbtn" data-a="fechar" aria-label="Fechar">✕</button></div><div id="sheetc"></div></div>
@@ -165,8 +185,8 @@ const CONFIG = {
   externalId: 'fernando',                             // o mesmo usado no Apps Script (avisarNoApp)
   tesseract: 'https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js' // leitura de texto no aparelho (gratuita)
 };
-const DEMO = {"acervo": [{"titulo": "1984", "autor": "George Orwell", "categoria": "Ficção e clássicos", "tags": "totalitarismo, vigilância, verdade, linguagem, memória", "tags_nota": "linguagem, liberdade", "nota_pessoal": "(exemplo) Me marcou como controlar a linguagem é controlar o que se consegue pensar.", "ativo": "sim"}, {"titulo": "A revolução dos bichos", "autor": "George Orwell", "categoria": "Ficção e clássicos", "tags": "poder, revolução, manipulação, totalitarismo", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Nós", "autor": "Ievguêni Zamiátin", "categoria": "Ficção e clássicos", "tags": "distopia, controle-social, liberdade, identidade", "tags_nota": "", "nota_pessoal": "", "ativo": "sim", "peso": "menos"}, {"titulo": "Admirável mundo novo", "autor": "Aldous Huxley", "categoria": "Ficção e clássicos", "tags": "distopia, felicidade, consumo, controle-social, tecnologia", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Fahrenheit 451", "autor": "Ray Bradbury", "categoria": "Ficção e clássicos", "tags": "censura, conhecimento, tecnologia, alienação", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "O processo", "autor": "Franz Kafka", "categoria": "Ficção e clássicos", "tags": "burocracia, culpa, justiça, absurdo", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "A metamorfose", "autor": "Franz Kafka", "categoria": "Ficção e clássicos", "tags": "alienação, trabalho, identidade, família", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Memórias do subsolo", "autor": "Fiódor Dostoiévski", "categoria": "Ficção e clássicos", "tags": "livre-arbítrio, razão, ressentimento, solidão", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Noites brancas", "autor": "Fiódor Dostoiévski", "categoria": "Ficção e clássicos", "tags": "solidão, amor, imaginação", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Crime e castigo", "autor": "Fiódor Dostoiévski", "categoria": "Ficção e clássicos", "tags": "culpa, moral, redenção, sofrimento", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "O livro do riso e do esquecimento", "autor": "Milan Kundera", "categoria": "Ficção e clássicos", "tags": "memória, totalitarismo, humor, identidade", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Vidas secas", "autor": "Graciliano Ramos", "categoria": "Ficção e clássicos", "tags": "desigualdade, sobrevivência, linguagem, natureza", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Germinal", "autor": "Émile Zola", "categoria": "Ficção e clássicos", "tags": "trabalho, desigualdade, revolução, comunidade", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "O senhor das moscas", "autor": "William Golding", "categoria": "Ficção e clássicos", "tags": "natureza-humana, civilização, poder, violência", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Cem anos de solidão", "autor": "Gabriel García Márquez", "categoria": "Ficção e clássicos", "tags": "solidão, tempo, memória, família, história", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Sidarta", "autor": "Hermann Hesse", "categoria": "Ficção e clássicos", "tags": "espiritualidade, autoconhecimento, sentido-da-vida, tempo", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "A peste", "autor": "Albert Camus", "categoria": "Ficção e clássicos", "tags": "sofrimento, comunidade, absurdo, morte", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "O Aleph", "autor": "Paulo Coelho", "categoria": "Ficção e clássicos", "tags": "espiritualidade, autoconhecimento, tempo, jornada", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Fundação", "autor": "Isaac Asimov", "categoria": "Ficção e clássicos", "tags": "história, civilização, futuro, ciência, poder", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "O guia do mochileiro das galáxias", "autor": "Douglas Adams", "categoria": "Ficção e clássicos", "tags": "absurdo, sentido-da-vida, humor, tecnologia", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "O horizonte", "autor": "Patrick Modiano", "categoria": "Ficção e clássicos", "tags": "memória, tempo, identidade, amor", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Utopia", "autor": "Thomas More", "categoria": "Ficção e clássicos", "tags": "utopia, estado, justiça, desigualdade", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Nada mais será como antes", "autor": "Miguel Nicolelis", "categoria": "Ficção e clássicos", "tags": "tecnologia, futuro, ciência, risco, inteligência-artificial", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "A república", "autor": "Platão", "categoria": "Filosofia e ciências humanas", "tags": "justiça, estado, educação, verdade, poder", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Ética a Nicômaco", "autor": "Aristóteles", "categoria": "Filosofia e ciências humanas", "tags": "virtude, felicidade, ética, amizade", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Ética", "autor": "Baruch Spinoza", "categoria": "Filosofia e ciências humanas", "tags": "liberdade, natureza, afetos, livre-arbítrio, felicidade", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "O contrato social", "autor": "Jean-Jacques Rousseau", "categoria": "Filosofia e ciências humanas", "tags": "estado, liberdade, democracia, comunidade", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "O mito de Sísifo", "autor": "Albert Camus", "categoria": "Filosofia e ciências humanas", "tags": "absurdo, sentido-da-vida, morte, revolta", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Pedagogia do oprimido", "autor": "Paulo Freire", "categoria": "Filosofia e ciências humanas", "tags": "educação, liberdade, desigualdade, poder", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Comunidade", "autor": "Zygmunt Bauman", "categoria": "Filosofia e ciências humanas", "tags": "comunidade, liberdade, segurança, identidade", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Cegueira moral", "autor": "Zygmunt Bauman e Leonidas Donskis", "categoria": "Filosofia e ciências humanas", "tags": "ética, moral, indiferença, tecnologia", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Sociedade do cansaço", "autor": "Byung-Chul Han", "categoria": "Filosofia e ciências humanas", "tags": "cansaço, trabalho, desempenho, liberdade", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Infocracia", "autor": "Byung-Chul Han", "categoria": "Filosofia e ciências humanas", "tags": "informação, democracia, tecnologia, verdade, vigilância", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Vida contemplativa", "autor": "Byung-Chul Han", "categoria": "Filosofia e ciências humanas", "tags": "contemplação, tempo, trabalho, sentido-da-vida", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "A coragem de não agradar", "autor": "Ichiro Kishimi e Fumitake Koga", "categoria": "Filosofia e ciências humanas", "tags": "liberdade, autoconhecimento, felicidade, relações", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "A coragem de ser feliz", "autor": "Ichiro Kishimi e Fumitake Koga", "categoria": "Filosofia e ciências humanas", "tags": "felicidade, educação, amor, comunidade", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Diário estoico (The Daily Stoic)", "autor": "Ryan Holiday e Stephen Hanselman", "categoria": "Filosofia e ciências humanas", "tags": "estoicismo, virtude, autoconhecimento, resiliência", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Free Will", "autor": "Sam Harris", "categoria": "Filosofia e ciências humanas", "tags": "livre-arbítrio, moral, ciência, responsabilidade", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "O animal social", "autor": "Elliot Aronson", "categoria": "Filosofia e ciências humanas", "tags": "natureza-humana, comportamento, manipulação, preconceito", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Sapiens", "autor": "Yuval Noah Harari", "categoria": "Não ficção", "tags": "civilização, história, natureza-humana, mito, felicidade", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Homo Deus", "autor": "Yuval Noah Harari", "categoria": "Não ficção", "tags": "futuro, tecnologia, inteligência-artificial, livre-arbítrio", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "21 lições para o século 21", "autor": "Yuval Noah Harari", "categoria": "Não ficção", "tags": "futuro, tecnologia, verdade, democracia, sentido-da-vida", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Por que as nações fracassam", "autor": "Daron Acemoglu e James Robinson", "categoria": "Não ficção", "tags": "estado, instituições, desigualdade, poder, história", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Antifrágil", "autor": "Nassim Nicholas Taleb", "categoria": "Não ficção", "tags": "risco, incerteza, resiliência, fragilidade", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Arriscando a própria pele (Skin in the Game)", "autor": "Nassim Nicholas Taleb", "categoria": "Não ficção", "tags": "risco, ética, responsabilidade, justiça", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "How the World Works", "autor": "Noam Chomsky", "categoria": "Não ficção", "tags": "poder, estado, manipulação, democracia", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Sobrevivendo ao século XXI", "autor": "Noam Chomsky e José Mujica", "categoria": "Não ficção", "tags": "futuro, desigualdade, democracia, consumo", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "O diário de Anne Frank", "autor": "Anne Frank", "categoria": "Não ficção", "tags": "guerra, esperança, identidade, totalitarismo", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Cem dias entre céu e mar", "autor": "Amyr Klink", "categoria": "Não ficção", "tags": "aventura, solidão, coragem, natureza", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Endurance: a lendária expedição de Shackleton", "autor": "Alfred Lansing", "categoria": "Não ficção", "tags": "liderança, sobrevivência, coragem, resiliência", "tags_nota": "", "nota_pessoal": "", "ativo": "sim"}], "trechos": [], "historico": [{"id": "d-2026-11-21", "data": "2026-11-21", "tema": "Sentido e absurdo", "livros": "O mito de Sísifo; Sidarta; O guia do mochileiro das galáxias", "formato": "Fio condutor", "sugestao": "", "mensagem": "*Rolar a pedra*\nCamus encerra seu ensaio com Sísifo feliz. Sidarta passa a vida procurando e encontra ouvindo um rio. Arthur Dent descobre que a resposta é 42. Três maneiras de lidar com a falta de um sentido dado.\n\n📚 *Referências*\n• Albert Camus — _O mito de Sísifo_: revolta lúcida diante do absurdo\n• Hermann Hesse — _Sidarta_: o sentido vem da experiência, não do ensino\n• Douglas Adams — _O guia do mochileiro das galáxias_: o absurdo como comédia\n\n🤔 Qual é a sua pedra, e você a escolheria de novo?\n\n🏷️ #absurdo #sentido-da-vida #humor", "status": "enviado", "trechos": "t-demo1", "tags": "absurdo, sentido-da-vida, humor", "resposta": "(exemplo) Minha pedra é o trabalho, e eu a escolheria de novo, mas não todos os dias.", "respondido_em": "2026-11-21"}, {"id": "d-2026-11-24", "data": "2026-11-24", "tema": "Autoexploração", "livros": "Sociedade do cansaço; A metamorfose; Diário estoico (The Daily Stoic)", "formato": "Ficção × realidade", "sugestao": "", "mensagem": "*O cansaço que a gente escolhe*\nNinguém mandou você trabalhar até tarde. Ainda assim, você trabalhou. Byung-Chul Han chama isso de _sociedade do desempenho_: o chicote saiu da mão do patrão e foi parar na nossa.\n\nLido ao lado de _A metamorfose_, o quadro fica mais estranho. Gregor acorda inseto e a primeira preocupação dele é o trem que vai perder. Kafka antecipa o trabalhador que se mede só pela utilidade.\n\nOs estoicos ofereceriam uma saída curiosa: separar o que depende de nós do que não depende. O problema, diria Han, é que hoje achamos que *tudo* depende de nós.\n\n📚 *Referências*\n• Byung-Chul Han — _Sociedade do cansaço_: a autoexploração substitui a coerção externa\n• Franz Kafka — _A metamorfose_: o sujeito reduzido à sua função\n• Ryan Holiday — _Diário estoico_: a dicotomia do controle\n\n🤔 O que, no seu trabalho, você cobra de si que ninguém cobraria?\n\n🏷️ #cansaço #trabalho #liberdade", "status": "enviado", "trechos": "", "tags": "cansaço, trabalho, liberdade"}], "tags": [{"tag": "absurdo", "tema": "Sentido da vida", "fundir_em": ""}, {"tag": "afetos", "tema": "", "fundir_em": ""}, {"tag": "alienação", "tema": "Sociedade e trabalho", "fundir_em": ""}, {"tag": "amizade", "tema": "", "fundir_em": ""}, {"tag": "amor", "tema": "Memória e identidade", "fundir_em": ""}, {"tag": "autoconhecimento", "tema": "Sentido da vida", "fundir_em": ""}, {"tag": "aventura", "tema": "", "fundir_em": ""}, {"tag": "burocracia", "tema": "Sociedade e trabalho", "fundir_em": ""}, {"tag": "cansaço", "tema": "Sociedade e trabalho", "fundir_em": ""}, {"tag": "censura", "tema": "Política e poder", "fundir_em": ""}, {"tag": "civilização", "tema": "Sociedade e trabalho", "fundir_em": ""}, {"tag": "ciência", "tema": "Tecnologia e futuro", "fundir_em": ""}, {"tag": "comportamento", "tema": "", "fundir_em": ""}, {"tag": "comunidade", "tema": "Sociedade e trabalho", "fundir_em": ""}, {"tag": "conhecimento", "tema": "", "fundir_em": ""}, {"tag": "consumo", "tema": "Sociedade e trabalho", "fundir_em": ""}, {"tag": "contemplação", "tema": "", "fundir_em": ""}, {"tag": "controle-social", "tema": "Política e poder", "fundir_em": ""}, {"tag": "coragem", "tema": "", "fundir_em": ""}, {"tag": "culpa", "tema": "Sentido da vida", "fundir_em": ""}, {"tag": "democracia", "tema": "Política e poder", "fundir_em": ""}, {"tag": "desempenho", "tema": "Sociedade e trabalho", "fundir_em": ""}, {"tag": "desigualdade", "tema": "Sociedade e trabalho", "fundir_em": ""}, {"tag": "distopia", "tema": "Política e poder", "fundir_em": ""}, {"tag": "educação", "tema": "Sociedade e trabalho", "fundir_em": ""}, {"tag": "esperança", "tema": "", "fundir_em": ""}, {"tag": "espiritualidade", "tema": "Sentido da vida", "fundir_em": ""}, {"tag": "estado", "tema": "Política e poder", "fundir_em": ""}, {"tag": "estoicismo", "tema": "Sentido da vida", "fundir_em": ""}, {"tag": "família", "tema": "Memória e identidade", "fundir_em": ""}, {"tag": "felicidade", "tema": "Sentido da vida", "fundir_em": ""}, {"tag": "fragilidade", "tema": "", "fundir_em": ""}, {"tag": "futuro", "tema": "Tecnologia e futuro", "fundir_em": ""}, {"tag": "guerra", "tema": "", "fundir_em": ""}, {"tag": "história", "tema": "Memória e identidade", "fundir_em": ""}, {"tag": "humor", "tema": "", "fundir_em": ""}, {"tag": "identidade", "tema": "Memória e identidade", "fundir_em": ""}, {"tag": "imaginação", "tema": "", "fundir_em": ""}, {"tag": "incerteza", "tema": "Tecnologia e futuro", "fundir_em": ""}, {"tag": "indiferença", "tema": "", "fundir_em": ""}, {"tag": "informação", "tema": "Tecnologia e futuro", "fundir_em": ""}, {"tag": "instituições", "tema": "Política e poder", "fundir_em": ""}, {"tag": "inteligência-artificial", "tema": "Tecnologia e futuro", "fundir_em": ""}, {"tag": "jornada", "tema": "", "fundir_em": ""}, {"tag": "justiça", "tema": "Política e poder", "fundir_em": ""}, {"tag": "liberdade", "tema": "", "fundir_em": ""}, {"tag": "liberdades", "tema": "", "fundir_em": "liberdade"}, {"tag": "liderança", "tema": "", "fundir_em": ""}, {"tag": "linguagem", "tema": "Memória e identidade", "fundir_em": ""}, {"tag": "livre-arbítrio", "tema": "", "fundir_em": ""}, {"tag": "manipulação", "tema": "Política e poder", "fundir_em": ""}, {"tag": "memória", "tema": "Memória e identidade", "fundir_em": ""}, {"tag": "mito", "tema": "", "fundir_em": ""}, {"tag": "moral", "tema": "Sentido da vida", "fundir_em": ""}, {"tag": "morte", "tema": "Sentido da vida", "fundir_em": ""}, {"tag": "natureza", "tema": "", "fundir_em": ""}, {"tag": "natureza-humana", "tema": "", "fundir_em": ""}, {"tag": "poder", "tema": "Política e poder", "fundir_em": ""}, {"tag": "preconceito", "tema": "", "fundir_em": ""}, {"tag": "razão", "tema": "", "fundir_em": ""}, {"tag": "redenção", "tema": "Sentido da vida", "fundir_em": ""}, {"tag": "relações", "tema": "", "fundir_em": ""}, {"tag": "resiliência", "tema": "", "fundir_em": ""}, {"tag": "responsabilidade", "tema": "", "fundir_em": ""}, {"tag": "ressentimento", "tema": "", "fundir_em": ""}, {"tag": "revolta", "tema": "Sentido da vida", "fundir_em": ""}, {"tag": "revolução", "tema": "Política e poder", "fundir_em": ""}, {"tag": "risco", "tema": "Tecnologia e futuro", "fundir_em": ""}, {"tag": "segurança", "tema": "", "fundir_em": ""}, {"tag": "sentido-da-vida", "tema": "Sentido da vida", "fundir_em": ""}, {"tag": "sobrevivência", "tema": "", "fundir_em": ""}, {"tag": "sofrimento", "tema": "Sentido da vida", "fundir_em": ""}, {"tag": "solidão", "tema": "Memória e identidade", "fundir_em": ""}, {"tag": "tecnologia", "tema": "Tecnologia e futuro", "fundir_em": ""}, {"tag": "tempo", "tema": "Memória e identidade", "fundir_em": ""}, {"tag": "totalitarismo", "tema": "Política e poder", "fundir_em": ""}, {"tag": "trabalho", "tema": "Sociedade e trabalho", "fundir_em": ""}, {"tag": "utopia", "tema": "Política e poder", "fundir_em": ""}, {"tag": "verdade", "tema": "", "fundir_em": ""}, {"tag": "vigilância", "tema": "Política e poder", "fundir_em": ""}, {"tag": "violência", "tema": "", "fundir_em": ""}, {"tag": "virtude", "tema": "Sentido da vida", "fundir_em": ""}, {"tag": "ética", "tema": "Sentido da vida", "fundir_em": ""}], "atualizado": "2026-11-25T07:00:00-03:00"};
-const VERSAO = '1.13.0';
+const DEMO = {"acervo": [{"titulo": "1984", "autor": "George Orwell", "categoria": "Ficção e clássicos", "tags": "totalitarismo, vigilância, verdade, linguagem, memória, liberdade", "nota_pessoal": "(exemplo) Me marcou como controlar a linguagem é controlar o que se consegue pensar.", "ativo": "sim"}, {"titulo": "A revolução dos bichos", "autor": "George Orwell", "categoria": "Ficção e clássicos", "tags": "poder, revolução, manipulação, totalitarismo", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Nós", "autor": "Ievguêni Zamiátin", "categoria": "Ficção e clássicos", "tags": "distopia, controle-social, liberdade, identidade", "nota_pessoal": "", "ativo": "sim", "peso": "menos"}, {"titulo": "Admirável mundo novo", "autor": "Aldous Huxley", "categoria": "Ficção e clássicos", "tags": "distopia, felicidade, consumo, controle-social, tecnologia", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Fahrenheit 451", "autor": "Ray Bradbury", "categoria": "Ficção e clássicos", "tags": "censura, conhecimento, tecnologia, alienação", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "O processo", "autor": "Franz Kafka", "categoria": "Ficção e clássicos", "tags": "burocracia, culpa, justiça, absurdo", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "A metamorfose", "autor": "Franz Kafka", "categoria": "Ficção e clássicos", "tags": "alienação, trabalho, identidade, família", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Memórias do subsolo", "autor": "Fiódor Dostoiévski", "categoria": "Ficção e clássicos", "tags": "livre-arbítrio, razão, ressentimento, solidão", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Noites brancas", "autor": "Fiódor Dostoiévski", "categoria": "Ficção e clássicos", "tags": "solidão, amor, imaginação", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Crime e castigo", "autor": "Fiódor Dostoiévski", "categoria": "Ficção e clássicos", "tags": "culpa, moral, redenção, sofrimento", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "O livro do riso e do esquecimento", "autor": "Milan Kundera", "categoria": "Ficção e clássicos", "tags": "memória, totalitarismo, humor, identidade", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Vidas secas", "autor": "Graciliano Ramos", "categoria": "Ficção e clássicos", "tags": "desigualdade, sobrevivência, linguagem, natureza", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Germinal", "autor": "Émile Zola", "categoria": "Ficção e clássicos", "tags": "trabalho, desigualdade, revolução, comunidade", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "O senhor das moscas", "autor": "William Golding", "categoria": "Ficção e clássicos", "tags": "natureza-humana, civilização, poder, violência", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Cem anos de solidão", "autor": "Gabriel García Márquez", "categoria": "Ficção e clássicos", "tags": "solidão, tempo, memória, família, história", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Sidarta", "autor": "Hermann Hesse", "categoria": "Ficção e clássicos", "tags": "espiritualidade, autoconhecimento, sentido-da-vida, tempo", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "A peste", "autor": "Albert Camus", "categoria": "Ficção e clássicos", "tags": "sofrimento, comunidade, absurdo, morte", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "O Aleph", "autor": "Paulo Coelho", "categoria": "Ficção e clássicos", "tags": "espiritualidade, autoconhecimento, tempo, jornada", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Fundação", "autor": "Isaac Asimov", "categoria": "Ficção e clássicos", "tags": "história, civilização, futuro, ciência, poder", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "O guia do mochileiro das galáxias", "autor": "Douglas Adams", "categoria": "Ficção e clássicos", "tags": "absurdo, sentido-da-vida, humor, tecnologia", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "O horizonte", "autor": "Patrick Modiano", "categoria": "Ficção e clássicos", "tags": "memória, tempo, identidade, amor", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Utopia", "autor": "Thomas More", "categoria": "Ficção e clássicos", "tags": "utopia, estado, justiça, desigualdade", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Nada mais será como antes", "autor": "Miguel Nicolelis", "categoria": "Ficção e clássicos", "tags": "tecnologia, futuro, ciência, risco, inteligência-artificial", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "A república", "autor": "Platão", "categoria": "Filosofia e ciências humanas", "tags": "justiça, estado, educação, verdade, poder", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Ética a Nicômaco", "autor": "Aristóteles", "categoria": "Filosofia e ciências humanas", "tags": "virtude, felicidade, ética, amizade", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Ética", "autor": "Baruch Spinoza", "categoria": "Filosofia e ciências humanas", "tags": "liberdade, natureza, afetos, livre-arbítrio, felicidade", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "O contrato social", "autor": "Jean-Jacques Rousseau", "categoria": "Filosofia e ciências humanas", "tags": "estado, liberdade, democracia, comunidade", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "O mito de Sísifo", "autor": "Albert Camus", "categoria": "Filosofia e ciências humanas", "tags": "absurdo, sentido-da-vida, morte, revolta", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Pedagogia do oprimido", "autor": "Paulo Freire", "categoria": "Filosofia e ciências humanas", "tags": "educação, liberdade, desigualdade, poder", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Comunidade", "autor": "Zygmunt Bauman", "categoria": "Filosofia e ciências humanas", "tags": "comunidade, liberdade, segurança, identidade", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Cegueira moral", "autor": "Zygmunt Bauman e Leonidas Donskis", "categoria": "Filosofia e ciências humanas", "tags": "ética, moral, indiferença, tecnologia", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Sociedade do cansaço", "autor": "Byung-Chul Han", "categoria": "Filosofia e ciências humanas", "tags": "cansaço, trabalho, desempenho, liberdade", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Infocracia", "autor": "Byung-Chul Han", "categoria": "Filosofia e ciências humanas", "tags": "informação, democracia, tecnologia, verdade, vigilância", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Vida contemplativa", "autor": "Byung-Chul Han", "categoria": "Filosofia e ciências humanas", "tags": "contemplação, tempo, trabalho, sentido-da-vida", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "A coragem de não agradar", "autor": "Ichiro Kishimi e Fumitake Koga", "categoria": "Filosofia e ciências humanas", "tags": "liberdade, autoconhecimento, felicidade, relações", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "A coragem de ser feliz", "autor": "Ichiro Kishimi e Fumitake Koga", "categoria": "Filosofia e ciências humanas", "tags": "felicidade, educação, amor, comunidade", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Diário estoico (The Daily Stoic)", "autor": "Ryan Holiday e Stephen Hanselman", "categoria": "Filosofia e ciências humanas", "tags": "estoicismo, virtude, autoconhecimento, resiliência", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Free Will", "autor": "Sam Harris", "categoria": "Filosofia e ciências humanas", "tags": "livre-arbítrio, moral, ciência, responsabilidade", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "O animal social", "autor": "Elliot Aronson", "categoria": "Filosofia e ciências humanas", "tags": "natureza-humana, comportamento, manipulação, preconceito", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Sapiens", "autor": "Yuval Noah Harari", "categoria": "Não ficção", "tags": "civilização, história, natureza-humana, mito, felicidade", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Homo Deus", "autor": "Yuval Noah Harari", "categoria": "Não ficção", "tags": "futuro, tecnologia, inteligência-artificial, livre-arbítrio", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "21 lições para o século 21", "autor": "Yuval Noah Harari", "categoria": "Não ficção", "tags": "futuro, tecnologia, verdade, democracia, sentido-da-vida", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Por que as nações fracassam", "autor": "Daron Acemoglu e James Robinson", "categoria": "Não ficção", "tags": "estado, instituições, desigualdade, poder, história", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Antifrágil", "autor": "Nassim Nicholas Taleb", "categoria": "Não ficção", "tags": "risco, incerteza, resiliência, fragilidade", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Arriscando a própria pele (Skin in the Game)", "autor": "Nassim Nicholas Taleb", "categoria": "Não ficção", "tags": "risco, ética, responsabilidade, justiça", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "How the World Works", "autor": "Noam Chomsky", "categoria": "Não ficção", "tags": "poder, estado, manipulação, democracia", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Sobrevivendo ao século XXI", "autor": "Noam Chomsky e José Mujica", "categoria": "Não ficção", "tags": "futuro, desigualdade, democracia, consumo", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "O diário de Anne Frank", "autor": "Anne Frank", "categoria": "Não ficção", "tags": "guerra, esperança, identidade, totalitarismo", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Cem dias entre céu e mar", "autor": "Amyr Klink", "categoria": "Não ficção", "tags": "aventura, solidão, coragem, natureza", "nota_pessoal": "", "ativo": "sim"}, {"titulo": "Endurance: a lendária expedição de Shackleton", "autor": "Alfred Lansing", "categoria": "Não ficção", "tags": "liderança, sobrevivência, coragem, resiliência", "nota_pessoal": "", "ativo": "sim"}], "trechos": [], "historico": [{"id": "d-2026-11-21", "data": "2026-11-21", "tema": "Sentido e absurdo", "livros": "O mito de Sísifo; Sidarta; O guia do mochileiro das galáxias", "formato": "Fio condutor", "sugestao": "", "mensagem": "*Rolar a pedra*\nCamus encerra seu ensaio com Sísifo feliz. Sidarta passa a vida procurando e encontra ouvindo um rio. Arthur Dent descobre que a resposta é 42. Três maneiras de lidar com a falta de um sentido dado.\n\n📚 *Referências*\n• Albert Camus — _O mito de Sísifo_: revolta lúcida diante do absurdo\n• Hermann Hesse — _Sidarta_: o sentido vem da experiência, não do ensino\n• Douglas Adams — _O guia do mochileiro das galáxias_: o absurdo como comédia\n\n🤔 Qual é a sua pedra, e você a escolheria de novo?\n\n🏷️ #absurdo #sentido-da-vida #humor", "status": "enviado", "trechos": "t-demo1", "tags": "absurdo, sentido-da-vida, humor", "resposta": "(exemplo) Minha pedra é o trabalho, e eu a escolheria de novo, mas não todos os dias.", "respondido_em": "2026-11-21"}, {"id": "a-20261121203000", "data": "2026-11-21", "tema": "Sentido e absurdo", "livros": "O mito de Sísifo; Sidarta", "formato": "aprofundamento", "origem": "d-2026-11-21", "mensagem": "(exemplo de aprofundamento) Camus pede que se imagine Sísifo feliz no momento em que ele desce a montanha para buscar a pedra de novo. Sidarta, à beira do rio, chega a uma calma parecida por outro caminho.\n\n🤔 Em que momento do seu dia você \"desce a montanha\"?", "status": "enviado", "tags": "absurdo, sentido-da-vida"}, {"id": "c-20261122090000", "data": "2026-11-22", "tema": "Sentido sem garantia", "livros": "A peste; Cem dias entre céu e mar; Antifrágil", "formato": "Tese, antítese e síntese", "origem": "d-2026-11-21", "mensagem": "*Sentido sem garantia*\n(exemplo de outra conexão) Rieux, em _A peste_, continua tratando os doentes sem saber se adianta. Amyr Klink rema sem certeza de chegar. Taleb diria que é justamente a incerteza que fortalece.\n\n📚 *Referências*\n• Albert Camus — _A peste_: o dever sem promessa\n• Amyr Klink — _Cem dias entre céu e mar_: o preparo diante do imprevisível\n• Nassim Nicholas Taleb — _Antifrágil_: ganhar com a desordem\n\n🤔 O que você faz mesmo sem garantia de resultado?\n\n🏷️ #absurdo #sentido-da-vida #incerteza", "status": "enviado", "tags": "absurdo, sentido-da-vida, incerteza"}, {"id": "d-2026-11-24", "data": "2026-11-24", "tema": "Autoexploração", "livros": "Sociedade do cansaço; A metamorfose; Diário estoico (The Daily Stoic)", "formato": "Ficção × realidade", "sugestao": "", "mensagem": "*O cansaço que a gente escolhe*\nNinguém mandou você trabalhar até tarde. Ainda assim, você trabalhou. Byung-Chul Han chama isso de _sociedade do desempenho_: o chicote saiu da mão do patrão e foi parar na nossa.\n\nLido ao lado de _A metamorfose_, o quadro fica mais estranho. Gregor acorda inseto e a primeira preocupação dele é o trem que vai perder. Kafka antecipa o trabalhador que se mede só pela utilidade.\n\nOs estoicos ofereceriam uma saída curiosa: separar o que depende de nós do que não depende. O problema, diria Han, é que hoje achamos que *tudo* depende de nós.\n\n📚 *Referências*\n• Byung-Chul Han — _Sociedade do cansaço_: a autoexploração substitui a coerção externa\n• Franz Kafka — _A metamorfose_: o sujeito reduzido à sua função\n• Ryan Holiday — _Diário estoico_: a dicotomia do controle\n\n🤔 O que, no seu trabalho, você cobra de si que ninguém cobraria?\n\n🏷️ #cansaço #trabalho #liberdade", "status": "enviado", "trechos": "", "tags": "cansaço, trabalho, liberdade"}], "tags": [{"tag": "absurdo", "tema": "Sentido da vida", "fundir_em": ""}, {"tag": "afetos", "tema": "", "fundir_em": ""}, {"tag": "alienação", "tema": "Sociedade e trabalho", "fundir_em": ""}, {"tag": "amizade", "tema": "", "fundir_em": ""}, {"tag": "amor", "tema": "Memória e identidade", "fundir_em": ""}, {"tag": "autoconhecimento", "tema": "Sentido da vida", "fundir_em": ""}, {"tag": "aventura", "tema": "", "fundir_em": ""}, {"tag": "burocracia", "tema": "Sociedade e trabalho", "fundir_em": ""}, {"tag": "cansaço", "tema": "Sociedade e trabalho", "fundir_em": ""}, {"tag": "censura", "tema": "Política e poder", "fundir_em": ""}, {"tag": "civilização", "tema": "Sociedade e trabalho", "fundir_em": ""}, {"tag": "ciência", "tema": "Tecnologia e futuro", "fundir_em": ""}, {"tag": "comportamento", "tema": "", "fundir_em": ""}, {"tag": "comunidade", "tema": "Sociedade e trabalho", "fundir_em": ""}, {"tag": "conhecimento", "tema": "", "fundir_em": ""}, {"tag": "consumo", "tema": "Sociedade e trabalho", "fundir_em": ""}, {"tag": "contemplação", "tema": "", "fundir_em": ""}, {"tag": "controle-social", "tema": "Política e poder", "fundir_em": ""}, {"tag": "coragem", "tema": "", "fundir_em": ""}, {"tag": "culpa", "tema": "Sentido da vida", "fundir_em": ""}, {"tag": "democracia", "tema": "Política e poder", "fundir_em": ""}, {"tag": "desempenho", "tema": "Sociedade e trabalho", "fundir_em": ""}, {"tag": "desigualdade", "tema": "Sociedade e trabalho", "fundir_em": ""}, {"tag": "distopia", "tema": "Política e poder", "fundir_em": ""}, {"tag": "educação", "tema": "Sociedade e trabalho", "fundir_em": ""}, {"tag": "esperança", "tema": "", "fundir_em": ""}, {"tag": "espiritualidade", "tema": "Sentido da vida", "fundir_em": ""}, {"tag": "estado", "tema": "Política e poder", "fundir_em": ""}, {"tag": "estoicismo", "tema": "Sentido da vida", "fundir_em": ""}, {"tag": "família", "tema": "Memória e identidade", "fundir_em": ""}, {"tag": "felicidade", "tema": "Sentido da vida", "fundir_em": ""}, {"tag": "fragilidade", "tema": "", "fundir_em": ""}, {"tag": "futuro", "tema": "Tecnologia e futuro", "fundir_em": ""}, {"tag": "guerra", "tema": "", "fundir_em": ""}, {"tag": "história", "tema": "Memória e identidade", "fundir_em": ""}, {"tag": "humor", "tema": "", "fundir_em": ""}, {"tag": "identidade", "tema": "Memória e identidade", "fundir_em": ""}, {"tag": "imaginação", "tema": "", "fundir_em": ""}, {"tag": "incerteza", "tema": "Tecnologia e futuro", "fundir_em": ""}, {"tag": "indiferença", "tema": "", "fundir_em": ""}, {"tag": "informação", "tema": "Tecnologia e futuro", "fundir_em": ""}, {"tag": "instituições", "tema": "Política e poder", "fundir_em": ""}, {"tag": "inteligência-artificial", "tema": "Tecnologia e futuro", "fundir_em": ""}, {"tag": "jornada", "tema": "", "fundir_em": ""}, {"tag": "justiça", "tema": "Política e poder", "fundir_em": ""}, {"tag": "liberdade", "tema": "", "fundir_em": ""}, {"tag": "liberdades", "tema": "", "fundir_em": "liberdade"}, {"tag": "liderança", "tema": "", "fundir_em": ""}, {"tag": "linguagem", "tema": "Memória e identidade", "fundir_em": ""}, {"tag": "livre-arbítrio", "tema": "", "fundir_em": ""}, {"tag": "manipulação", "tema": "Política e poder", "fundir_em": ""}, {"tag": "memória", "tema": "Memória e identidade", "fundir_em": ""}, {"tag": "mito", "tema": "", "fundir_em": ""}, {"tag": "moral", "tema": "Sentido da vida", "fundir_em": ""}, {"tag": "morte", "tema": "Sentido da vida", "fundir_em": ""}, {"tag": "natureza", "tema": "", "fundir_em": ""}, {"tag": "natureza-humana", "tema": "", "fundir_em": ""}, {"tag": "poder", "tema": "Política e poder", "fundir_em": ""}, {"tag": "preconceito", "tema": "", "fundir_em": ""}, {"tag": "razão", "tema": "", "fundir_em": ""}, {"tag": "redenção", "tema": "Sentido da vida", "fundir_em": ""}, {"tag": "relações", "tema": "", "fundir_em": ""}, {"tag": "resiliência", "tema": "", "fundir_em": ""}, {"tag": "responsabilidade", "tema": "", "fundir_em": ""}, {"tag": "ressentimento", "tema": "", "fundir_em": ""}, {"tag": "revolta", "tema": "Sentido da vida", "fundir_em": ""}, {"tag": "revolução", "tema": "Política e poder", "fundir_em": ""}, {"tag": "risco", "tema": "Tecnologia e futuro", "fundir_em": ""}, {"tag": "segurança", "tema": "", "fundir_em": ""}, {"tag": "sentido-da-vida", "tema": "Sentido da vida", "fundir_em": ""}, {"tag": "sobrevivência", "tema": "", "fundir_em": ""}, {"tag": "sofrimento", "tema": "Sentido da vida", "fundir_em": ""}, {"tag": "solidão", "tema": "Memória e identidade", "fundir_em": ""}, {"tag": "tecnologia", "tema": "Tecnologia e futuro", "fundir_em": ""}, {"tag": "tempo", "tema": "Memória e identidade", "fundir_em": ""}, {"tag": "totalitarismo", "tema": "Política e poder", "fundir_em": ""}, {"tag": "trabalho", "tema": "Sociedade e trabalho", "fundir_em": ""}, {"tag": "utopia", "tema": "Política e poder", "fundir_em": ""}, {"tag": "verdade", "tema": "", "fundir_em": ""}, {"tag": "vigilância", "tema": "Política e poder", "fundir_em": ""}, {"tag": "violência", "tema": "", "fundir_em": ""}, {"tag": "virtude", "tema": "Sentido da vida", "fundir_em": ""}, {"tag": "ética", "tema": "Sentido da vida", "fundir_em": ""}], "atualizado": "2026-11-25T07:00:00-03:00"};
+const VERSAO = '1.14.0';
 </script>
 <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
 <script>
@@ -200,10 +220,15 @@ const peso = r => sem(r?.peso) || 'normal';
 const S = {
   cfg: store.get('cfg', { api: '', token: '' }),
   dados: null, demo: false, aba: (location.hash || '#hoje').slice(1),
-  busca: '', categoria: '', tagFiltro: '', foto: null, capas: store.get('capas', {})
+  busca: '', categoria: '', tagFiltro: '', foto: null, capas: store.get('capas', {}),
+  notaId: null, sessao: [], buscaNotas: '', tagNotas: '', editCfg: false,
+  viaPush: new URLSearchParams(location.search).get('origem') === 'push'   // aberto pelo aviso de nota nova
 };
-const ABAS = { hoje: 'Hoje', biblioteca: 'Biblioteca', trechos: 'Guardar trecho', tags: 'Tags', mais: 'Mais', historico: 'Notas anteriores' };
+if (S.viaPush) try { history.replaceState(null, '', location.pathname + location.hash); } catch (e) {}
+const ABAS = { hoje: 'Hoje', biblioteca: 'Biblioteca', trechos: 'Trechos', tags: 'Tags', mais: 'Mais' };
+if (S.aba === 'historico') S.aba = 'trechos';
 if (!ABAS[S.aba]) S.aba = 'hoje';
+const ICO = { salvar: '<svg viewBox="0 0 24 24"><path d="M5 4h11l3 3v13H5z"/><path d="M8 4v5h7V4M8 20v-6h8v6"/></svg>' };
 document.title = CONFIG.nomeApp;
 
 /* ===== API (Google Apps Script; o endereço termina em /exec) ===== */
@@ -268,13 +293,10 @@ const A = () => (S.dados?.acervo || []);
 const TR = () => (S.dados?.trechos || []);
 const TG = () => (S.dados?.tags || []);
 const H = () => (S.dados?.historico || []).slice().sort((a, b) => String(a.data).localeCompare(String(b.data)) || String(a.id).localeCompare(String(b.id)));
-const trOk = () => [];   // trechos são só apoio do agente: o app não os recebe
 function indiceTags() {
   const idx = {};
-  const pega = t => (idx[t] = idx[t] || { livros: new Set(), notas_pessoais: 0, trechos: 0, reflexoes: 0 });
-  A().forEach(r => { T(r.tags).forEach(t => pega(t).livros.add(r.titulo));
-    T(r.tags_nota).forEach(t => { const e = pega(t); e.livros.add(r.titulo); e.notas_pessoais++; }); });
-  trOk().forEach(r => T(r.tags).forEach(t => { const e = pega(t); e.trechos++; if (r.titulo) e.livros.add(r.titulo); }));
+  const pega = t => (idx[t] = idx[t] || { livros: new Set(), reflexoes: 0 });
+  A().forEach(r => T(r.tags).forEach(t => pega(t).livros.add(r.titulo)));
   H().forEach(r => T(r.tags).forEach(t => pega(t).reflexoes++));
   return idx;
 }
@@ -283,6 +305,27 @@ const vocabulario = () => Object.keys(indiceTags()).sort();
 const notasDoLivro = t => H().filter(r => String(r.livros || '').split(';').some(x => sem(x) === sem(t)));
 const chips = tags => T(tags).length ? `<div class="chips">${T(tags).map(t => `<button class="chip" data-a="tag" data-v="${esc(t)}">#${esc(t)}</button>`).join('')}</div>` : '';
 const pergunta = m => semFmt((String(m || '').split('\n').find(l => l.includes('🤔')) || '').replace('🤔', '')).trim();
+/** separa o texto da nota: corpo (sem a pergunta 🤔 e sem a linha 🏷️) e o bloco 📚 Referências, que fica recolhido */
+function partesNota(m) {
+  const corpo = [], refs = []; let emRefs = false;
+  String(m || '').split('\n').forEach(l => {
+    if (/^\s*🏷️/.test(l) || l.includes('🤔')) { emRefs = false; return; }
+    if (l.includes('📚')) { emRefs = true; return; }
+    if (emRefs) { if (l.trim()) { refs.push(l); return; } emRefs = false; }
+    corpo.push(l);
+  });
+  return { corpo: corpo.join('\n').replace(/\n{3,}/g, '\n\n').trim(), refs };
+}
+function notaHtml(m) {
+  const { corpo, refs } = partesNota(m);
+  return `<div class="nota">${fmt(corpo)}</div>` + (refs.length ? `<details class="refs"><summary>📚 Referências (${refs.filter(l => /^\s*[•\-–]/.test(l)).length || refs.length})</summary><div class="nota" style="font-size:16px">${fmt(refs.join('\n'))}</div></details>` : '');
+}
+const seqNotas = () => H().filter(r => /^(d|c)-/.test(String(r.id)));          // notas navegáveis: diárias e outras conexões
+/** aprofundamentos (a) e conexões (c) de uma nota; aprofundamentos antigos, sem origem, contam pela data */
+const derivadas = (nota, pref) => H().filter(r => String(r.id).startsWith(pref + '-') &&
+  (String(r.origem || '') === String(nota.id) || (!r.origem && pref === 'a' && String(nota.id).startsWith('d-') && r.data === nota.data)));
+const LIMITE_CONEXOES = 5;
+const plural = (n, s, p) => `${n} ${n === 1 ? s : p}`;
 function limpaTxt(s) { return sem(s).replace(/[^\p{L}\p{N}\s]/gu, ' ').split(/\s+/).filter(w => w.length > 2); }
 function parecido(a, b) {
   const X = new Set(limpaTxt(a)), Y = new Set(limpaTxt(b)); if (!X.size || !Y.size) return false;
@@ -361,30 +404,41 @@ function setTags(id, lista) { const el = $('#' + id); if (!el) return; el.outerH
 
 /* ===== Telas ===== */
 function telaHoje() {
-  const h = H();
-  if (!h.length) return `<div class="empty">Nenhuma nota ainda.<br>A primeira chega amanhã às 7h.</div>`;
-  const diarias = h.filter(r => !String(r.id).startsWith('a-'));
-  const atual = diarias[diarias.length - 1] || h[h.length - 1];
-  const aprof = h.filter(r => String(r.id).startsWith('a-') && r.data >= atual.data);
+  const seq = seqNotas();
+  if (!seq.length) return `<div class="empty">Nenhuma nota ainda.<br>A primeira chega às 7h.</div>`;
+  const diarias = seq.filter(r => String(r.id).startsWith('d-')), ultima = diarias[diarias.length - 1] || seq[seq.length - 1];
+  if (!seq.some(r => r.id === S.notaId)) S.notaId = ultima.id;
+  const i = seq.findIndex(r => r.id === S.notaId), atual = seq[i], eAtual = atual.id === ultima.id, eDiaria = String(atual.id).startsWith('d-');
   S.lidas = S.lidas || store.get('lidas', []);
-  if (!S.demo && atual.status === 'pendente' && !S.lidas.includes(atual.id)) { S.lidas.push(atual.id); store.set('lidas', S.lidas.slice(-30)); acao({ acao: 'lida', id: atual.id }).catch(() => {}); }
-  const q = pergunta(atual.mensagem);
+  if (eAtual && !S.demo && atual.status === 'pendente' && !S.lidas.includes(atual.id)) { S.lidas.push(atual.id); store.set('lidas', S.lidas.slice(-30)); acao({ acao: 'lida', id: atual.id }).catch(() => {}); }
+  const q = pergunta(atual.mensagem), aprof = derivadas(atual, 'a'), conex = derivadas(atual, 'c');
+  const origem = atual.origem ? H().find(r => r.id === atual.origem) : null;
+  const resposta = !q ? '' : eAtual
+    ? `<div class="card"><div class="meta">Sua resposta${atual.respondido_em ? ' · ' + esc(dataBR(atual.respondido_em)) : ''}</div>
+      <div class="sp"></div><div class="nota" style="font-size:16px">🤔 ${esc(q)}</div><div class="sp"></div>
+      <div class="resp"><textarea id="resp" placeholder="Escreva o que pensa. O agente usa suas respostas nas próximas notas.">${esc(atual.resposta || '')}</textarea>
+      <button class="salvar" data-a="responder" data-v="${esc(atual.id)}" aria-label="Salvar resposta" title="Salvar resposta">${ICO.salvar}</button></div></div>`
+    : `<div class="card"><div class="meta">Sua resposta</div><div class="sp"></div><div class="nota" style="font-size:16px">🤔 ${esc(q)}</div>
+      <div class="sp"></div>${atual.resposta ? `<div class="nota" style="font-size:15px">${esc(atual.resposta)}</div>` : '<div class="meta">Sem resposta.</div>'}</div>`;
+  let acoes = '';
+  if (eAtual) acoes = aprof.length ? '' : `<button class="btn" data-a="aprofundar" data-v="${esc(atual.id)}">Aprofundar esta nota</button>`;
+  else if (eDiaria) acoes = conex.length < LIMITE_CONEXOES
+    ? `<button class="btn sec" data-a="conexoes" data-v="${esc(atual.id)}">Fazer outras conexões</button><div class="meta" style="text-align:center;margin-top:6px">O agente escreve uma nota nova com estas tags e outros livros · ${plural(LIMITE_CONEXOES - conex.length, 'restante', 'restantes')}</div>`
+    : `<div class="meta" style="text-align:center">Esta nota já teve as ${LIMITE_CONEXOES} conexões permitidas.</div>`;
   return `
   <div class="card">
-    <button class="mais" data-a="cartaoNota" data-v="${esc(atual.id)}" aria-label="Compartilhar">⤴︎</button>
-    <div class="meta">${esc(dataBR(atual.data))} · ${esc(atual.formato || 'nota')}${atual.status === 'pendente' ? ' · <span class="badge">nova</span>' : ''}</div>
-    <div class="sp"></div>
-    <div class="nota">${fmt(atual.mensagem)}</div>
+    <div class="navnota"><button class="seta" data-a="notaAnt" ${i <= 0 ? 'disabled' : ''} aria-label="Nota anterior">‹</button>
+      <div class="meta">${esc(dataBR(atual.data))} · ${esc(atual.formato || 'nota')}${atual.status === 'pendente' ? ' · <span class="badge">nova</span>' : ''}</div>
+      <button class="seta" data-a="notaProx" ${i >= seq.length - 1 ? 'disabled' : ''} aria-label="Próxima nota">›</button>
+      <button class="seta" data-a="exportarNota" data-v="${esc(atual.id)}" aria-label="Exportar nota">⤴︎</button></div>
+    ${origem ? `<div class="meta" style="text-align:center;margin-bottom:8px">Outra conexão a partir de “${esc(origem.tema || dataBR(origem.data))}”</div>` : ''}
+    ${notaHtml(atual.mensagem)}
     ${chips(atual.tags)}
   </div>
-  ${q ? `<div class="card"><div class="meta">Sua resposta${atual.respondido_em ? ' · ' + esc(dataBR(atual.respondido_em)) : ''}</div>
-    <div class="sp"></div><div class="nota" style="font-size:15px">🤔 ${esc(q)}</div>
-    <textarea id="resp" placeholder="Escreva o que pensa. O agente usa suas respostas nas próximas notas.">${esc(atual.resposta || '')}</textarea>
-    <div class="sp"></div><button class="btn sec" data-a="responder" data-v="${esc(atual.id)}">${atual.resposta ? 'Atualizar resposta' : 'Guardar resposta'}</button></div>` : ''}
-  ${aprof.map(r => `<div class="card"><div class="meta">Aprofundamento · ${esc(dataBR(r.data))}</div><div class="sp"></div><div class="nota">${fmt(r.mensagem)}</div>${chips(r.tags)}</div>`).join('')}
-  <button class="btn" data-a="aprofundar">Aprofundar esta nota</button>
-  <div class="sp"></div>
-  <button class="btn ghost" data-a="ir" data-v="historico">Ver notas anteriores</button>`;
+  ${resposta}
+  ${aprof.map(r => `<div class="card" id="ap-${esc(r.id)}"><div class="meta">Aprofundamento · ${esc(dataBR(r.data))}</div><div class="sp"></div>${notaHtml(r.mensagem)}${chips(r.tags)}
+    ${pergunta(r.mensagem) ? `<div class="sp"></div><div class="nota" style="font-size:16px">🤔 ${esc(pergunta(r.mensagem))}</div>` : ''}</div>`).join('')}
+  ${acoes}`;
 }
 function telaBiblioteca() {
   const cats = [...new Set(A().map(r => r.categoria).filter(Boolean))];
@@ -392,7 +446,7 @@ function telaBiblioteca() {
   if (S.categoria === '_mais') l = l.filter(r => peso(r) === 'mais');
   else if (S.categoria === '_nunca') l = l.filter(r => peso(r) === 'nunca');
   else if (S.categoria) l = l.filter(r => r.categoria === S.categoria);
-  if (S.busca) l = l.filter(r => sem(r.titulo + ' ' + r.autor + ' ' + r.tags + ' ' + r.tags_nota).includes(sem(S.busca)));
+  if (S.busca) l = l.filter(r => sem(r.titulo + ' ' + r.autor + ' ' + r.tags).includes(sem(S.busca)));
   l = l.slice().sort((a, b) => sem(a.titulo).localeCompare(sem(b.titulo)));
   const filtros = [['', 'Todos'], ...cats.map(c => [c, c]), ['_mais', '★ Prioridade'], ['_nunca', 'Fora das notas']];
   return `
@@ -411,25 +465,39 @@ function telaBiblioteca() {
   <button class="fab" data-a="novoLivro">＋ Livro</button>`;
 }
 function telaTrechos() {
+  const sessao = S.sessao;
+  const conta = {}; H().forEach(r => T(r.tags).forEach(t => { conta[t] = (conta[t] || 0) + 1; }));
+  const topo = Object.entries(conta).sort((a, b) => b[1] - a[1]).slice(0, 12).map(([t]) => t);
+  const tipo = r => String(r.id).startsWith('a-') ? 'Aprofundamento' : String(r.id).startsWith('c-') ? 'Outra conexão' : (r.formato || 'Nota');
+  const notas = H().slice().reverse()
+    .filter(r => !S.tagNotas || T(r.tags).includes(S.tagNotas))
+    .filter(r => !S.buscaNotas || sem(`${r.tema} ${r.livros} ${semFmt(r.mensagem)}`).includes(sem(S.buscaNotas)));
   return `
   <div class="card">
     <h2>Guardar um trecho</h2>
-    <div class="meta">Fotografe a página e escolha o livro. O trecho fica só como apoio das reflexões: ele não aparece no app.</div>
-    <div class="sp"></div>
-    <button class="btn" data-a="camera" data-v="local">📸 Ler no aparelho (grátis)</button>
-    <div class="sp"></div>
-    <button class="btn sec" data-a="camera" data-v="ia">✨ Ler com IA (reconhece grifos)</button>
-  </div>`;
+    <div class="meta">Escolha o livro e fotografe a página. Você confere o texto antes de salvar. O trecho fica só como apoio das reflexões.</div>
+    <label class="l">Livro</label><select id="alLivro"><option value="">— escolha —</option>${opcoesLivros(S.fotoLivro)}</select>
+    <div class="sp"></div><button class="btn" data-a="tirarFotoLocal">📸 Fotografar a página</button>
+    ${sessao.length ? `<label class="l">Guardados agora (${sessao.length})</label><div class="list">${sessao.slice().reverse().map(x =>
+      `<div class="item"><div class="t">${esc(x.titulo)}</div><div class="s">${esc(x.trecho.slice(0, 140))}${x.trecho.length > 140 ? '…' : ''}</div></div>`).join('')}</div>
+      <div class="meta">Esta lista some quando o app é fechado.</div>` : ''}
+  </div>
+  <h2 class="sec-tit">Notas anteriores</h2>
+  <input type="search" placeholder="Buscar por tema, livro ou texto" value="${esc(S.buscaNotas)}" data-in="buscaNotas">
+  <div class="seg" style="margin-top:8px"><button class="chip ${!S.tagNotas ? 'on' : ''}" data-a="tagNotas" data-v="">Todas</button>${topo.map(t => `<button class="chip ${S.tagNotas === t ? 'on' : ''}" data-a="tagNotas" data-v="${esc(t)}">#${esc(t)}</button>`).join('')}</div>
+  <div class="meta" style="margin-bottom:8px">${plural(notas.length, 'nota', 'notas')}</div>
+  <div class="list">${notas.map(r => `<button class="item" data-a="nota" data-v="${esc(r.id)}">
+    <div class="t">${esc(r.tema || 'Nota')}</div><div class="s">${esc(dataBR(r.data))} · ${esc(tipo(r))}${r.resposta ? ' · ✍️ respondida' : ''}</div>
+    <div class="s" style="color:var(--accent-ink)">${T(r.tags).map(t => '#' + esc(t)).join(' ')}</div></button>`).join('') || '<div class="empty">Nenhuma nota encontrada.</div>'}</div>`;
 }
 function telaTags() {
   const idx = indiceTags(), tm = temaDe();
-  const pesoT = v => v.livros.size + v.reflexoes + v.notas_pessoais;
-  const l = Object.entries(idx).filter(([t]) => !S.busca || sem(t).includes(sem(S.busca))).sort((a, b) => pesoT(b[1]) - pesoT(a[1]));
+  const pesoT = v => v.livros.size + v.reflexoes;
+  const l = Object.entries(idx).filter(([t]) => !S.busca || sem(t).includes(sem(S.busca))).sort((a, b) => pesoT(b[1]) - pesoT(a[1]) || a[0].localeCompare(b[0]));
   const max = Math.max(1, ...l.map(([, v]) => pesoT(v)));
   const fus = TG().filter(r => r.fundir_em && r.fundir_em !== r.tag && idx[r.tag]);
-  const item = ([t, v]) => `<button class="item" data-a="tag" data-v="${esc(t)}">
-      <div class="row" style="justify-content:space-between"><div class="t">#${esc(t)}</div><div class="s" style="flex:0 0 auto">${v.livros.size} · ${v.reflexoes}</div></div>
-      <div class="bar"><i style="width:${Math.round(pesoT(v) / max * 100)}%"></i></div></button>`;
+  const chip = ([t, v]) => { const k = pesoT(v) / max;
+    return `<button class="chip" data-a="tag" data-v="${esc(t)}" style="font-size:${(12 + k * 9).toFixed(1)}px;opacity:${(.62 + k * .38).toFixed(2)}" title="${plural(v.livros.size, 'livro', 'livros')} · ${plural(v.reflexoes, 'nota', 'notas')}">#${esc(t)}</button>`; };
   const grupos = {};
   l.forEach(e => { const g = tm[e[0]] || 'Sem tema'; (grupos[g] = grupos[g] || []).push(e); });
   const temTemas = Object.keys(tm).length > 0;
@@ -440,31 +508,26 @@ function telaTags() {
       <button class="btn sm ghost" style="flex:0 0 auto" data-a="naoFundir" data-v="${esc(r.tag)}">Manter</button></div>`).join('')}</div>` : ''}
   <input type="search" placeholder="Filtrar tags" value="${esc(S.busca)}" data-in="busca">
   <div class="sp"></div>
-  <div class="meta" style="margin-bottom:8px">${l.length} tags · livros · reflexões</div>
-  ${temTemas ? Object.entries(grupos).sort((a, b) => a[0] === 'Sem tema' ? 1 : b[0] === 'Sem tema' ? -1 : a[0].localeCompare(b[0]))
-      .map(([g, es]) => `<label class="l" style="font-weight:600;color:var(--ink)">${esc(g)}</label><div class="list">${es.map(item).join('')}</div>`).join('')
-    : `<div class="list">${l.map(item).join('') || '<div class="empty">Nenhuma tag.</div>'}</div>`}`;
+  <div class="meta" style="margin-bottom:10px">${plural(l.length, 'tag', 'tags')} · o tamanho mostra quantos livros e notas usam cada uma</div>
+  ${!l.length ? '<div class="empty">Nenhuma tag.</div>' : temTemas ? Object.entries(grupos).sort((a, b) => a[0] === 'Sem tema' ? 1 : b[0] === 'Sem tema' ? -1 : a[0].localeCompare(b[0]))
+      .map(([g, es]) => `<label class="l" style="font-weight:600;color:var(--ink)">${esc(g)}</label><div class="nuvem">${es.map(chip).join('')}</div>`).join('')
+    : `<div class="nuvem">${l.map(chip).join('')}</div>`}`;
 }
+const pushAtivo = () => { try { return !!(window.OneSignal && OneSignal.Notifications && OneSignal.Notifications.permission && OneSignal.User.PushSubscription.optedIn); } catch (e) { return false; } };
 function telaMais() {
-  const n = typeof window.OneSignal !== 'undefined' && OneSignal.Notifications ? OneSignal.Notifications.permission : null;
+  const ativo = pushAtivo(), conectado = S.cfg.api && S.cfg.token && !S.editCfg;
+  const atualizado = S.dados?.atualizado ? new Date(S.dados.atualizado).toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' }) : '—';
   return `
-  <div class="list">
-    <button class="item" data-a="ir" data-v="historico"><div class="t">🗂️ Notas anteriores</div><div class="s">${H().length} registro(s)</div></button>
-  </div>
-  <div class="card">
-    <h2>Exportar</h2>
-    <div class="meta">Acervo e reflexões, com suas respostas.</div>
-    <div class="sp"></div>
-    <div class="row"><button class="btn sm sec" data-a="exportar" data-v="md">Markdown</button><button class="btn sm sec" data-a="exportar" data-v="json">JSON</button><button class="btn sm sec" data-a="exportar" data-v="pdf">PDF</button></div>
-  </div>
   <div class="card">
     <h2>Notificações</h2>
-    <div class="meta">${!standalone() ? 'Primeiro instale o app: no Safari, toque em Compartilhar › Adicionar à Tela de Início, e abra pelo ícone.' : n ? 'Ativadas ✅' : 'Receba a nota do dia às 7h.'}</div>
+    <div class="meta">${!standalone() ? 'Primeiro instale o app: no Safari, toque em Compartilhar › Adicionar à Tela de Início, e abra pelo ícone.' : ativo ? 'Ativadas: a nota do dia chega às 7h.' : 'Desativadas.'}</div>
     <div class="sp"></div>
-    <button class="btn" data-a="push" ${!standalone() || n ? 'disabled' : ''}>Ativar notificações</button>
+    <button class="btn ${ativo ? 'ghost' : ''}" data-a="push" ${!standalone() ? 'disabled' : ''}>${ativo ? 'Desativar notificações' : 'Ativar notificações'}</button>
   </div>
   <div class="card">
     <h2>Conexão</h2>
+    ${conectado ? `<div class="row"><div class="meta">${S.demo ? 'Modo demonstração' : 'Conectado ✅ · atualizado em ' + esc(atualizado)}</div>
+      <button class="btn sm ghost" style="flex:0 0 auto" data-a="editarCfg">Alterar</button></div>` : `
     <label class="l">Endereço do App da Web (Apps Script)</label>
     <input type="url" id="cfgApi" placeholder="https://script.google.com/macros/s/…/exec" value="${esc(S.cfg.api)}">
     <label class="l">Token</label>
@@ -472,15 +535,9 @@ function telaMais() {
     <div class="sp"></div>
     <button class="btn" data-a="salvarCfg">Salvar e testar</button>
     <div class="sp"></div>
-    <div class="meta">${S.demo ? 'Sem conexão configurada: o app está em modo demonstração.' : 'Última atualização: ' + esc(S.dados?.atualizado ? new Date(S.dados.atualizado).toLocaleString('pt-BR') : '—')}</div>
+    <div class="meta">${S.demo ? 'Sem conexão configurada: o app está em modo demonstração.' : 'Última atualização: ' + esc(atualizado)}</div>`}
   </div>
   <div class="meta" style="text-align:center">${esc(CONFIG.nomeApp)} v${VERSAO}</div>`;
-}
-function telaHistorico() {
-  const l = H().slice().reverse();
-  return `<div class="list">${l.map(r => `<button class="item" data-a="nota" data-v="${esc(r.id)}">
-    <div class="t">${esc(r.tema || 'Nota')}</div><div class="s">${esc(dataBR(r.data))} · ${esc(r.formato || '')}${r.resposta ? ' · ✍️ respondida' : ''}</div>
-    <div class="s" style="color:var(--accent-ink)">${T(r.tags).map(t => '#' + esc(t)).join(' ')}</div></button>`).join('') || '<div class="empty">Sem notas ainda.</div>'}</div>`;
 }
 
 /* ===== Painéis (bottom sheet) ===== */
@@ -493,10 +550,9 @@ function painelLivro(titulo) {
   const ns = notasDoLivro(titulo);
   abrir(`<div style="display:flex;gap:14px;align-items:flex-start"><button class="capa-g" data-a="trocarCapa" data-v="${esc(r.titulo)}" data-capa="${esc(r.titulo)}" aria-label="Trocar capa" style="${capa(r.titulo) ? `background-image:url('${esc(capa(r.titulo))}')` : ''}"></button><div><h3>${esc(r.titulo)}</h3><div class="meta">${esc(r.autor)} · ${esc(r.categoria)}</div><button class="btn ghost sm" style="margin-top:8px" data-a="trocarCapa" data-v="${esc(r.titulo)}">Trocar capa</button></div></div>
     <label class="l">Quanto aparece nas notas</label>${segPeso('livro', r.titulo, peso(r))}
-    <label class="l">Tags do livro</label>${editorTags('tgLivro', r.tags)}
+    <label class="l">Tags</label>${editorTags('tgLivro', r.tags)}
     <label class="l">O que me marcou</label>
     <textarea id="notaTxt" placeholder="Escreva sua impressão sobre o livro">${esc(r.nota_pessoal || '')}</textarea>
-    <label class="l">Tags da sua nota</label>${editorTags('tgNota', r.tags_nota)}
     <div class="sp"></div><button class="btn" data-a="salvarLivro" data-v="${esc(r.titulo)}">Salvar alterações</button>
     <div class="sp"></div><button class="btn ghost sm" data-a="buscarPopulares" data-v="${esc(r.titulo)}">Buscar trechos populares</button>
     ${(() => { const v = vizinhos(r.titulo).slice(0, 5); return v.length ? `<label class="l">Livros mais próximos</label><div class="list">${v.map(x => `<button class="item" data-a="livro" data-v="${esc(x.livro.titulo)}"><div class="t">${esc(x.livro.titulo)}</div><div class="s" style="color:var(--accent-ink)">${x.comuns.map(t => '#' + esc(t)).join(' ')}</div></button>`).join('')}</div>` : ''; })()}
@@ -504,42 +560,65 @@ function painelLivro(titulo) {
     <div class="sp"></div><button class="btn ghost" data-a="remover" data-v="${esc(r.titulo)}">Remover do acervo</button>`);
 }
 function painelTag(tag) {
-  const livros = A().filter(r => T(r.tags).includes(tag) || T(r.tags_nota).includes(tag));
+  const livros = A().filter(r => T(r.tags).includes(tag));
   const refs = H().filter(r => T(r.tags).includes(tag));
   const viz = {};
-  livros.forEach(r => [...T(r.tags), ...T(r.tags_nota)].forEach(t => { if (t !== tag) viz[t] = (viz[t] || 0) + 1; }));
+  livros.forEach(r => T(r.tags).forEach(t => { if (t !== tag) viz[t] = (viz[t] || 0) + 1; }));
   const junto = Object.entries(viz).sort((a, b) => b[1] - a[1]).slice(0, 8);
   const tm = temaDe()[tag];
-  abrir(`<h3>#${esc(tag)}</h3><div class="meta">${tm ? esc(tm) + ' · ' : ''}${livros.length} livro(s) · ${refs.length} reflexão(ões)</div>
+  abrir(`<h3>#${esc(tag)}</h3><div class="meta">${tm ? esc(tm) + ' · ' : ''}${plural(livros.length, 'livro', 'livros')} · ${plural(refs.length, 'nota', 'notas')}</div>
     ${junto.length ? `<label class="l">Aparece junto com</label><div class="chips">${junto.map(([t, n]) => `<button class="chip" data-a="tag" data-v="${esc(t)}">#${esc(t)} (${n})</button>`).join('')}</div>` : ''}
-    <label class="l">Livros</label><div class="list">${livros.map(r => `<button class="item" data-a="livro" data-v="${esc(r.titulo)}"><div class="t">${esc(r.titulo)}</div><div class="s">${esc(r.autor)}${T(r.tags_nota).includes(tag) ? ' · 📝 na sua nota' : ''}</div></button>`).join('') || '<div class="meta">—</div>'}</div>
-    ${refs.length ? `<label class="l">Reflexões</label><div class="list">${refs.slice().reverse().map(n => `<button class="item" data-a="nota" data-v="${esc(n.id)}"><div class="t">${esc(n.tema)}</div><div class="s">${esc(dataBR(n.data))}${n.resposta ? ' · ✍️' : ''}</div></button>`).join('')}</div>` : ''}`);
+    <label class="l">Livros · toque para ver por que a tag se liga a cada um</label><div class="list">${livros.map(r => `<button class="item" data-a="resumo" data-v="${esc(tag)}|${esc(r.titulo)}"><div class="t">${esc(r.titulo)}</div><div class="s">${esc(r.autor)}</div></button>`).join('') || '<div class="meta">—</div>'}</div>
+    ${refs.length ? `<label class="l">Notas</label><div class="list">${refs.slice().reverse().map(n => `<button class="item" data-a="nota" data-v="${esc(n.id)}"><div class="t">${esc(n.tema)}</div><div class="s">${esc(dataBR(n.data))}${n.resposta ? ' · ✍️' : ''}</div></button>`).join('')}</div>` : ''}
+    <div class="sp"></div><div id="renForm"><button class="btn ghost sm" data-a="renomearForm" data-v="${esc(tag)}">Renomear tag</button></div>`);
+}
+/** resumo de 15 a 30 linhas: por que a tag se liga ao livro (gerado uma vez pelo agente e guardado na aba Resumos) */
+async function painelResumo(tag, titulo, refazer) {
+  const chave = tag + '|' + titulo; S.resumoAberto = chave;
+  const topo = `<button class="btn ghost sm" data-a="tag" data-v="${esc(tag)}">‹ #${esc(tag)}</button><h3 style="margin-top:12px">${esc(titulo)}</h3><div class="meta">Por que #${esc(tag)} se liga a este livro</div><div class="sp"></div>`;
+  abrir(topo + `<div class="empty"><span class="spin"></span><br>${refazer ? 'Refazendo' : 'Preparando'} o resumo…</div>`);
+  let j = null, erro = '';
+  try { j = await acao({ acao: 'resumoTag', tag, titulo, refazer: refazer ? '1' : '' }); } catch (e) { erro = e.message; }
+  if (S.resumoAberto !== chave || !$('#sheet').classList.contains('open')) return;
+  if (!j) return abrir(topo + `<div class="meta">${erro ? 'Erro: ' + esc(erro) : 'No modo demonstração o resumo não é gerado. Configure a conexão em Mais.'}</div>`);
+  abrir(topo + `<div class="nota">${fmt(j.texto)}</div>
+    <div class="meta" style="margin-top:10px">Leitura gerada pelo agente${j.guardado ? ', guardada.' : ' agora e guardada para as próximas vezes.'}</div>
+    <div class="sp"></div><div class="row"><button class="btn sec sm" data-a="livro" data-v="${esc(titulo)}">Abrir ficha do livro</button>
+    <button class="btn ghost sm" data-a="refazerResumo" data-v="${esc(tag)}|${esc(titulo)}">Refazer resumo</button></div>`);
 }
 function painelNota(id) {
   const n = H().find(x => String(x.id) === String(id)); if (!n) return;
-  abrir(`<button class="mais" data-a="cartaoNota" data-v="${esc(n.id)}">⤴︎</button><div class="meta">${esc(dataBR(n.data))} · ${esc(n.formato)}</div><div class="sp"></div><div class="nota">${fmt(n.mensagem)}</div>${chips(n.tags)}
+  const q = pergunta(n.mensagem), origem = n.origem ? H().find(r => r.id === n.origem) : null;
+  abrir(`<div class="navnota"><div class="meta" style="text-align:left">${esc(dataBR(n.data))} · ${esc(n.formato || 'nota')}</div>
+      <button class="seta" data-a="exportarNota" data-v="${esc(n.id)}" aria-label="Exportar nota">⤴︎</button></div>
+    ${origem ? `<div class="meta" style="margin-bottom:8px">A partir de “${esc(origem.tema || dataBR(origem.data))}”</div>` : ''}
+    ${notaHtml(n.mensagem)}${chips(n.tags)}
+    ${q ? `<div class="sp"></div><div class="nota" style="font-size:16px">🤔 ${esc(q)}</div>` : ''}
     ${n.resposta ? `<label class="l">Sua resposta</label><div class="nota" style="font-size:15px">${esc(n.resposta)}</div>` : ''}`);
 }
 function painelNovoLivro() {
+  S.capaInfo = null;
   abrir(`<h3>Adicionar livro</h3><div class="meta">O agente confere o autor, evita duplicatas e atribui as tags.</div>
+    <div class="sp"></div><button class="btn sec" data-a="fotoCapa">📷 Identificar pela foto da capa (opcional)</button>
+    <div class="meta" id="nlInfo" style="margin-top:6px"></div>
     <label class="l">Título</label><input type="text" id="nlT" placeholder="Ex.: Vigiar e punir">
     <label class="l">Autor (opcional)</label><input type="text" id="nlA" placeholder="Ex.: Michel Foucault">
     <label class="l">O que me marcou (opcional)</label><textarea id="nlN"></textarea>
     <div class="sp"></div><button class="btn" data-a="enviarLivro">Adicionar</button>`);
 }
-function painelAprofundar() {
-  abrir(`<h3>Aprofundar</h3><div class="meta">Uma camada nova sobre a nota de hoje: outro livro, uma objeção ou uma aplicação.</div>
-    <label class="l">Direção (opcional)</label><input type="text" id="apD" placeholder="Ex.: lado prático, Camus, #liberdade">
-    <div class="sp"></div><button class="btn" data-a="enviarAprof">Pedir aprofundamento</button>`);
+const DIRECOES = ['Lado prático', 'Objeções', 'Contexto histórico', 'Outro autor'];
+function painelAprofundar(id) {
+  abrir(`<h3>Aprofundar</h3><div class="meta">Um texto mais longo (60 a 70 linhas) que vai mais fundo em cada livro da nota e nas ligações entre eles. Uma vez por nota.</div>
+    <label class="l">Direção (opcional)</label><div class="chips" id="apDirs">${DIRECOES.map(d => `<button class="chip" data-a="direcao" data-v="${esc(d)}">${esc(d)}</button>`).join('')}</div>
+    <input type="text" id="apD" placeholder="Ou escreva: Camus, #liberdade…" style="margin-top:10px">
+    <div class="sp"></div><button class="btn" data-a="enviarAprof" data-v="${esc(id)}">Pedir aprofundamento</button>
+    <div class="meta" style="margin-top:8px;text-align:center">Leva de 1 a 3 minutos.</div>`);
+}
+function painelExportar(id) {
+  abrir(`<h3>Exportar nota</h3><div class="meta">A nota que está aberta.</div><div class="sp"></div>
+    <div class="row"><button class="btn sec" data-a="cartaoNota" data-v="${esc(id)}">🖼️ Imagem</button><button class="btn sec" data-a="pdfNota" data-v="${esc(id)}">📄 PDF</button></div>`);
 }
 const opcoesLivros = sel => A().slice().sort((a, b) => sem(a.titulo).localeCompare(sem(b.titulo))).map(r => `<option ${r.titulo === sel ? 'selected' : ''}>${esc(r.titulo)}</option>`).join('');
-function painelFotoIA() {
-  abrir(`<h3>Ler com IA</h3><img class="foto-prev" src="${S.foto.url}" alt="Prévia da foto">
-    <label class="l">De qual livro?</label>
-    <select id="fLivro"><option value="">— escolha —</option>${opcoesLivros()}</select>
-    <div class="sp"></div><button class="btn" data-a="enviarFoto">Enviar e transcrever</button>
-    <div class="sp"></div><button class="btn ghost" data-a="camera" data-v="ia">Escolher outra foto</button>`);
-}
 function painelResultado(titulo, texto, extra = '') { abrir(`<h3>${esc(titulo)}</h3><div class="sp"></div><div class="nota">${fmt(texto)}</div>${extra}<div class="sp"></div><button class="btn ghost" data-a="fechar">Fechar</button>`); }
 
 /* ===== Foto: compressão no aparelho ===== */
@@ -565,7 +644,7 @@ function carregarTesseract() {
 function painelRecorte() {
   abrir(`<h3>Selecione o trecho</h3><div class="meta">Arraste o dedo sobre a parte que interessa. Sem seleção, a página inteira é lida.</div>
     <div class="sp"></div><div class="crop" id="crop"><canvas id="cropC"></canvas><div class="r" id="cropR" style="display:none"></div></div>
-    <div class="sp"></div><button class="btn" data-a="lerLocal">Ler e salvar</button>
+    <div class="sp"></div><button class="btn" data-a="lerLocal">Ler o texto</button>
     <div class="sp"></div><button class="btn ghost" data-a="outraFotoLocal">Escolher outra foto</button>`);
   const img = S.foto.img, cv = $('#cropC'), k = Math.min(1, 1000 / img.width);
   cv.width = Math.round(img.width * k); cv.height = Math.round(img.height * k);
@@ -584,15 +663,16 @@ function sugerirTags(texto, titulo) {
   const doTexto = vocabulario().filter(t => t.split('-').every(p => palavras.has(sem(p))));
   return [...new Set([...doTexto, ...T(livro?.tags)])].slice(0, 5);
 }
-function painelAntesDaFoto() {
-  abrir(`<h3>Ler no aparelho</h3><div class="meta">Escolha o livro antes da foto. O texto lido é guardado direto, só com o livro.</div>
-    <label class="l">Livro</label><select id="alLivro"><option value="">— escolha —</option>${opcoesLivros(S.fotoLivro)}</select>
-    <div class="sp"></div><button class="btn" data-a="tirarFotoLocal">📸 Fotografar a página</button>`);
+function painelRevisao(texto) {
+  abrir(`<h3>Confira o texto</h3><div class="meta">${esc(S.fotoLivro)} · corrija o que o leitor errou antes de salvar.</div>
+    <div class="sp"></div><textarea id="revTxt" style="min-height:220px">${esc(texto)}</textarea>
+    <div class="sp"></div><div class="row"><button class="btn ghost" data-a="descartarTrecho">Descartar</button><button class="btn" data-a="salvarTrecho">Salvar</button></div>`);
 }
 async function salvarTrechoLocal(texto) {
   const titulo = S.fotoLivro, livro = A().find(r => r.titulo === titulo);
   await gravar([{ aba: 'Trechos', modo: 'append', valores: { id: 't-' + agoraId(), titulo, autor: livro?.autor || '', trecho: texto,
     tags: sugerirTags(texto, titulo).join(', ') } }], '📸 Trecho guardado.');
+  S.sessao.push({ titulo, trecho: texto });                 // lista só desta sessão; nada além disso fica no app (D19)
   S.foto = null; fechar(); render(); toast('Trecho guardado. Ele entra como apoio nas próximas reflexões.', 3500);
 }
 
@@ -610,7 +690,7 @@ function painelEstante(livros) {
 }
 
 /* ===== Mapa de conexões entre livros (por tags em comum) ===== */
-const tagsDo = r => [...new Set([...T(r.tags), ...T(r.tags_nota)])];
+const tagsDo = r => [...new Set(T(r.tags))];
 function vizinhos(titulo) {
   const r = A().find(x => x.titulo === titulo); if (!r) return [];
   const minhas = new Set(tagsDo(r));
@@ -654,10 +734,10 @@ function abrirMapa(filtroTema) {
   $('#tela').innerHTML = `<div class="full"><div class="barra"><h3>Conexões entre livros</h3><button class="iconbtn" data-a="fecharTela" aria-label="Fechar">✕</button></div>
     <div class="seg" style="padding:0 14px 6px"><button class="chip ${!filtroTema ? 'on' : ''}" data-a="mapaTema" data-v="">Tudo</button>${temas.map(t => `<button class="chip ${filtroTema === t ? 'on' : ''}" data-a="mapaTema" data-v="${esc(t)}">${esc(t)}</button>`).join('')}</div>
     <div class="meta" style="padding:0 14px 6px">${filtroTema ? 'Livros ligados por tags deste tema.' : 'Linhas ligam livros com 2 ou mais tags em comum; mais grossa = mais tags.'}
-      <span style="color:var(--accent-ink)">●</span> Ficção <span style="color:var(--gold)">●</span> Filosofia <span style="color:var(--muted)">●</span> Não ficção${soltos ? ` · ${soltos} sem ligação` : ''}</div>
+      <span style="color:var(--accent-ink)">●</span> Ficção <span style="color:var(--gold)">●</span> Filosofia <span style="color:var(--muted)">●</span> Não ficção${soltos ? ` · ${soltos} sem ligação` : ''}. Aproxime (＋) para ver mais nomes.</div>
     <div class="grafo" id="grafo">${nos.length ? `<svg id="svg" viewBox="${S.vb.join(' ')}">
       ${ar.map(([a, b, n]) => `<line x1="${a.x.toFixed(1)}" y1="${a.y.toFixed(1)}" x2="${b.x.toFixed(1)}" y2="${b.y.toFixed(1)}" style="stroke-width:${Math.min(4, n)}px"/>`).join('')}
-      ${nos.map(n => `<g class="lv" data-a="livro" data-v="${esc(n.id)}" transform="translate(${n.x.toFixed(1)},${n.y.toFixed(1)})">
+      ${nos.map(n => `<g class="lv" data-a="livro" data-v="${esc(n.id)}" data-grau="${grau[n.id]}" data-xy="${n.x.toFixed(1)},${n.y.toFixed(1)}" transform="translate(${n.x.toFixed(1)},${n.y.toFixed(1)})">
         <circle r="${((5 + Math.min(9, grau[n.id])) * e0).toFixed(1)}" style="fill:${COR_CAT[n.cat] || 'var(--muted)'}"/><text x="${((9 + Math.min(9, grau[n.id])) * e0).toFixed(1)}" y="${(4 * e0).toFixed(1)}" style="font-size:${fs}px">${esc(corta(n.id))}</text></g>`).join('')}
     </svg>` : '<div class="empty">Nenhuma ligação neste filtro.</div>'}
     <div class="zoom"><button class="iconbtn" data-a="zoom" data-v="0.7">＋</button><button class="iconbtn" data-a="zoom" data-v="1.4">－</button><button class="iconbtn" data-a="zoom" data-v="0">⟲</button></div></div></div>`;
@@ -666,6 +746,22 @@ function abrirMapa(filtroTema) {
   g.onpointermove = e => { if (!arr) return; const k = S.vb[2] / g.clientWidth;
     S.vb[0] = arr.vb[0] - (e.clientX - arr.x) * k; S.vb[1] = arr.vb[1] - (e.clientY - arr.y) * k; svg.setAttribute('viewBox', S.vb.join(' ')); };
   g.onpointerup = () => { arr = null; };
+  requestAnimationFrame(rotular);
+}
+/** nomes do mapa sem sobreposição: o tamanho da letra acompanha o zoom e, quando dois nomes se cruzam, fica o do livro mais ligado */
+function rotular() {
+  const svg = $('#svg'), g = $('#grafo'); if (!svg || !g) return;
+  const k = S.vb[2] / (g.clientWidth || 390), fs = 12 * k, caixas = [];
+  const nos = [...svg.querySelectorAll('g.lv')].map(el => { const [x, y] = el.dataset.xy.split(',').map(Number), c = el.querySelector('circle'), rr = Number(c.getAttribute('r'));
+    caixas.push([x - rr, y - rr, x + rr, y + rr]); return { el, x, y, rr, grau: Number(el.dataset.grau) }; });
+  nos.sort((a, b) => b.grau - a.grau).forEach(n => {
+    const tx = n.el.querySelector('text');
+    tx.classList.remove('oculto'); tx.setAttribute('x', (n.rr + 4 * k).toFixed(1)); tx.setAttribute('y', (4 * k).toFixed(1)); tx.style.fontSize = fs.toFixed(1) + 'px';
+    const w = (tx.getComputedTextLength ? tx.getComputedTextLength() : 0) || tx.textContent.length * fs * .56;
+    const b = [n.x + n.rr + 3 * k, n.y - fs * .75, n.x + n.rr + 4 * k + w, n.y + fs * .45];
+    const bate = caixas.some(c => b[0] < c[2] && b[2] > c[0] && b[1] < c[3] && b[3] > c[1]);
+    if (bate) tx.classList.add('oculto'); else caixas.push(b);
+  });
 }
 
 /* ===== Cartão-imagem para compartilhar ===== */
@@ -691,30 +787,20 @@ async function cartaoImagem({ citacao, titulo, linha2, rodape }) {
   abrir(`<h3>Imagem pronta</h3><img class="foto-prev" src="${c.toDataURL('image/png')}" alt="Cartão"><div class="meta">Toque e segure a imagem para salvar ou compartilhar.</div>`);
 }
 
-/* ===== Exportar ===== */
-function markdown() {
-  let md = `# ${CONFIG.nomeApp} — exportado em ${dataBR(hoje())}\n\n## Acervo (${A().length})\n`;
-  A().forEach(r => { md += `\n### ${r.titulo} — ${r.autor}\n- Categoria: ${r.categoria}\n- Tags: ${T(r.tags).join(', ')}\n` + (r.nota_pessoal ? `- O que me marcou: ${r.nota_pessoal}\n` : ''); });
-  md += `\n## Reflexões (${H().length})\n`;
-  H().forEach(r => { md += `\n### ${dataBR(r.data)} — ${r.tema}\n\n${semFmt(r.mensagem)}\n` + (r.resposta ? `\n**Minha resposta:** ${r.resposta}\n` : ''); });
-  return md;
-}
-async function baixar(nome, conteudo, tipo) {
-  const file = new File([conteudo], nome, { type: tipo });
-  if (navigator.canShare && navigator.canShare({ files: [file] })) { try { await navigator.share({ files: [file] }); return; } catch (e) { if (e.name === 'AbortError') return; } }
-  const a = document.createElement('a'); a.href = URL.createObjectURL(file); a.download = nome; document.body.appendChild(a); a.click(); a.remove();
-}
-function imprimir() {
-  $('#impressao').innerHTML = `<h1>${esc(CONFIG.nomeApp)}</h1>` + markdown().split('\n').map(l =>
-    l.startsWith('### ') ? `<h3>${esc(l.slice(4))}</h3>` : l.startsWith('## ') ? `<h2>${esc(l.slice(3))}</h2>` : l.startsWith('# ') ? '' :
-    l.startsWith('> ') ? `<blockquote><i>${esc(l.slice(2))}</i></blockquote>` : l.trim() ? `<p>${esc(l)}</p>` : '').join('');
+/* ===== Exportar a nota aberta (PDF pela impressão do aparelho; imagem pelo cartão) ===== */
+function pdfNota(id) {
+  const n = H().find(x => String(x.id) === String(id)); if (!n) return;
+  const par = t => semFmt(t).split('\n').map(l => l.trim() ? `<p>${esc(l)}</p>` : '').join('');
+  $('#impressao').innerHTML = `<h1>${esc(semFmt(String(n.mensagem).split('\n')[0]))}</h1><p><i>${esc(dataBR(n.data))} · ${esc(n.formato || '')} · ${esc(CONFIG.nomeApp)}</i></p>` +
+    par(String(n.mensagem).split('\n').slice(1).join('\n')) + (n.resposta ? `<h3>Minha resposta</h3>${par(n.resposta)}` : '') +
+    derivadas(n, 'a').map(a => `<h2>Aprofundamento</h2>${par(a.mensagem)}`).join('');
   setTimeout(() => window.print(), 100);
 }
 
 /* ===== Ações ===== */
 async function ocupado(btn, fn) {
   const txt = btn ? btn.innerHTML : '';
-  if (btn) { btn.disabled = true; btn.innerHTML = '<span class="spin"></span> Aguarde…'; }
+  if (btn) { btn.disabled = true; btn.innerHTML = btn.classList.contains('salvar') || btn.classList.contains('seta') ? '<span class="spin"></span>' : '<span class="spin"></span> Aguarde…'; }
   try { return await fn(); }
   catch (e) { toast('Erro: ' + e.message, 4000); }
   finally { if (btn && document.body.contains(btn)) { btn.disabled = false; btn.innerHTML = txt; } }
@@ -725,7 +811,31 @@ const AC = {
   cat: (v) => { S.categoria = v; render(); },
   livro: (v) => painelLivro(v),
   tag: (v) => painelTag(v),
-  nota: (v) => painelNota(v),
+  nota: (v) => { if (!/^(d|c)-/.test(v)) return painelNota(v);           // notas diárias e conexões abrem na tela Hoje, com as setas
+    fechar(); $('#tela').innerHTML = ''; S.notaId = v; S.aba = 'hoje'; location.hash = 'hoje'; render(); window.scrollTo(0, 0); },
+  notaAnt: () => { const q = seqNotas(), i = q.findIndex(r => r.id === S.notaId); if (i > 0) { S.notaId = q[i - 1].id; render(); window.scrollTo(0, 0); } },
+  notaProx: () => { const q = seqNotas(), i = q.findIndex(r => r.id === S.notaId); if (i >= 0 && i < q.length - 1) { S.notaId = q[i + 1].id; render(); window.scrollTo(0, 0); } },
+  exportarNota: (v) => painelExportar(v),
+  pdfNota: (v) => { fechar(); pdfNota(v); },
+  tagNotas: (v) => { S.tagNotas = v; render(); },
+  resumo: (v) => { const i = v.indexOf('|'); painelResumo(v.slice(0, i), v.slice(i + 1), false); },
+  refazerResumo: (v) => { const i = v.indexOf('|'); painelResumo(v.slice(0, i), v.slice(i + 1), true); },
+  renomearForm: (v) => { $('#renForm').innerHTML = `<label class="l">Novo nome</label><div class="row"><input type="text" id="renNovo" value="${esc(v)}" autocapitalize="none">
+      <button class="btn sm" style="flex:0 0 auto" data-a="renomear" data-v="${esc(v)}">Salvar</button></div>
+      <div class="meta" style="margin-top:6px">Muda em todos os livros, notas e trechos. Se o nome já existir, as duas tags são juntadas.</div>`; $('#renNovo').focus(); },
+  renomear: (v, b) => { const para = normTag($('#renNovo').value); if (!para || para === v) return toast('Escreva um nome diferente');
+    if (indiceTags()[para] && b.dataset.conf !== para) { b.dataset.conf = para; b.textContent = 'Juntar'; toast(`#${para} já existe. Toque de novo para juntar as duas.`, 3500); return; }
+    return ocupado(b, async () => { const j = await acao({ acao: 'renomearTag', de: v, para }); if (!j) return; await carregar(true); painelTag(para); toast(j.texto, 3500); }); },
+  conexoes: (v, b) => ocupado(b, async () => { b.innerHTML = '<span class="spin"></span> Escrevendo a nova nota…';
+    const j = await acao({ acao: 'conexoes', id: v }); if (!j) return; await carregar(true); S.notaId = j.id || S.notaId; render(); window.scrollTo(0, 0);
+    toast('Nova conexão pronta' + (j.restantes !== undefined ? ` · ${plural(j.restantes, 'restante', 'restantes')}` : ''), 3500); }),
+  direcao: (v, b) => { const on = b.classList.contains('on'); document.querySelectorAll('#apDirs .chip').forEach(c => c.classList.remove('on'));
+    if (on) $('#apD').value = ''; else { b.classList.add('on'); $('#apD').value = v; } },
+  fotoCapa: () => { S.modoFoto = 'capa'; const i = $('#cam'); i.value = ''; i.click(); },
+  salvarTrecho: (v, b) => { const t = $('#revTxt').value.replace(/\s+/g, ' ').trim(); if (t.length < 10) return toast('O texto ficou curto demais');
+    return ocupado(b, () => salvarTrechoLocal(t)); },
+  descartarTrecho: () => { S.foto = null; fechar(); toast('Trecho descartado'); },
+  editarCfg: () => { S.editCfg = true; render(); },
   fechar: () => fechar(),
   fecharTela: () => { $('#tela').innerHTML = ''; render(); },
   buscarPopulares: (v, b) => ocupado(b, async () => {
@@ -735,13 +845,12 @@ const AC = {
   }),
 
   novoLivro: () => painelNovoLivro(),
-  aprofundar: () => painelAprofundar(),
+  aprofundar: (v) => painelAprofundar(v),
   mapa: () => abrirMapa(''),
   mapaTema: (v) => abrirMapa(v),
   zoom: (v) => { const k = Number(v), svg = $('#svg'); if (!k) S.vb = S.vb0.slice();
     else { const cx = S.vb[0] + S.vb[2] / 2, cy = S.vb[1] + S.vb[3] / 2; S.vb[2] *= k; S.vb[3] *= k; S.vb[0] = cx - S.vb[2] / 2; S.vb[1] = cy - S.vb[3] / 2; }
-    svg.setAttribute('viewBox', S.vb.join(' ')); },
-  camera: (v) => { if (v === 'local') return painelAntesDaFoto(); S.modoFoto = v; const i = $('#cam'); i.value = ''; i.click(); },
+    svg.setAttribute('viewBox', S.vb.join(' ')); rotular(); },
   estante: () => { S.modoFoto = 'estante'; const i = $('#cam'); i.value = ''; i.click(); },
   tirarTag: (v) => { const [id, t] = v.split('|'); setTags(id, lerTags(id).filter(x => x !== t)); },
   porTag: (v) => { const inp = $('#' + v + '_in'), t = normTag(inp.value); if (!t) return; setTags(v, [...new Set([...lerTags(v), t])]); inp.value = ''; },
@@ -760,27 +869,29 @@ const AC = {
   usarCapaLink: (v, b) => { const u = $('#capaUrl').value.trim(); if (!/^https?:\/\/\S+$/.test(u)) return toast('Cole um link que comece com https://'); return ocupado(b, () => salvarCapa(v, https(u))); },
   salvarLivro: (v, b) => ocupado(b, async () => {
     const r = A().find(x => x.titulo === v), nota = $('#notaTxt').value.trim();
-    const valores = { titulo: v, tags: lerTags('tgLivro').join(', '), tags_nota: lerTags('tgNota').join(', ') };
+    const valores = { titulo: v, tags: lerTags('tgLivro').join(', ') };
     if (nota !== String(r.nota_pessoal || '').trim()) valores.nota_pessoal = nota;
     await gravar([{ aba: 'Acervo', modo: 'update', valores }]); toast('Livro atualizado'); fechar();
   }),
 
   cartaoNota: (v) => { const n = H().find(x => String(x.id) === String(v)); if (!n) return;
     const tit = semFmt(String(n.mensagem).split('\n')[0]); cartaoImagem({ citacao: pergunta(n.mensagem) || tit, titulo: tit, linha2: T(n.tags).map(t => '#' + t).join(' ') }); },
-  fundir: (v, b) => ocupado(b, async () => {
+  fundir: (v, b) => ocupado(b, async () => {           // a troca acontece no script: livros, notas, trechos e resumos (A4)
     const para = TG().find(r => r.tag === v)?.fundir_em; if (!para) return;
-    const troca = s => [...new Set(T(s).map(t => t === v ? para : t))].join(', '), ops = [];
-    A().forEach(r => { if (T(r.tags).includes(v) || T(r.tags_nota).includes(v)) ops.push({ aba: 'Acervo', modo: 'update', valores: { titulo: r.titulo, tags: troca(r.tags), tags_nota: troca(r.tags_nota) } }); });
-    H().forEach(r => { if (T(r.tags).includes(v)) ops.push({ aba: 'Historico', modo: 'update', valores: { id: r.id, tags: troca(r.tags) } }); });
-    ops.push({ aba: 'Tags', modo: 'update', valores: { tag: v, fundir_em: '' } });
-    await gravar(ops, `🔀 #${v} juntada a #${para} (${ops.length - 1} registro(s)).`); toast(`#${v} → #${para}`);
+    const j = await acao({ acao: 'renomearTag', de: v, para }); if (!j) return;
+    await carregar(true); toast(`#${v} → #${para}`);
   }),
   naoFundir: (v, b) => ocupado(b, async () => { await gravar([{ aba: 'Tags', modo: 'update', valores: { tag: v, fundir_em: '' } }]); }),
-  exportar: (v) => v === 'json' ? baixar(`entrelinhas-${hoje()}.json`, JSON.stringify(S.dados, null, 2), 'application/json')
-    : v === 'md' ? baixar(`entrelinhas-${hoje()}.md`, markdown(), 'text/markdown') : imprimir(),
   enviarLivro: (v, b) => ocupado(b, async () => {
     const t = $('#nlT').value.trim(), a = $('#nlA').value.trim(), n = $('#nlN').value.trim();
     if (!t) return toast('Informe o título');
+    const info = S.capaInfo;
+    if (info && sem(info.titulo) === sem(t)) {            // identificado pela foto: já tem categoria e tags, grava sem outra chamada à IA
+      if (A().some(r => sem(r.titulo) === sem(t))) return toast('Este livro já está no acervo');
+      await gravar([{ aba: 'Acervo', modo: 'append', valores: { titulo: t, autor: a || info.autor || '', categoria: info.categoria || '', nota_pessoal: n, ativo: 'sim',
+        adicionado_em: hoje(), tags: T(info.tags).join(', '), peso: 'normal' } }], `📚 _${t}_ adicionado.`);
+      S.capaInfo = null; fechar(); toast('Livro adicionado'); return;
+    }
     const j = await comando(['/livro ' + t, a, n].filter(Boolean).join(' - '));
     if (j) painelResultado('Acervo', j.texto);
   }),
@@ -789,14 +900,10 @@ const AC = {
     return ocupado(b, async () => { const j = await comando('/remover ' + v); if (j) painelResultado('Acervo', j.texto); });
   },
   enviarAprof: (v, b) => ocupado(b, async () => {
-    const d = $('#apD').value.trim(); const j = await comando('/aprofundar' + (d ? ' ' + d : ''));
-    if (j) { fechar(); S.aba = 'hoje'; render(); toast('Aprofundamento pronto'); }
-  }),
-  enviarFoto: (v, b) => ocupado(b, async () => {
-    if (!$('#fLivro').value) return toast('Escolha o livro');
-    const j = await acao({ acao: 'foto', imagem_b64: S.foto.b64, mime: S.foto.mime, legenda: $('#fLivro').value });
-    if (!j) return; S.foto = null; await carregar(true);
-    painelResultado('Trecho', j.texto);
+    b.innerHTML = '<span class="spin"></span> Escrevendo o aprofundamento…';
+    const j = await acao({ acao: 'aprofundar', id: v, direcao: $('#apD').value.trim() }); if (!j) return;
+    fechar(); await carregar(true); S.aba = 'hoje'; location.hash = 'hoje'; render(); toast('Aprofundamento pronto');
+    setTimeout(() => document.getElementById('ap-' + j.id)?.scrollIntoView({ behavior: 'smooth' }), 150);
   }),
   lerLocal: (v, b) => ocupado(b, async () => {
     const img = S.foto.img, s = S.sel || { x: 0, y: 0, w: 1, h: 1 };
@@ -806,7 +913,7 @@ const AC = {
     const res = await Tesseract.recognize(rec.canvas, 'por', { logger: m => { if (m.status === 'recognizing text') b.innerHTML = `<span class="spin"></span> Lendo… ${Math.round(m.progress * 100)}%`; } });
     const texto = res.data.text.replace(/-\n(\p{Ll})/gu, '$1').replace(/\s*\n\s*/g, ' ').replace(/\s{2,}/g, ' ').trim();
     if (texto.length < 10) return toast('Não encontrei texto. Tente uma foto mais nítida ou selecione menos área.', 4000);
-    await salvarTrechoLocal(texto);
+    painelRevisao(texto);
   }),
   tirarFotoLocal: () => {
     const t = $('#alLivro').value; if (!t) return toast('Escolha o livro');
@@ -816,24 +923,25 @@ const AC = {
   adicionarEstante: (v, b) => ocupado(b, async () => {
     const ops = S.estante.filter(l => $('#es_' + l.i)?.checked).map(l => ({ aba: 'Acervo', modo: 'append', valores: {
       titulo: l.titulo, autor: l.autor || '', categoria: $('#esc_' + l.i).value, nota_pessoal: '', ativo: 'sim', adicionado_em: hoje(),
-      tags: lerTags('tgE' + l.i).join(', '), tags_nota: '', peso: 'normal' } }));
+      tags: lerTags('tgE' + l.i).join(', '), peso: 'normal' } }));
     if (!ops.length) return toast('Nenhum livro marcado');
     await gravar(ops, `📚 ${ops.length} livro(s) adicionado(s).`); fechar(); toast(`${ops.length} livro(s) adicionado(s)`);
   }),
 
   salvarCfg: (v, b) => ocupado(b, async () => {
-    S.cfg = { api: $('#cfgApi').value.trim(), token: $('#cfgTok').value.trim() }; store.set('cfg', S.cfg);
+    S.cfg = { api: $('#cfgApi').value.trim(), token: $('#cfgTok').value.trim() }; store.set('cfg', S.cfg); S.editCfg = false;
     await carregar();
   }),
-  push: (v, b) => ocupado(b, async () => {
+  push: (v, b) => ocupado(b, async () => {               // um botão só: ativa ou desativa
     if (!window.OneSignal || !OneSignal.Notifications) throw new Error('serviço de notificações não carregou');
-    await OneSignal.Notifications.requestPermission();
+    if (pushAtivo()) { await OneSignal.User.PushSubscription.optOut(); toast('Notificações desativadas'); }
+    else { if (!OneSignal.Notifications.permission) await OneSignal.Notifications.requestPermission(); await OneSignal.User.PushSubscription.optIn(); toast('Notificações ativadas'); }
     render();
   })
 };
 document.addEventListener('click', e => {
   const b = e.target.closest('[data-a]'); if (b) { e.preventDefault(); AC[b.dataset.a]?.(b.dataset.v, b); return; }
-  const t = e.target.closest('[data-tab]'); if (t) { $('#tela').innerHTML = ''; S.aba = t.dataset.tab; S.busca = ''; location.hash = S.aba; render(); window.scrollTo(0, 0); }
+  const t = e.target.closest('[data-tab]'); if (t) { $('#tela').innerHTML = ''; S.aba = t.dataset.tab; S.busca = ''; if (S.aba === 'hoje') S.notaId = null; location.hash = S.aba; render(); window.scrollTo(0, 0); }
 });
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') { if ($('#sheet').classList.contains('open')) return fechar(); if ($('#tela').innerHTML) return AC.fecharTela(); }
@@ -844,12 +952,20 @@ document.addEventListener('input', e => {
   S._deb = setTimeout(() => { const pos = e.target.selectionStart; render(); const el = document.querySelector(`[data-in="${k}"]`); if (el) { el.focus(); try { el.setSelectionRange(pos, pos); } catch (x) {} } }, 200);
 });
 $('#sheetbg').addEventListener('click', fechar);
+/* deslizar o painel para baixo fecha (quando ele está no topo; não vale em campos de texto nem no recorte da foto) */
+(() => { const sh = $('#sheet'); let y0 = null, dy = 0;
+  sh.addEventListener('touchstart', e => { if (sh.scrollTop > 0 || e.target.closest('textarea,input,select,.crop')) { y0 = null; return; } y0 = e.touches[0].clientY; dy = 0; }, { passive: true });
+  sh.addEventListener('touchmove', e => { if (y0 === null) return; dy = e.touches[0].clientY - y0;
+    if (dy > 0) { sh.style.transition = 'none'; sh.style.transform = `translateY(${dy}px)`; } }, { passive: true });
+  sh.addEventListener('touchend', () => { if (y0 === null) return; y0 = null; sh.style.transition = ''; sh.style.transform = ''; if (dy > 90) fechar(); dy = 0; });
+})();
 $('#cam').addEventListener('change', async e => {
   const f = e.target.files[0]; if (!f) return;
   try {
     const { img, url } = await carregarImagem(f);
     if (S.modoFoto === 'local') { S.foto = { img, url }; painelRecorte(); return; }
     const j = paraJpeg(img, 0, 0, img.width, img.height);
+    if (S.modoFoto === 'capa') { await lerCapa(j); return; }
     if (S.modoFoto === 'estante') {
       abrir('<h3>Lendo a estante…</h3><div class="empty"><span class="spin"></span></div>');
       try { const r = await acao({ acao: 'estante', imagem_b64: j.b64, mime: j.mime }); if (!r) return fechar();
@@ -857,19 +973,33 @@ $('#cam').addEventListener('change', async e => {
         painelEstante(r.livros); } catch (x) { fechar(); toast('Erro: ' + x.message, 4000); }
       return;
     }
-    S.foto = j; painelFotoIA();
   } catch (x) { toast(x.message); }
 });
-window.addEventListener('hashchange', () => { const a = location.hash.slice(1); if (ABAS[a] && a !== S.aba) { S.aba = a; render(); } });
+window.addEventListener('hashchange', () => { let a = location.hash.slice(1); if (a === 'historico') a = 'trechos'; if (ABAS[a] && a !== S.aba) { S.aba = a; render(); } });
+/** Adicionar livro: a IA lê a capa e preenche título e autor (gasta tokens); categoria e tags ficam guardadas para gravar direto */
+async function lerCapa(j) {
+  const info = $('#nlInfo'); if (!info) return;
+  info.innerHTML = '<span class="spin"></span> Lendo a capa…';
+  try {
+    const r = await acao({ acao: 'estante', modo: 'capa', imagem_b64: j.b64, mime: j.mime });
+    if (!r) { info.textContent = ''; return; }
+    const l = (r.livros || [])[0];
+    if (!l) { info.textContent = r.texto || 'Não consegui identificar o livro.'; return; }
+    $('#nlT').value = l.titulo || ''; if (l.autor) $('#nlA').value = l.autor;
+    S.capaInfo = { titulo: l.titulo, autor: l.autor || '', categoria: l.categoria || '', tags: T(l.tags) };
+    const ja = l.ja_no_acervo || A().some(x => sem(x.titulo) === sem(l.titulo));
+    info.innerHTML = ja ? '⚠️ Este livro já está no acervo.' : `${esc(l.categoria || '')}${S.capaInfo.tags.length ? ' · ' + S.capaInfo.tags.map(t => '#' + esc(t)).join(' ') : ''}`;
+  } catch (x) { info.textContent = 'Erro: ' + x.message; }
+}
 
 /* ===== Render ===== */
 function render() {
   const aba = S.aba;
   $('#titulo').textContent = aba === 'hoje' ? CONFIG.nomeApp : ABAS[aba];
-  document.querySelectorAll('#tabs button').forEach(b => b.classList.toggle('on', b.dataset.tab === (aba === 'historico' ? 'mais' : aba)));
+  document.querySelectorAll('#tabs button').forEach(b => b.classList.toggle('on', b.dataset.tab === aba));
   if (!S.dados) { $('#app').innerHTML = '<div class="empty"><span class="spin"></span></div>'; return; }
   const banner = S.demo ? '<div class="banner">Modo demonstração com dados de exemplo. Configure a conexão em <b>Mais</b>.</div>' : '';
-  const telas = { hoje: telaHoje, biblioteca: telaBiblioteca, trechos: telaTrechos, tags: telaTags, mais: telaMais, historico: telaHistorico };
+  const telas = { hoje: telaHoje, biblioteca: telaBiblioteca, trechos: telaTrechos, tags: telaTags, mais: telaMais };
   $('#app').innerHTML = banner + telas[aba]();
   if (!S._abMontada && $('#abertura')) { S._abMontada = true; montarAbertura(); }
 }
@@ -886,7 +1016,7 @@ function montarAbertura() {
   const nLivros = nota ? String(nota.livros || '').split(';').filter(x => x.trim()).length : 0, nArt = nota ? String(nota.artigos || '').split(' ;; ').filter(x => x.trim()).length : 0;
   $('#abSub').textContent = nota ? `nota nº ${total} · ${nLivros} livro${nLivros === 1 ? '' : 's'}${nArt ? ` · ${nArt} artigo${nArt === 1 ? '' : 's'}` : ''}` : 'a primeira nota chega às 7h';
   const vocab = Object.entries(indiceTags()).sort((a, b) => b[1].livros.size - a[1].livros.size).map(([t]) => t);
-  if (!vocab.length) return;
+  if (!vocab.length) { if (S.viaPush) entrarSozinho(0); return; }
   const acesas = [...new Set(T(nota?.tags))].filter(t => vocab.includes(t)).slice(0, 5);
   const lista = []; while (lista.length < 140) lista.push(...vocab.slice().sort(() => rnd() - .5));
   const corpo = lista.slice(0, 140).filter(t => !acesas.includes(t));
@@ -912,10 +1042,22 @@ function montarAbertura() {
     const svg = $('#abFios'), r0 = ab.getBoundingClientRect();
     const pts = alvos.filter(Boolean).map(e => { const r = e.getBoundingClientRect(); return [r.left - r0.left + r.width / 2, r.top - r0.top + r.height / 2]; }).filter(p => p[1] > 0);
     svg.setAttribute('viewBox', `0 0 ${r0.width} ${r0.height}`);
+    const anim = !matchMedia('(prefers-reduced-motion: reduce)').matches, dur = 1500, passo = pts.length > 1 ? dur / (pts.length - 1) : 0;
     svg.innerHTML = (pts.length > 1 ? `<polyline points="${pts.map(p => p.join(',')).join(' ')}" fill="none" stroke="var(--accent)" stroke-opacity=".38" stroke-width="1"/>` : '') +
-      pts.map(p => `<circle cx="${p[0]}" cy="${p[1] + 13}" r="2.5" fill="var(--accent)" fill-opacity=".7"/>`).join('');
+      pts.map((p, i) => `<circle cx="${p[0]}" cy="${p[1] + 13}" r="2.5" fill="var(--accent)" fill-opacity=".7" style="${anim ? `opacity:0;transition:opacity .35s ease ${Math.round(i * passo)}ms` : ''}"/>`).join('');
+    // o fio se desenha de tag em tag; os pontos acendem quando o fio chega
+    const pl = svg.querySelector('polyline');
+    if (anim && pl && pl.getTotalLength) {
+      const L = pl.getTotalLength(); pl.style.strokeDasharray = L; pl.style.strokeDashoffset = L; pl.getBoundingClientRect();
+      pl.style.transition = `stroke-dashoffset ${dur}ms ease-in-out`; pl.style.strokeDashoffset = 0;
+    }
+    if (anim) requestAnimationFrame(() => svg.querySelectorAll('circle').forEach(c => { c.style.opacity = 1; }));
+    S.abAnimada = true;
+    if (S.viaPush) entrarSozinho(anim ? dur + 700 : 400);
   });
 }
+/** aberto pelo aviso de nota nova: a abertura aparece, o fio termina e o app entra sozinho na nota */
+function entrarSozinho(ms) { if (S._auto) return; S._auto = setTimeout(() => { S.notaId = null; fecharAbertura(); }, ms); }
 function fecharAbertura() {
   const ab = $('#abertura'); if (!ab) return;
   ab.classList.add('sai'); try { sessionStorage.setItem('ab_vista', '1'); } catch (e) {}
@@ -937,6 +1079,11 @@ if (CONFIG.onesignalAppId && !CONFIG.onesignalAppId.startsWith('COLE') && locati
     try {
       await OS.init({ appId: CONFIG.onesignalAppId, serviceWorkerPath: base.slice(1) + 'sw.js', serviceWorkerParam: { scope: base } });
       await OS.login(CONFIG.externalId);
+      OS.Notifications.addEventListener('click', () => {           // toque no aviso com o app já aberto em segundo plano
+        S.viaPush = true;
+        if ($('#abertura') && !$('#abertura').classList.contains('sai')) { if (S.abAnimada) entrarSozinho(1800); }
+        else AC.ir('hoje');
+      });
       if (S.aba === 'mais') render();
     } catch (e) { console.log('OneSignal', e); }
   });
